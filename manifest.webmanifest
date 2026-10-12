@@ -1,0 +1,15 @@
+{
+  "name": "Visual Line - Giám sát chuyền",
+  "short_name": "Visual Line",
+  "description": "Giám sát chuyền may treo Tinh Lợi: chuyền / công nhân / máy có vấn đề, ghi chú, máy hỏng",
+  "start_url": "may/giam-sat.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#16305c",
+  "theme_color": "#16305c",
+  "icons": [
+    { "src": "lib/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "lib/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
