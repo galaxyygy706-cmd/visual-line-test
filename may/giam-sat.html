@@ -560,7 +560,12 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .m-strip{font-size:12.5px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .m-strip b{color:var(--accent)}
   #mNav{display:flex;position:fixed;left:0;right:0;bottom:0;height:58px;z-index:70;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0)}
   #mNav button{flex:1;min-height:0;border:0;border-radius:0;background:none;font:600 11px var(--f-body);color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;cursor:pointer}
-  #mNav button i{font-style:normal;font-size:21px;line-height:1} #mNav button.on{color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 3px 0 var(--accent)}
+  #mNav button i{font-style:normal;font-size:21px;line-height:1;transition:transform .18s,margin .18s}
+  #mNav button.on{color:var(--accent);font-weight:700;justify-content:flex-end;padding-bottom:5px}
+  #mNav button.on i{width:46px;height:46px;margin-top:-24px;display:grid;place-items:center;border-radius:50%;background:var(--panel);border:2px solid var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.28);font-size:23px}
+  #mNav button.on span{top:-18px}
+  #mNav{overflow:visible}
+  #v3Qual .btn{white-space:nowrap;min-height:34px;padding:0 10px}
   #mNav button span{position:absolute;top:3px;left:calc(50% + 6px);background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 5px}
   body[data-mt="home"] #mChips,body[data-mt="home"] #mStrip,body[data-mt="home"] .stage,body[data-mt="home"] .panel,body[data-mt="home"] .bot-row,body[data-mt="home"] #empty{display:none!important}
   body:not([data-mt="home"]) #mHome{display:none}
@@ -574,7 +579,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   body:not([data-mt="mon"]) .app .stage{height:170px;min-height:0}
   .app .stage{height:42vh;min-height:270px}
   .vbar{left:6px;right:6px;bottom:6px;gap:4px;flex-wrap:wrap}
-  #v3Walk,#v3Undo,#v3New,#v3Qual,#v3Mark,#v3Full,#v3Top,#v3Help,#v3Leg,#v3Lines{display:none!important}
+  #v3Walk,#v3Undo,#v3New,#v3Mark,#v3Full,#v3Top,#v3Help,#v3Leg,#v3Lines{display:none!important}
   .pban{max-width:calc(100% - 24px);top:8px;left:8px;font-size:12.5px}
   .stage .tip.card{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:100%;max-width:none;min-width:0;border-radius:16px 16px 0 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.35);overflow-y:auto}
   .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
