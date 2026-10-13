@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#16305c">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Visual Line">
 <link rel="manifest" href="../manifest.webmanifest"><link rel="apple-touch-icon" href="../lib/icon-192.png">
@@ -538,7 +538,8 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
 .m-only{display:none}
 /* ĐIỆN THOẠI (≤ 700 px, 13/10/2026): 1 cột — thẻ chuyền cuộn ngang → 3D → Cần xử lý + Máy chờ sửa → biểu đồ; bỏ nút nhập liệu / đi dạo / báo cáo */
 @media (max-width:700px){
-  html,body{height:auto} body{font-size:15px}
+  html,body{height:auto;touch-action:pan-x pan-y;overscroll-behavior-x:none} body{font-size:15px;-webkit-text-size-adjust:100%;text-size-adjust:100%}   /* 13/10: khóa chụm hai ngón / bấm đúp phóng to trang (3D tự xử lý chụm trong khung) */
+  .stage canvas{touch-action:none}
   .app{height:auto;padding:8px;gap:10px;grid-template-columns:minmax(0,1fr);grid-template-rows:none}
   .vl-top{margin:-8px -8px 0;padding:0 12px;gap:4px 10px;min-height:44px;height:44px;flex-wrap:nowrap}
   .vl-logo{flex:1;gap:8px} .vl-logo i{width:26px;height:26px;border-radius:7px} .vl-b-d{display:inline} .vl-b-m{display:none}
@@ -558,17 +559,24 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .mb{padding:6px 10px;min-height:66px} .mb b,.mr b{display:block;font-size:15px;line-height:1.15} .mb small,.mr small{display:block;color:var(--muted);font-size:11.5px;font-weight:400}
   .mb em,.mr em{font-style:normal;font-weight:700;font-size:17px} .mb .n,.mr .n{background:var(--crit);color:#fff;border-radius:9px;font-size:11px;font-weight:700;padding:1px 7px}
   .mb .n{position:absolute;right:7px;top:7px}
+  /* Home v2 (13/10): thẻ Block có icon bên trái + mũi tên bên phải, chưa có dữ liệu vẫn nền trắng (chữ nhạt) */
+  .mb{padding:8px 22px 8px 44px;min-height:70px} .mb .bi{position:absolute;left:10px;top:10px;width:26px;height:26px;color:var(--accent)} .mb .bi svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .mb .ar{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:20px;line-height:1} .mb.off .bi,.mb.off .ar{color:var(--muted)}
+  .mb.off{opacity:1;background:var(--panel);border-left-width:1px;border-left-color:var(--line)} .mb.off b{color:var(--muted)} .mb.off em{color:var(--muted)}
+  .mb small{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #mHome .mhome-i{display:flex;flex-direction:column;align-items:center;gap:6px;margin:34px 0 8px;color:var(--muted);font-size:14px;text-align:center} .mhome-i svg{width:150px;height:auto;fill:none;stroke:#aebbd0;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .m-crumb .hm{display:inline-flex;vertical-align:-4px} .m-crumb .hm svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .mr{width:100%;display:flex;align-items:center;gap:10px;padding:7px 10px;margin-bottom:7px;min-height:52px} .mr > span:first-child{flex:1;min-width:0} .mr .ar{color:var(--muted);font-size:20px}
   .mb.off,.mr.off{opacity:.45;cursor:default} .mr.all{background:var(--accent-soft);border-left-color:var(--accent)}
   /* Thẻ chuyền v3/v4 (13/10): chấm + mã, % to cùng màu trạng thái, thanh tiến độ mảnh; thẻ chọn = nền nhạt + viền 1 px + nâng nhẹ; nhiều chuyền (> 6): thẻ gọn, cần chú ý lên đầu, dải màu, nút "Tất cả" */
   .m-chips{display:flex!important;gap:8px;overflow-x:auto;padding:8px 2px 6px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;scrollbar-width:none} .m-chips::-webkit-scrollbar{display:none}
-  .m-chips .mc{flex:0 0 92px;scroll-snap-align:start;position:relative;text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px 8px;min-height:56px;cursor:pointer}
+  .m-chips .mc{flex:0 0 92px;scroll-snap-align:start;position:relative;text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px 8px;min-height:44px;cursor:pointer}
   .m-chips .mc b{display:flex;align-items:center;gap:5px;font-size:12.5px;line-height:1.2;color:var(--muted)} .m-chips .mc b .dot{width:8px;height:8px;border-radius:50%;background:var(--k,var(--gray));flex:none}
-  .m-chips .mc em{display:block;font-style:normal;font-weight:800;font-size:22px;line-height:1.15;color:var(--k,var(--fg));font-variant-numeric:tabular-nums}
-  .m-chips .mc u{display:block;height:3px;border-radius:2px;background:var(--line);margin-top:5px;overflow:hidden;text-decoration:none} .m-chips .mc u::after{content:"";display:block;height:100%;width:var(--w,0);background:var(--k,var(--gray))}
+  .m-chips .mc em{display:block;font-style:normal;font-weight:800;font-size:12px;line-height:1.2;color:var(--k,var(--fg));font-variant-numeric:tabular-nums}
+  .m-chips .mc u{display:none}   /* bỏ thanh tiến độ (13/10) */
   .m-chips .mc.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 3px 10px rgba(31,95,191,.25);transform:translateY(-1px)} .m-chips .mc.on b{color:var(--fg)}
-  .m-chips .mc .n{position:absolute;right:6px;top:6px;min-width:17px;height:17px;display:grid;place-items:center;background:var(--crit);color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;padding:0 4px}
-  .m-chips.many .mc{flex-basis:64px;padding:5px 7px 6px;min-height:50px} .m-chips.many .mc b{font-size:12px} .m-chips.many .mc em{font-size:18px}
+  .m-chips .mc .n{position:absolute;right:6px;bottom:5px;min-width:17px;height:17px;display:grid;place-items:center;background:var(--crit);color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;padding:0 4px}
+  .m-chips.many .mc{flex-basis:64px;padding:5px 7px 6px;min-height:40px} .m-chips.many .mc b{font-size:12px} .m-chips.many .mc em{font-size:12px}
   .m-chips .mc.more{flex:0 0 68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--accent);border:1px dashed var(--accent);font-size:12px;font-weight:700;background:var(--panel)}
   .m-chips .mc.more svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8}
   .m-rib{margin:0 2px} .m-rib .rb{display:flex;gap:2px;height:10px} .m-rib .rb i{flex:1;border-radius:2px;background:var(--k);cursor:pointer} .m-rib .rb i.on{outline:2px solid var(--accent);outline-offset:1px}
@@ -600,8 +608,20 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   body[data-mt="prob"] #view > :not(#secProb):not(#secMach),body[data-mt="prob"] .bot-row{display:none!important}
   body[data-mt="mach"] #view > :not(#secMach),body[data-mt="mach"] .bot-row{display:none!important}
   body[data-mt="stat"] #view > :is(#secProb,#secMach,#alerts){display:none!important}
-  body[data-mt="stat"] #view > .bot-row{order:3;margin-bottom:0}
-  .bot-row .bot-tabs{order:-1}   /* bảng 3 tab lên trên, 2 biểu đồ nhỏ xuống dưới */   /* bảng Tổng quan / Công đoạn / Công nhân lên ngay sau "Xem tại giờ" (trước đây nằm cuối trang, phải cuộn ~3000 px mới thấy) */
+  body[data-mt="stat"] #view > .bot-row{order:1;margin-bottom:0}
+  /* Dòng đường dẫn có 2 nút Công đoạn / Công nhân (tab Chỉ số): bấm = danh sách tương ứng thay cho phần chính, bấm lại = về phần chính */
+  .m-crumb{display:flex;align-items:center;gap:8px} .m-crumb .cp{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .m-crumb .sv{flex:none;font:600 12.5px var(--f-body);color:var(--accent);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:4px 11px;min-height:0;cursor:pointer}
+  .m-crumb .sv.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  body[data-mt="stat"][data-sv="ops"] #view > .bot-row ~ *,body[data-mt="stat"][data-sv="wk"] #view > .bot-row ~ *{display:none!important}
+  body[data-mt="stat"][data-sv="ops"] #view > :not(.bot-row),body[data-mt="stat"][data-sv="wk"] #view > :not(.bot-row){display:none!important}
+  body[data-mt="stat"][data-sv="ops"] .bot-row .bot-box,body[data-mt="stat"][data-sv="wk"] .bot-row .bot-box{display:none!important}
+  body[data-mt="stat"][data-sv="ops"] #botRow .bot-tabs,body[data-mt="stat"][data-sv="wk"] #botRow .bot-tabs{display:flex!important}
+  body[data-mt="stat"][data-sv="ops"] .bot-tabs .bot-h,body[data-mt="stat"][data-sv="wk"] .bot-tabs .bot-h{display:none}
+  /* Tab Chỉ số (13/10): chỉ 4 phần theo thứ tự So sánh %EFF các chuyền → Sản lượng TB từng công đoạn → Cân bằng chuyền → Ra chuyền theo giờ; còn lại ẩn */
+  body[data-mt="stat"] #view > :not(.bot-row):not(#secRate):not(#secBal):not(#secHour){display:none!important}
+  body[data-mt="stat"] .bot-row .bot-box:not(:first-child){display:none!important}
+  body[data-mt="stat"] #secRate{order:2} body[data-mt="stat"] #secBal{order:3} body[data-mt="stat"] #secHour{order:4}   /* bảng Tổng quan / Công đoạn / Công nhân lên ngay sau "Xem tại giờ" (trước đây nằm cuối trang, phải cuộn ~3000 px mới thấy) */
   #mFix{display:flex;flex-direction:column;gap:8px;margin:-8px -8px 0;padding:0 8px 6px;background:var(--bg)}
   #mFix .vl-top,#mFix .m-crumb{margin-left:-8px;margin-right:-8px;margin-top:0}
   body:not([data-mt="home"]) #mFix{position:sticky;top:0;z-index:55;box-shadow:0 3px 8px rgba(0,0,0,.2)}
@@ -2703,9 +2723,21 @@ const M_ICO = (() => { const s = p => '<svg viewBox="0 0 24 24" aria-hidden="tru
 // Điện thoại: chuyển hàng dưới (Tổng quan / Công đoạn / Công nhân) vào cột phải (#view) để xếp ngay sau "Xem tại giờ"; máy tính để nguyên chỗ cũ
 (() => {
   const mq = window.matchMedia('(max-width:700px)'), bot = $('botRow'), view = $('view'), app = $('app');
-  const place = () => { if (!bot || !view || !app) return; if (mq.matches) { if (bot.parentNode !== view) view.appendChild(bot); } else if (bot.parentNode !== app) app.insertBefore(bot, $('shSide')); };
+  const place = () => { if (!bot || !view || !app) return; if (mq.matches) { if (bot.parentNode !== view) view.appendChild(bot); } else if (bot.parentNode !== app) app.insertBefore(bot, $('panel').nextSibling); };
   place(); mq.addEventListener('change', place);
 })();
+// Khóa phóng to trang trên điện thoại (Safari iOS bỏ qua user-scalable=no): chặn cử chỉ chụm 2 ngón ngoài khung 3D
+(() => {
+  const ph = () => window.matchMedia('(max-width:700px)').matches;
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => { if (ph() && !(e.target.closest && e.target.closest('#stage'))) e.preventDefault(); }, { passive: false }));
+  document.addEventListener('touchmove', e => { if (ph() && e.touches.length > 1 && !(e.target.closest && e.target.closest('#stage'))) e.preventDefault(); }, { passive: false });
+})();
+const M_SV = p => '<svg viewBox="0 0 24 24" aria-hidden="true">' + p + '</svg>';
+const M_HOME = M_SV('<path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>');
+const M_BLD = M_SV('<path d="M4 21V7l6-3v17M10 9l10 3v9M3 21h18M7 10h.01M7 13h.01M7 16h.01M14 14h2M14 17h2"/>');
+const M_WASH = M_SV('<rect x="4.5" y="3" width="15" height="18" rx="2.2"/><circle cx="12" cy="14" r="4"/><path d="M8 6.5h.01M11 6.5h2"/>');
+const M_FACT = '<svg viewBox="0 0 160 90" aria-hidden="true"><path d="M20 78h110M30 78V46l22-12v12l22-12v12l22-12V20h12v58"/><path d="M42 62h6M58 62h6M74 62h6"/><circle cx="110" cy="64" r="13"/><path d="M120 74l12 12"/><path d="M14 40c0-6 5-10 12-9M128 26c0-5 4-8 10-7"/></svg>';
+let mSV = '';   // tab Chỉ số: '' = 4 phần chính, 'ops' = bảng công đoạn, 'wk' = bảng công nhân
 const M_MANY = 6; let mChipSel = '', mSort = 'att';
 const M_ATT = { red: 0, yellow: 1, start: 2, gray: 3, green: 4, purple: 5 };
 function mSortLines(list, how) {
@@ -2733,7 +2765,7 @@ function mSheetOpen(open) {
 }
 const mEffClr = (e, t) => { const r = e / t; return !isFinite(r) ? 'inherit' : r >= 1 ? 'var(--ok)' : r >= 0.9 ? 'var(--near)' : 'var(--crit)'; };   // %EFF so mục tiêu: như effCls (máy tính)
 function mSet(tab, keep) {
-  mTab = tab; document.body.dataset.mt = tab;
+  mTab = tab; document.body.dataset.mt = tab; mSV = '';
   if (tab === 'home' && !keep) { /* giữ cấp đang xem */ }
   mDraw(); try { machCard(); } catch (e) {}   // tab Máy trống vẫn hiện lời giải thích
   window.scrollTo(0, 0);
@@ -2741,7 +2773,7 @@ function mSet(tab, keep) {
 }
 function mDraw() {
   const nav = $('mNav'); if (!nav) return;
-  document.body.dataset.mt = mTab;
+  document.body.dataset.mt = mTab; document.body.dataset.sv = mTab === 'stat' ? mSV : '';
   const nProb = PROB_ALL.filter(q => q.status !== 'mach').length, nMach = PROB_ALL.filter(q => q.status === 'mach').length;   // tổng mọi chuyền (cùng số với badge Block)
   const tabs = [['home', '🏠', 'Home', 'Home'], ['mon', '📺', 'Giám sát', 'Monitor'], ['prob', '⚠', 'Xử lý', 'To do', nProb], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
   nav.innerHTML = tabs.map(t => `<button data-mt="${t[0]}" class="${mTab === t[0] ? 'on' : ''}"><i>${M_ICO[t[0]]}</i>${T(t[2], t[3])}${t[4] ? `<span>${t[4]}</span>` : ''}</button>`).join('');
@@ -2749,9 +2781,9 @@ function mDraw() {
   const cr = $('mCrumb'), home = $('mHome'), bk = NM && mBlock ? NM.blocks.find(b => b.id === mBlock) : null;
   const bkN = bk ? T(bk.name.vi, bk.name.en) : '';
   if (mTab === 'home') {
-    cr.innerHTML = `<a data-lv="0">Tinh Lợi</a>${bk ? ` › <a data-lv="1">${esc(bkN)}</a>` : ''}${mXuong ? ` › <b>${T('Xưởng', 'Workshop')} ${esc(mXuong)}</b>` : bk ? ` › <b>${T('Xưởng', 'Workshops')}</b>` : ''}`;
-    if (mXuong) cr.innerHTML = `<a data-lv="0">Tinh Lợi</a> › <a data-lv="1">${esc(bkN)}</a> › <b>${T('Xưởng', 'Workshop')} ${esc(mXuong)}</b>`;
-    if (!mBlock) cr.innerHTML = '<b>Tinh Lợi</b>';
+    cr.innerHTML = `<a data-lv="0" class="hm">${M_HOME}</a> › <a data-lv="0">Tinh Lợi</a>${bk ? ` › <a data-lv="1">${esc(bkN)}</a>` : ''}${mXuong ? ` › <b>${T('Xưởng', 'Workshop')} ${esc(mXuong)}</b>` : bk ? ` › <b>${T('Xưởng', 'Workshops')}</b>` : ''}`;
+    if (mXuong) cr.innerHTML = `<a data-lv="0" class="hm">${M_HOME}</a> › <a data-lv="0">Tinh Lợi</a> › <a data-lv="1">${esc(bkN)}</a> › <b>${T('Xưởng', 'Workshop')} ${esc(mXuong)}</b>`;
+    if (!mBlock) cr.innerHTML = `<a data-lv="0" class="hm">${M_HOME}</a> › <b>Tinh Lợi</b>`;
     cr.querySelectorAll('[data-lv]').forEach(a => { a.onclick = () => { if (a.dataset.lv === '0') { mBlock = ''; mXuong = ''; } else mXuong = ''; mDraw(); }; });
     let h = '';
     const effTxt = a => `<em style="color:${mEffClr(a.eff, a.effTarget)}">${pct(a.eff)}</em>`;
@@ -2759,10 +2791,10 @@ function mDraw() {
     else if (!mBlock) {
       h = `<div class="mh">Block</div><div class="mg">` + NM.blocks.map(b => {
         const list = mLinesOf(id => NM.blockOfGroup(id) && NM.blockOfGroup(id).id === b.id), a = mAgg(list), nm = esc(T(b.name.vi, b.name.en));
-        if (b.link) return `<a class="mb" href="../${esc(b.link)}" style="--c:#2361a8"><b>${nm}</b><small>${T('Mở trang riêng', 'Open its own page')}</small><em style="color:#2361a8">›</em></a>`;
-        return list.length ? `<button class="mb" data-b="${b.id}" style="--c:${mClr(a.state)}"><b>${nm}</b><small>${T(`${b.xuong.length} xưởng · ${a.n} chuyền`, `${b.xuong.length} workshop(s) · ${a.n} line(s)`)}</small>${effTxt(a)}${a.probs ? `<span class="n">${a.probs}</span>` : ''}</button>`
-          : `<div class="mb off"><b>${nm}</b><small>${T('chưa có dữ liệu', 'no data yet')}</small><em>–</em></div>`;
-      }).join('') + '</div>';
+        if (b.link) return `<a class="mb" href="../${esc(b.link)}" style="--c:#2361a8"><i class="bi">${M_WASH}</i><b>${nm}</b><small>${T('Mở trang riêng', 'Open its own page')}</small><span class="ar">›</span></a>`;
+        return list.length ? `<button class="mb" data-b="${b.id}" style="--c:${mClr(a.state)}"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T(`${b.xuong.length} xưởng · ${a.n} chuyền`, `${b.xuong.length} workshop(s) · ${a.n} line(s)`)}</small>${effTxt(a)}${a.probs ? `<span class="n">${a.probs}</span>` : ''}<span class="ar">›</span></button>`
+          : `<div class="mb off"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T('Chưa có dữ liệu', 'No data yet')}</small><em>–</em><span class="ar">›</span></div>`;
+      }).join('') + `</div><div class="mhome-i">${M_FACT}<span>${T('Chọn một block để xem chi tiết chuyền', 'Pick a block to see line details')}</span></div>`;
     } else if (!mXuong) {
       h = `<div class="mh">${T('Xưởng', 'Workshops')} · ${esc(bkN)}</div>` + (bk.xuong.length ? bk.xuong.map(x => {
         const list = mLinesOf(id => NM.xuongOf(id) === x.id), a = mAgg(list);
@@ -2781,7 +2813,13 @@ function mDraw() {
     home.querySelectorAll('[data-all]').forEach(e => { e.onclick = () => { probAll(); mSet('mon'); }; });
   } else {
     const pre = [bk ? esc(bkN) : '', mXuong ? esc(mXuong) : ''].filter(Boolean);
-    cr.innerHTML = (pre.length ? pre.join(' › ') + ' › ' : '') + `<b>${probScope === 'all' ? T('Cả xưởng', 'Whole workshop') : esc(ST.cur || '')}</b>`;
+    cr.innerHTML = '<span class="cp">' + (pre.length ? pre.join(' › ') + ' › ' : '') + `<b>${probScope === 'all' ? T('Cả xưởng', 'Whole workshop') : esc(ST.cur || '')}</b></span>`
+      + (mTab === 'stat' ? `<button type="button" class="sv${mSV === 'ops' ? ' on' : ''}" data-sv="ops">${T('Công đoạn', 'Operations')}</button><button type="button" class="sv${mSV === 'wk' ? ' on' : ''}" data-sv="wk">${T('Công nhân', 'Operators')}</button>` : '');
+    cr.querySelectorAll('[data-sv]').forEach(b => { b.onclick = () => {
+      mSV = mSV === b.dataset.sv ? '' : b.dataset.sv;
+      const pt = document.querySelector('.ptabs [data-pt="' + (mSV || 'lines') + '"]'); if (pt) pt.click();   // dùng lại cách chuyển tab sẵn có của bảng
+      mDraw(); window.scrollTo(0, 0);
+    }; });
     const list = mLinesOf(id => !mXuong || (NM && NM.xuongOf(id) === mXuong));
     const many = list.length > M_MANY, a = mAgg(list);
     const ordl = mSortLines(list, many ? 'att' : 'id');
