@@ -225,6 +225,10 @@ details.more[open] summary{margin-bottom:10px}
 .app .stage{height:auto;min-height:0;border-radius:10px}
 #mFix{display:contents}
 .stage:fullscreen{height:100%;border-radius:0;border:0}
+/* Toàn màn hình "giả" (iPhone Safari không có Fullscreen API cho phần tử): khung 3D phủ kín màn hình, ẩn thanh dưới; xoay ngang điện thoại để rộng hơn */
+body.fsfake{overflow:hidden} body.fsfake #mFix{z-index:200} body.fsfake #mNav{display:none!important}
+body.fsfake .app .stage,body.fsfake .stage{position:fixed!important;left:0;top:0;right:0;bottom:0;width:auto;height:100vh!important;height:100dvh!important;min-height:0!important;border-radius:0;border:0;z-index:210;margin:0}
+body.fsfake .stage .tip.card{z-index:260}
 .stage canvas{display:block;width:100%;height:100%;outline:none}
 .stage .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;color:var(--muted);font-size:13px}
 .stage .leg{position:absolute;right:10px;bottom:12px;max-width:max(220px,calc(100% - 800px));justify-content:flex-end;display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--panel) 88%,transparent);border:1px solid var(--line);border-radius:6px;padding:5px 9px;pointer-events:none}
@@ -3436,12 +3440,20 @@ function walkUi(on) {
   b.onclick = () => { newTagOn = !newTagOn; set(newTagOn); try { localStorage.setItem('sam3d-newTag', newTagOn ? '1' : '0'); } catch (e) {} render(); b.blur(); };
 })();
 $('v3Walk').onclick = () => { if (!V3) return; V3.walk(!V3.walking); $('v3Walk').blur(); };   // bỏ focus nút: phím cách / Enter không bật tắt lại
+const fakeFs = on => {
+  document.body.classList.toggle('fsfake', on); $('v3Full').classList.toggle('on', on);
+  if (on) { showMsg(T('Xoay ngang điện thoại để xem rộng hơn. Bấm lại nút này để thoát.', 'Rotate your phone for a wider view. Tap this button again to exit.')); setTimeout(() => showMsg(''), 4000); }
+  setTimeout(() => { try { V3 && V3.resize(); } catch (e) {} }, 150);
+};
+window.addEventListener('resize', () => { if (document.body.classList.contains('fsfake')) setTimeout(() => { try { V3 && V3.resize(); } catch (e) {} }, 150); });
 $('v3Full').onclick = () => {
   const s = $('stage');
   if (document.fullscreenElement) { document.exitFullscreen(); return; }
-  if (!s.requestFullscreen) return;
-  const p = s.requestFullscreen();
-  if (isPhoneUi() && p && p.then) p.then(() => { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} }).catch(() => {});   // điện thoại: xoay ngang cho khung 3D (trình duyệt không cho thì thôi)
+  if (document.body.classList.contains('fsfake')) { fakeFs(false); return; }
+  const rq = s.requestFullscreen || s.webkitRequestFullscreen;
+  if (!rq) { fakeFs(true); return; }                       // iPhone Safari: không có → toàn màn hình giả bằng CSS
+  let p; try { p = rq.call(s); } catch (e) { fakeFs(true); return; }
+  if (p && p.then) p.then(() => { if (isPhoneUi()) { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} } }).catch(() => fakeFs(true));   // điện thoại: xoay ngang cho khung 3D (trình duyệt không cho thì thôi)
 };
 document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement) { try { screen.orientation.unlock(); } catch (e) {} }
