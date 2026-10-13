@@ -596,9 +596,10 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   #mNav{display:flex;position:fixed;left:0;right:0;bottom:0;height:58px;z-index:70;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0)}
   #mNav button{flex:1;min-height:0;border:0;border-radius:0;background:none;font:600 11px var(--f-body);color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;cursor:pointer}
   #mNav button i{font-style:normal;font-size:21px;line-height:1;transition:transform .18s,margin .18s;display:grid;place-items:center} #mNav button i svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  #mNav button.on{color:var(--accent);font-weight:700;justify-content:flex-end;padding-bottom:5px}
-  #mNav button.on i{width:46px;height:46px;margin-top:-12px;display:grid;place-items:center;border-radius:50%;background:var(--panel);border:2px solid var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.28);font-size:23px}
-  #mNav button.on span{top:-6px}
+  /* Thanh dưới kiểu C (13/10): mục đang chọn = nền ô xanh nhạt + icon đậm hơn + gạch xanh sát đáy (không nổi) */
+  #mNav button.on{color:var(--accent);font-weight:700;background:linear-gradient(var(--accent-soft),var(--panel))}
+  #mNav button.on i svg{stroke-width:2.4}
+  #mNav button.on::after{content:"";position:absolute;bottom:0;left:18%;right:18%;height:3px;border-radius:3px 3px 0 0;background:var(--accent)}
   #mNav{overflow:visible}
   #v3Qual .btn{white-space:nowrap;min-height:34px;padding:0 10px}
   #mNav button span{position:absolute;top:3px;left:calc(50% + 6px);background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 5px}
@@ -643,6 +644,17 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .pban{max-width:calc(100% - 24px);top:8px;left:8px;font-size:12.5px}
   .stage .tip.card{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:100%;max-width:none;min-width:0;border-radius:16px 16px 0 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.35);overflow-y:auto}
   .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
+  /* khung công nhân mức vừa (13/10, phương án B): 3 ô số lớn %EFF / sp·giờ / sản lượng */
+  .stage .tip .ph-w b.wn{font:800 16px var(--f-body);color:var(--fg)}
+  .ph-t3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 12px 2px} .ph-t3 > div{background:var(--panel-2);border-radius:10px;padding:6px 9px} .ph-t3 small{display:block;font-size:11px;color:var(--muted)} .ph-t3 b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+  .nfB{padding:2px 12px 10px} .nchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .nchip{font:600 13px var(--f-body);padding:8px 13px;min-height:0;border-radius:18px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+  .nfB.mach .nchip.on{background:#fbe9e7;border-color:#d0281c;color:#d0281c;font-weight:800} .nfB.note .nchip.on{background:#fdeede;border-color:#e8742a;color:#c25a12;font-weight:800}
+  .nmini{display:flex;gap:8px;margin-top:10px} .nmini input{flex:1;min-width:0;font:14px var(--f-body);padding:11px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
+  .ncam{flex:none;width:50px;display:grid;place-items:center;border:1px dashed #9aa6bb;border-radius:8px;background:var(--panel-2);font-size:21px;cursor:pointer} .ncam.has{border-style:solid;border-color:var(--ok)}
+  .nwho{margin-top:10px;font-size:12.5px;color:var(--muted)} .nwho b{color:var(--fg)} .nwho u{color:var(--accent);text-decoration:none;font-weight:700;cursor:pointer} .nwho input{width:100%;font:14px var(--f-body);padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
+  .nbtns{display:flex;gap:8px;margin-top:12px} .nbtns .btn{min-height:46px;font-size:14px;font-weight:700;border-radius:10px} .nbtns .btn:first-child{flex:0 0 76px} .nbtns .btn.pri{flex:1}
+  .nfB.mach .nbtns .btn.pri{background:#d0281c;border-color:#d0281c;color:#fff} .nfB.note .nbtns .btn.pri{background:#e8742a;border-color:#e8742a;color:#fff}
   .ph-hd{padding:6px 12px 0;touch-action:none} .ph-hd .hdl{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 6px}
   .ph-t{display:flex;align-items:center;gap:7px;flex-wrap:wrap} .ph-t b{font:700 16px var(--f-display);display:inline} .ph-t .chip{margin-left:0} .ph-t .x{margin-left:auto;min-height:40px;min-width:40px;font-size:18px}
   .ph-w{font-size:13px;padding:2px 12px 6px} .stage .tip .ph-w b{display:inline;font:700 13px var(--f-mono)} .stage .tip .ph-t b{display:inline}
@@ -2775,7 +2787,7 @@ function mDraw() {
   const nav = $('mNav'); if (!nav) return;
   document.body.dataset.mt = mTab; document.body.dataset.sv = mTab === 'stat' ? mSV : '';
   const nProb = PROB_ALL.filter(q => q.status !== 'mach').length, nMach = PROB_ALL.filter(q => q.status === 'mach').length;   // tổng mọi chuyền (cùng số với badge Block)
-  const tabs = [['home', '🏠', 'Home', 'Home'], ['mon', '📺', 'Giám sát', 'Monitor'], ['prob', '⚠', 'Xử lý', 'To do', nProb], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
+  const tabs = [['home', '🏠', 'Home', 'Home'], ['prob', '⚠', 'Xử lý', 'To do', nProb], ['mon', '📺', 'Giám sát', 'Monitor'], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
   nav.innerHTML = tabs.map(t => `<button data-mt="${t[0]}" class="${mTab === t[0] ? 'on' : ''}"><i>${M_ICO[t[0]]}</i>${T(t[2], t[3])}${t[4] ? `<span>${t[4]}</span>` : ''}</button>`).join('');
   nav.querySelectorAll('button').forEach(b => { b.onclick = () => { const t = b.dataset.mt; if (t === 'home' && mTab === 'home') { mBlock = ''; mXuong = ''; } mSet(t); }; });
   const cr = $('mCrumb'), home = $('mHome'), bk = NM && mBlock ? NM.blocks.find(b => b.id === mBlock) : null;
@@ -3152,19 +3164,32 @@ function noteSection(o) {
 // shLv 0 = thu gọn (tiêu đề + người + 3 nút), 1 = vừa (+ ghi chú, số liệu), 2 = rộng (mở %EFF lịch sử / cả công đoạn: shSec). Vuốt lên / xuống ở đầu khung để đổi mức.
 let shLv = 0, shSec = '';
 const isPhoneUi = () => matchMedia('(max-width:700px)').matches;
+// Biểu mẫu Ghi chú / Máy hỏng trên điện thoại (phương án B, 13/10): chọn loại bằng chip, mô tả 1 dòng + nút camera, tên người báo nhớ sẵn, nút Gửi to
+function phoneForm(o, w, title) {
+  const mach = noteForm === 'machine', types = mach ? MACH_TYPES : NOTE_CATS, keys = Object.keys(types), nm = noteWho(), photos = SRV && SRV.photos;
+  const who = o.free || !w || w.none ? '' : ` · <b class="wn">${esc(w.name || w.emp)}</b>`;
+  return `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-t"><b>${mach ? '🔧 ' + T('Báo máy hỏng', 'Report machine down') : '📝 ' + T('Ghi chú', 'Note')}</b><button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>
+    <div class="ph-w">${title}${who}</div>
+    <div class="nfB ${mach ? 'mach' : 'note'}"><div class="nchips">${keys.map((k, i) => `<button type="button" class="nchip${i === 0 ? ' on' : ''}" data-chip="${k}">${esc(T(...types[k]))}</button>`).join('')}</div>
+      <input type="hidden" data-f="type" value="${keys[0]}">
+      <div class="nmini"><input data-f="text" placeholder="${esc(mach ? T('Mô tả ngắn (không bắt buộc)', 'Short description (optional)') : T('Nội dung ghi chú', 'Note text'))}" autocomplete="off">${photos ? `<label class="ncam" title="${esc(T('Chụp hoặc chọn ảnh', 'Take or choose a photo'))}"><span>📷</span><input type="file" accept="image/*" capture="environment" data-f="photo" hidden></label>` : ''}</div>
+      <div class="nwho">${nm ? `${T('Người báo', 'Reported by')}: <b>${esc(nm)}</b> · <u data-who>${T('đổi', 'change')}</u>` : ''}<input data-f="by" value="${esc(nm)}" placeholder="${esc(T('Người báo (tên)', 'Reported by (name)'))}"${nm ? ' hidden' : ''}></div>
+      <div class="nbtns"><button type="button" class="btn" data-ncancel>${T('Hủy', 'Cancel')}</button><button type="button" class="btn pri" data-nsave>${mach ? T('Gửi báo máy hỏng', 'Send machine report') : T('Lưu ghi chú', 'Save note')}</button></div></div>`;
+}
 function phoneSheet(o) {
   const D = V3D[o.line], L = D && D.L; if (!o || !(o.info || o.free) || !L) return null;
   const w = o.free ? L.workers.find(x => String(x.emp) === o.id) || { emp: o.id, none: true } : o.info.worker, st = o.free ? null : o.info, ch = st && CHIP[st.status];
   const ops = o.free ? L.ops.filter(p => w && !w.none && p.op === w.primary) : o.info.ops || [], has = w && !w.none, P = noteParts(o);
   const title = o.free ? `${T('Ngoài trạm', 'Off station')}${w && w.primary ? ` · ${T('CĐ', 'Op')} ${esc(w.primary)}` : ''}` : `${T('Trạm', 'Station')} ${esc(st.extra ? st.anchorBan + '+' : o.t.ban)} · ${T('CĐ', 'Op')} ${esc(st.code)}`;
-  const wl = has ? `${esc(w.name || w.emp)} · <b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : T('chưa SAM', 'no SAM')}</b> · ${nf(w.rate)} ${T('sp/giờ', 'pcs/h')} · ${nf(w.primaryQty)} ${T('sp', 'pcs')}`
+  const wl = has ? `<b class="wn">${esc(w.name || w.emp)}</b> · <b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : T('chưa SAM', 'no SAM')}</b> · ${nf(w.rate)} ${T('sp/giờ', 'pcs/h')} · ${nf(w.primaryQty)} ${T('sp', 'pcs')}`
     : w ? T(`Mã NV ${esc(w.emp)}: không có Data ETS.`, `Emp. ${esc(w.emp)}: no ETS data.`) : T('Chưa có công nhân.', 'No operator.');
+  if (noteForm && shLv >= 1) return phoneForm(o, w, title);
   let h = `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-t"><b>${title}</b>${ch ? chipHtml(st.status) : ''}<button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>
-    <div class="ph-w">${wl}</div><div class="ph-b">${P.btns}</div>
+    <div class="ph-w">${shLv >= 1 && has ? `<b class="wn">${esc(w.name || w.emp)}</b> · ${T('mã', 'ID')} ${esc(w.emp)}` : wl}</div>${shLv >= 1 && has ? `<div class="ph-t3"><div><small>%EFF</small><b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b></div><div><small>${T('sp / giờ', 'pcs / h')}</small><b>${nf(w.rate)}</b></div><div><small>${T('Sản lượng', 'Output')}</small><b>${nf(w.primaryQty)}</b></div></div>` : ''}<div class="ph-b">${P.btns}</div>
     <div class="ph-more" data-shlv>${shLv ? '▾ ' + T('Thu gọn', 'Collapse') : '▴ ' + T('Xem thêm', 'More')}</div>`;
   if (shLv >= 1) {
     h += `<div class="ph-mid">${P.form}${P.list}`;
-    if (has) h += `<dl><dt>${T('Mã NV', 'Emp. no.')}</dt><dd>${esc(w.emp)}</dd><dt>SAH</dt><dd>${nf(w.sah, 2)}</dd><dt>${T('Sản lượng', 'Output')}</dt><dd>${nf(w.primaryQty)}</dd><dt>${T('Giờ làm', 'Hours')}</dt><dd>${nf(w.workHours, 2)}</dd>${hcRows(w.emp, true)}</dl>`;
+    if (has) h += `<dl><dt>SAH</dt><dd>${nf(w.sah, 2)}</dd><dt>${T('Giờ làm', 'Hours')}</dt><dd>${nf(w.workHours, 2)}</dd>${hcRows(w.emp, true)}</dl>`;
     if (has) h += `<div class="ph-sec" data-shsec="eff">${shSec === 'eff' ? '▾' : '▸'} ${T('%EFF lịch sử', '%EFF history')} ${new Date().getFullYear()}<em>${shSec === 'eff' ? '' : T('bấm để mở', 'tap to open')}</em></div>${shSec === 'eff' ? effHistHtml(L, w.emp) : ''}`;
     const ob = ops.filter(q => !wkHide(q.op));
     if (ob.length) h += `<div class="ph-sec" data-shsec="op">${shSec === 'op' ? '▾' : '▸'} ${T('Cả công đoạn', 'Whole operation')} ${esc(ob.map(q => q.op).join(', '))}<em>${shSec === 'op' ? '' : T(`${ob[0].people} người · ${nf(ob[0].qty)} sp`, `${ob[0].people} people · ${nf(ob[0].qty)} pcs`)}</em></div>${shSec === 'op' ? opBlocks(L, ob) : ''}`;
@@ -3176,7 +3201,7 @@ function pick3D(o, e) {
   const w = o && (o.free || (o.info && !o.info.blank));
   if (!w) { cardClose(); return; }                          // bấm chỗ trống / trạm trống: đóng
   const first = !cardO || $('v3Card').hidden;
-  if (cardO !== o) { noteForm = null; shLv = 0; shSec = ''; }
+  if (cardO !== o) { noteForm = null; shLv = isPhoneUi() ? 1 : 0; shSec = ''; }   // điện thoại: mở thẳng mức vừa (ghi chú + số liệu), vuốt xuống / Thu gọn để về mức nhỏ
   cardO = o; $('v3Tip').hidden = true; cardDraw();
   if (isPhoneUi()) return;                                  // điện thoại: khung cố định dưới màn hình
   if (first) {                                              // mở lần đầu: cạnh chỗ bấm; đang mở thì giữ chỗ người dùng đã kéo tới
@@ -3194,6 +3219,10 @@ function pick3D(o, e) {
     if (e.target.closest('[data-shlv]')) { shLv = shLv ? 0 : 1; shSec = ''; cardDraw(true); return; }
     const sec = e.target.closest('[data-shsec]');
     if (sec) { shSec = shSec === sec.dataset.shsec ? '' : sec.dataset.shsec; shLv = shSec ? 2 : 1; cardDraw(true); return; }
+    const chip = e.target.closest('[data-chip]');
+    if (chip) { box.querySelectorAll('[data-chip]').forEach(c => c.classList.toggle('on', c === chip)); const ti = box.querySelector('[data-f="type"]'); if (ti) ti.value = chip.dataset.chip; return; }
+    const wh = e.target.closest('[data-who]');
+    if (wh) { const bi = box.querySelector('[data-f="by"]'); if (bi) { bi.hidden = false; bi.focus(); } wh.closest('.nwho').querySelectorAll('b,u').forEach(x => { x.hidden = true; }); return; }
     if (e.target.closest('[data-ncancel]')) { noteForm = null; cardDraw(true); return; }
     if (e.target.closest('[data-nsave]')) { noteSave(); return; }
     const ns = e.target.closest('[data-nst]');
@@ -3201,6 +3230,7 @@ function pick3D(o, e) {
     if (e.target.closest('[data-x]')) cardClose();
     else if (e.target.closest('[data-trend]')) { cardTrend = !cardTrend; cardDraw(); }   // mở / thu biểu đồ xu hướng %EFF
   });
+  box.addEventListener('change', e => { const p = e.target.closest && e.target.closest('[data-f="photo"]'); if (p) { const l = p.closest('.ncam'); if (l) { l.classList.toggle('has', !!(p.files && p.files[0])); l.firstElementChild.textContent = p.files && p.files[0] ? '✅' : '📷'; } } });
   box.addEventListener('toggle', e => { const m = +e.target.dataset.m; if (e.target.open) cardOpenM.add(m); else cardOpenM.delete(m); }, true);
   box.addEventListener('pointerdown', e => {
     if (!e.target.closest('.cbar') || e.target.closest('[data-x]')) return;
