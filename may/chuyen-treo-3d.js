@@ -524,6 +524,7 @@ function create(el, opt) {
       o.tile.material.color.setHex(COLORS[x.status] != null ? COLORS[x.status] : COLORS.none);
       // Người: đang làm thì tay thao tác (cử động trong vòng lặp), ngừng / không có dữ liệu thì tay hạ
       o.busy = x.status !== 'stall' && x.status !== 'none';
+      o.pace = x.pace > 0 ? x.pace : 1;   // nhịp thao tác theo %EFF công nhân (1 = chuẩn)
       o.has = x.worker !== undefined ? !!x.worker : true;
       setGender(o, x.gender);
       const w = o.model;
@@ -900,11 +901,12 @@ function create(el, opt) {
         if (MH && C.speed > 0) L.stations.forEach(o => {
           const w = o.busy && o.model;
           if (w && !w.userData.far) {
-            w.userData.phase = o.ph + now / 260;
+            o.pt = (o.pt || 0) + dt * 1000 * (o.pace || 1);   // đồng hồ riêng từng người: %EFF cao → tay và áo nhanh hơn, không nhảy pha khi %EFF đổi
+            w.userData.phase = o.ph + o.pt / 260;
             // Áo trượt trên bàn: từ phía công nhân ra phía trước (qua kim), rồi lấy áo kế tiếp (thu nhỏ → hiện lại)
             const pc = o.piece;
             if (pc) {
-              const k = (((now / 2400 + o.ph * 0.37) % 1) + 1) % 1, e = k * k * (3 - 2 * k);
+              const k = (((o.pt / 2400 + o.ph * 0.37) % 1) + 1) % 1, e = k * k * (3 - 2 * k);
               const sc0 = pc.userData.sc || (pc.userData.sc = pc.scale.x);
               w.userData.feed = e;   // tay đẩy vải theo nhịp trượt của áo
               if (o.hang) {
