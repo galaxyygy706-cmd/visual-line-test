@@ -56,7 +56,7 @@ function create(el, opt) {
   const M = {
     floor: mat(0xc2c9c5, { roughness: 0.6 }), rail: mat(0x8f99a8, { metalness: 0.6, roughness: 0.35 }),
     leg: mat(0x6f7886, { metalness: 0.4, roughness: 0.5 }), machine: mat(0xeef1f5, { roughness: 0.4 }), head: mat(0xd9b38c),
-    shirt: mat(0x2b4f9c), hook: mat(0x5d6573, { metalness: 0.5 }), cloth: mat(0x6f8fd0, { roughness: 0.9 }), marker: mat(0xc63a2f, { emissive: 0x5a0d08 }),
+    shirt: mat(0x2b4f9c), hook: mat(0x5d6573, { metalness: 0.5 }), cloth: new THREE.MeshBasicMaterial({ color: 0x6f8fd0 }), marker: mat(0xc63a2f, { emissive: 0x5a0d08 }),
   };
   const G = {
     box: keep(new THREE.BoxGeometry(1, 1, 1)), cyl: keep(new THREE.CylinderGeometry(0.5, 0.5, 1, 14)),
@@ -100,7 +100,9 @@ function create(el, opt) {
     // Hệ trục trạm (chuyen-may.html): người ở −z quay về +z → xoay để +z hướng vào trục chuyền
     const unit = new THREE.Group(); unit.rotation.y = -side * Math.PI / 2; g.add(unit);
     const stn = MH.makeStation(kind, { equip, name: t.name }, standing, 'ao'); unit.add(stn);
-    g.userData.piece = stn.userData.piece || null;   // mảnh vải trên bàn: tô theo màu áo của đơn
+    g.userData.piece = stn.userData.piece || null;   // áo trên bàn + chồng áo: tô theo màu áo của đơn
+    g.userData.tint = stn.userData.tint || null;
+    g.userData.hang = standing && /^treo hang|dau chuyen/.test(nm);   // trạm treo áo đầu chuyền: áo được nhấc lên móc, không trượt
     const seed = Math.round(t.ban * 13) + 7;
     const w = MH.makeWorker({ female: seeded(seed) < 0.65, color: MH.pick3([0x2b4f9c, 0x35599f, 0x24467f], seeded(seed + 5)), seated: !standing, seed });
     w.position.set(0, 0, -0.62); unit.add(w);
@@ -335,7 +337,7 @@ function create(el, opt) {
       const tag = floorTag(); tag.position.set(side * (sx + 1.12), 0.016, z); tag.visible = false; g0.add(tag);
       // Khối chọn công nhân (kéo thả sang trạm khác / ra sàn)
       const whit = new THREE.Mesh(G.box, hitMat); whit.scale.set(0.8, 1.5, 0.9); whit.position.set(side * 0.62, 0.75, 0); g.add(whit);
-      const o = { line: id, t, side, sx, z, g, tile, hit, whit, sp, tag, info: null, has: true, model: g.userData.worker || null, lod: g.userData.lod || null, far: false, piece: g.userData.piece || null };
+      const o = { line: id, t, side, sx, z, g, tile, hit, whit, sp, tag, info: null, has: true, model: g.userData.worker || null, lod: g.userData.lod || null, far: false, piece: g.userData.piece || null, tint: g.userData.tint || null, hang: !!g.userData.hang };
       hit.userData.ref = whit.userData.ref = sp.userData.ref = o; L.stations.push(o);
     });
 
@@ -367,7 +369,7 @@ function create(el, opt) {
     // Móc treo: InstancedMesh chạy trên ray chính
     const NC = Math.max(24, Math.round(L.railLen / 0.55));
     if (MH) {
-      const gm = new THREE.InstancedMesh(keep(MH.garmentGeo('ao')), MH.MAT.matte, NC);
+      const gm = new THREE.InstancedMesh(keep(MH.garmentGeo('ao')), MH.MAT.garm, NC);
       gm.castShadow = !lite; gm.frustumCulled = false; g0.add(gm);
       L.carriers = { n: NC, gm, d: 0, gap: L.railLen / NC, speed: 0.25 };
     } else {
@@ -492,17 +494,20 @@ function create(el, opt) {
     }
     const sp = new THREE.Sprite(noteMat); sp.renderOrder = 6; return sp;
   }
-  let brokenMat = null;
-  function brokenSprite() {
-    if (!brokenMat) {
+  // Máy hỏng (13/10/2026): ĐỎ = máy hỏng chờ sửa, TÍM = đang sửa
+  const brokenMats = {};
+  function brokenMat(state) {
+    const k = state === 'doing' ? 'doing' : 'new';
+    if (!brokenMats[k]) {
       const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
-      g.fillStyle = '#7b3fb5'; g.beginPath(); g.roundRect ? g.roundRect(8, 8, 112, 112, 26) : g.rect(8, 8, 112, 112); g.fill();
+      g.fillStyle = k === 'doing' ? '#7b3fb5' : '#d0281c'; g.beginPath(); g.roundRect ? g.roundRect(8, 8, 112, 112, 26) : g.rect(8, 8, 112, 112); g.fill();
       g.lineWidth = 8; g.strokeStyle = '#fff'; g.stroke(); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
       g.font = '70px "Segoe UI Emoji", "Apple Color Emoji", sans-serif'; g.fillText('\u{1F527}', 64, 70);
-      brokenMat = keep(new THREE.SpriteMaterial({ map: keep(new THREE.CanvasTexture(c)), transparent: true, depthTest: false }));
+      brokenMats[k] = keep(new THREE.SpriteMaterial({ map: keep(new THREE.CanvasTexture(c)), transparent: true, depthTest: false }));
     }
-    const sp = new THREE.Sprite(brokenMat); sp.renderOrder = 6; return sp;
+    return brokenMats[k];
   }
+  function brokenSprite(state) { const sp = new THREE.Sprite(brokenMat(state)); sp.renderOrder = 6; return sp; }
   // ---------- Cập nhật trạng thái 1 chuyền ----------
   // s = { stations: [{ ban, status, title, sub, bn, worker, tag: { lines, color } }], free: […], speed: 0..1.5 (so với kế hoạch), running,
   //       sign: { title, sub, color } }
@@ -530,7 +535,8 @@ function create(el, opt) {
       // Máy hỏng (x.broken từ trang, hoặc setBroken): biểu tượng cờ lê tím trên máy
       const bk = !x.blank && !x.head && (x.broken || L.broken.has(o.t.ban));
       if (bk) {
-        if (!o.bk) { o.bk = brokenSprite(); o.g.add(o.bk); }
+        const bs = x.broken === 'doing' ? 'doing' : 'new';
+        if (!o.bk) { o.bk = brokenSprite(bs); o.g.add(o.bk); } else o.bk.material = brokenMat(bs);
         o.bk.position.set(o.side * 0.3, 1.75, 0); o.bk.userData.on = true;
       } else if (o.bk) { o.bk.userData.on = false; o.bk.visible = false; }
       const nn = !x.blank && !x.head && x.notes > 0;
@@ -573,14 +579,17 @@ function create(el, opt) {
   }
 
   // Màu áo của chuyền (số hex): áo trên móc treo + mảnh vải trên bàn các trạm. Hình áo theo màu dùng chung (cache), giải phóng khi dispose.
+  // 13/10/2026: áo dùng vật liệu KHÔNG ăn sáng (MeshBasicMaterial, MH.MAT.garm) → áo treo, áo trên bàn, chồng áo cùng đúng 1 màu, không phụ thuộc đèn trần (trước đây phải nhân tối 0,7 cho áo nằm ngang)
+  const FLAT_K = 1, flatTmp = new THREE.Color();
+  const paintFlat = (o, hex) => { flatTmp.setHex(hex).multiplyScalar(FLAT_K); if (o.piece) { o.piece.material.color.copy(flatTmp); o.piece.material.envMapIntensity = 0.5; } if (o.tint) { o.tint.color.copy(flatTmp); o.tint.envMapIntensity = 0.5; } };
   const garmGeo = {}, garmMat = {};
   function paintGarment(L, hex) {
     L.garm = hex;
     const C = L.carriers;
     if (C.gm) C.gm.geometry = garmGeo[hex] || (garmGeo[hex] = keep(MH.garmentGeo('ao', hex)));
-    else C.cloth.material = garmMat[hex] || (garmMat[hex] = mat(hex, { roughness: 0.9 }));
-    L.stations.forEach(o => { if (o.piece) o.piece.material.color.setHex(hex); });
-    L.freeMap.forEach(o => { if (o.piece) o.piece.material.color.setHex(hex); });
+    else C.cloth.material = garmMat[hex] || (garmMat[hex] = new THREE.MeshBasicMaterial({ color: hex }));
+    const tintSt = o => paintFlat(o, hex);
+    L.stations.forEach(tintSt); L.freeMap.forEach(tintSt);
   }
 
   // Công nhân chưa có trạm (làm công đoạn ngoài layout): ngồi máy riêng tại vị trí đã lưu (x, z trong hệ chuyền);
@@ -621,8 +630,8 @@ function create(el, opt) {
         const tag = floorTag(); tag.visible = false;
         // Nhãn trên đầu: số công đoạn + tên (như nhãn trạm), màu theo trạng thái công đoạn
         const sp = new THREE.Sprite(label(['', ''], '#9aa3b1')); sp.scale.set(1.28, 0.48, 1);
-        o = { line: L.id, id, key, free: true, g, model: g.userData.worker || null, lod: g.userData.lod || null, far: false, piece: g.userData.piece || null, hit, tag, sp }; hit.userData.ref = o;
-        if (o.piece && L.garm != null) o.piece.material.color.setHex(L.garm);
+        o = { line: L.id, id, key, free: true, g, model: g.userData.worker || null, lod: g.userData.lod || null, far: false, piece: g.userData.piece || null, tint: g.userData.tint || null, hit, tag, sp }; hit.userData.ref = o;
+        if (L.garm != null) paintFlat(o, L.garm);
         L.freeGroup.add(g, tag, sp); L.freeMap.set(id, o);
       }
       o.g.position.set(p.x, 0, p.z);
@@ -889,7 +898,27 @@ function create(el, opt) {
         else C.hook.instanceMatrix.needsUpdate = C.cloth.instanceMatrix.needsUpdate = true;
         if (MH && C.speed > 0) L.stations.forEach(o => {
           const w = o.busy && o.model;
-          if (w && !w.userData.far) { w.userData.phase = o.ph + now / 260; MH.pose(w, true); }
+          if (w && !w.userData.far) {
+            w.userData.phase = o.ph + now / 260;
+            // Áo trượt trên bàn: từ phía công nhân ra phía trước (qua kim), rồi lấy áo kế tiếp (thu nhỏ → hiện lại)
+            const pc = o.piece;
+            if (pc) {
+              const k = (((now / 2400 + o.ph * 0.37) % 1) + 1) % 1, e = k * k * (3 - 2 * k);
+              const sc0 = pc.userData.sc || (pc.userData.sc = pc.scale.x);
+              w.userData.feed = e;   // tay đẩy vải theo nhịp trượt của áo
+              if (o.hang) {
+                // Treo đầu chuyền: nhấc áo từ chồng lên, dựng thẳng, đưa tới móc ở ray rồi buông (áo tiếp tục chạy theo ray)
+                const u = Math.min(1, k / 0.6), s = u * u * (3 - 2 * u), z0 = pc.userData.z0;
+                pc.rotation.order = 'YXZ'; pc.rotation.x = s * Math.PI / 2; pc.rotation.y = s * Math.PI / 2;
+                pc.position.set(-0.15 * (1 - s), 0.9 + s * 0.95, z0 + (0.45 - z0) * s);
+                pc.scale.setScalar(sc0 * (0.8 + 0.2 * (1 - s)) * Math.max(0.02, Math.min(1, k * 10, (1 - k) * 6)));
+              } else {
+                pc.position.z = pc.userData.z0 + (e - 0.5) * 0.24;   // vải chạy qua kim, tay giữ mép gần người may
+                pc.scale.setScalar(sc0 * Math.max(0.02, Math.min(1, k * 8, (1 - k) * 8)));
+              }
+            }
+            MH.pose(w, true);
+          }
         });
       }
       // Thẻ sàn cùng chiều, đầu chữ quay ra xa camera: camera bên phải trục chuyền hay bên trái
@@ -913,8 +942,9 @@ function create(el, opt) {
         m.scale.set(f, f * 1.2, f);
       });
       L.stations.forEach(o => {
-        if (o.bk && o.bk.visible) { const f = Math.min(2.4, Math.max(0.45, camera.position.distanceTo(wv.copy(o.g.position).add(L.g.position)) / 22)); o.bk.scale.set(f, f, f); }
-        if (o.nt && o.nt.visible) { const f = Math.min(2.4, Math.max(0.45, camera.position.distanceTo(wv.copy(o.g.position).add(L.g.position)) / 22)); o.nt.scale.set(f, f, f); }
+        // bằng dấu "!" đỏ trên đầu (13/10/2026, trước to gấp ~2 lần: dist / 22, 0,45–2,4)
+        if (o.bk && o.bk.visible) { const f = Math.min(0.8, Math.max(0.3, camera.position.distanceTo(wv.copy(o.g.position).add(L.g.position)) / 45)); o.bk.scale.set(f, f, f); }
+        if (o.nt && o.nt.visible) { const f = Math.min(0.8, Math.max(0.3, camera.position.distanceTo(wv.copy(o.g.position).add(L.g.position)) / 45)); o.nt.scale.set(f, f, f); }
       });
     });
     if (pin && pin.visible) { if (now > pin.userData.until) pin.visible = false; else pin.position.y = 1.9 + Math.sin(now / 200) * 0.08; }

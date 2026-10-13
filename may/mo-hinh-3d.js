@@ -10,6 +10,7 @@ const MAT = {
   matte: new THREE.MeshStandardMaterial({ vertexColors:true, roughness:.72, metalness:.04 }),
   metal: new THREE.MeshStandardMaterial({ vertexColors:true, roughness:.34, metalness:.72 }),
   body:  new THREE.MeshStandardMaterial({ vertexColors:true, roughness:.64, metalness:0, side:THREE.DoubleSide }),
+  garm:  new THREE.MeshBasicMaterial({ vertexColors:true }),   // áo: KHÔNG ăn sáng (đèn trần / môi trường) → cùng 1 màu ở mọi nơi (áo treo, áo trên bàn, chồng áo)
 };
 const mat = (c, o={}) => new THREE.MeshStandardMaterial(Object.assign({ color:c, roughness:.7, metalness:.05 }, o));
 const COL = { garment:0x2c4a85, finished:0x86a5d4, carton:0xb98a55, op:0x2b4f9c, qc:0x24865a, steel:0x4a515a, rod:0x8a939c, wood:0xd8ccb2 };
@@ -151,7 +152,17 @@ function buildArm(L){
   return { sh, el };
 }
 const armPos = L => ({ x:L.female ? .145 : .168, y:(L.female ? .5 : .52) - .045 });
-function armPose(arm, k, busy, seated, phase){
+// Ngồi may: bàn tay đặt LÊN mặt bàn (cao 0,81 m, bàn 0,76) giữ mép vải cạnh kim và đẩy vải qua kim: tiến nhẹ theo vải (feed 0 → 1)
+// rồi nhả về nắm lại; tính góc vai / khuỷu bằng IK 2 đoạn (mỗi đoạn 0,28 m) nên tay luôn ở cùng độ cao, không xuyên bàn.
+const SEW_SH = { y: .884, z: .0485 }, SEW_L = .28, SEW_HAND_Y = .81;   // vai (hệ người, z so với ghế), độ cao bàn tay
+function sewArm(arm, feed){
+  const dy = SEW_SH.y - SEW_HAND_Y, dz = (-.11 + .08*feed) + .62 - SEW_SH.z;                   // tay chạm vải ở z = −0,11 … −0,03 trong hệ trạm
+  const r = Math.min(Math.hypot(dy, dz), 2*SEW_L*.999), th = Math.atan2(dz, dy);
+  const bend = Math.acos((r*r - 2*SEW_L*SEW_L) / (2*SEW_L*SEW_L));
+  arm.sh.rotation.x = -(th - bend/2); arm.el.rotation.x = -bend;
+}
+function armPose(arm, k, busy, seated, phase, feed){
+  if (busy && seated) return sewArm(arm, feed == null ? .5 : feed);
   const wob = busy ? Math.sin(phase + k*1.7) * .12 : 0;
   arm.sh.rotation.x = busy ? -.75 + wob : (seated ? -.35 : -.05);
   arm.el.rotation.x = busy ? -.85 - wob*.8 : (seated ? -.55 : -.15);
@@ -245,7 +256,7 @@ function makeWorker(o){
 // Tư thế: đang làm thì tay đưa ra trước thao tác, rảnh thì tay hạ xuống
 function pose(w, busy){
   const u = w.userData;
-  u.arms.forEach((a, k) => armPose(a, k, busy, u.seated, u.phase));
+  u.arms.forEach((a, k) => armPose(a, k, busy, u.seated, u.phase, u.feed));
 }
 // Người tĩnh trọn khối (cho các chuyền nền): thân + tay ở tư thế đang may, đặt sau bàn máy
 function ghostWorkerGeo(female){
@@ -346,14 +357,14 @@ function chair(r, z = -.66){
   part(r, rbox(.38, .14, .03, .012), COL.wood, 0, .74, zb, -.12, 0, 0);                        // tựa lưng
 }
 function garmentStack(r, x, y, z, n, color, w = .34, d = .26){
-  for (let k = 0; k < n; k++) part(r, rbox(w, .03, d, .012), k % 2 ? color : shade(color, .03), x, y + .015 + k*.032, z, 0, (seeded(k + x*10) - .5)*.08, 0);
+  for (let k = 0; k < n; k++) part(r, rbox(w, .03, d, .012), k % 2 ? color : shade(color, -.07), x, y + .015 + k*.032, z, 0, (seeded(k + x*10) - .5)*.08, 0);
 }
 // Phần tĩnh của từng loại vị trí (gộp sẵn, dùng chung)
 const SC = {};
 function stationStatic(kind, sty, standing){
   const key = kind + (sty ? sty.key : '') + (standing ? 's' : '');
   if (SC[key]) return SC[key];
-  const r = new THREE.Group();
+  const r = new THREE.Group(), rs = new THREE.Group();   // rs = chồng áo: bake riêng, tô màu theo đơn đang chạy
   if (kind === 'empty') sewTable(r);                                                            // bàn trống (chưa bố trí công đoạn)
   else if (kind === 'sewing' || kind === 'overlock'){
     sewTable(r);
@@ -390,7 +401,7 @@ function stationStatic(kind, sty, standing){
     part(r, rbox(1.1, .04, .62, .02), 0xdfe3e7, -.15, .88, 0);
     [[-.62, -.27], [.32, -.27], [-.62, .27], [.32, .27]].forEach(([x, z]) => pm(r, cyl(.018, .018, .86, 10), COL.steel, x, .43, z));
     pm(r, box(.96, .025, .025), COL.steel, -.15, .14, .27);
-    garmentStack(r, -.45, .9, .12, 6, COL.finished);
+    garmentStack(rs, -.45, .9, .12, 6, 0xffffff);
     part(r, rbox(.46, .78, .46, .04), 0x2f6fb0, .72, .43, .05);                                 // tủ hút
     part(r, rbox(.3, .16, .012, .02), 0x1e2a36, .72, .66, -.18);                                // bảng điều khiển
     part(r, cyl(.022, .022, .02, 12), 0x3fbf6a, .66, .66, -.19, Math.PI/2, 0, 0);               // nút xanh
@@ -412,10 +423,10 @@ function stationStatic(kind, sty, standing){
       part(r, box(1.3, .58, .05), 0x7d868f, 0, hgt + .32, .37);                                 // khung hộp đèn soi
       pm(r, cyl(.012, .012, .55, 8), COL.rod, .55, hgt + .28, -.15, .4, 0, 0);
       part(r, cone(.08, .09), 0xe6e9ec, .55, hgt + .52, -.25, Math.PI*.8, 0, 0);
-      garmentStack(r, .42, hgt, 0, 5, COL.finished);
+      garmentStack(rs, .42, hgt, 0, 5, 0xffffff);
     } else {
-      garmentStack(r, -.45, hgt, .15, 7, COL.finished);
-      garmentStack(r, .45, hgt, .15, 4, COL.finished);
+      garmentStack(rs, -.45, hgt, .15, 7, 0xffffff);
+      garmentStack(rs, .45, hgt, .15, 4, 0xffffff);
       part(r, box(.3, .2, .25), COL.carton, .95, .1, .45);
       part(r, box(.3, .2, .25), COL.carton, .95, .3, .45);
     }
@@ -424,22 +435,39 @@ function stationStatic(kind, sty, standing){
     pm(r, cyl(.016, .016, 1.6, 10), COL.rod, 0, 1.85, 0, 0, 0, Math.PI/2);
     // xe đẩy bó hàng
     pm(r, box(.7, .04, .5), COL.steel, .2, .3, -.8); [[-.1, -1], [.5, -1], [-.1, -.6], [.5, -.6]].forEach(([x, z]) => part(r, cyl(.05, .05, .04, 12), 0x1e2228, x, .05, z, Math.PI/2, 0, 0));
-    for (let k = 0; k < 6; k++) part(r, rbox(.3, .1, .22, .02), COL.garment, .05 + (k % 2)*.32, .37 + Math.floor(k/2)*.1, -.8);
+    for (let k = 0; k < 6; k++) part(rs, rbox(.3, .1, .22, .02), 0xffffff, .05 + (k % 2)*.32, .37 + Math.floor(k/2)*.1, -.8);
   }
   if (!standing && ['empty', 'sewing', 'overlock', 'table'].includes(kind)) chair(r);
-  const res = { matte:bake(r, m => !m.userData.metal), metal:bake(r, m => m.userData.metal) };
+  const res = { matte:bake(r, m => !m.userData.metal), metal:bake(r, m => m.userData.metal), tint:bake(rs) };
   return SC[key] = res;
 }
+// Áo phẳng nằm trên bàn (thân + 2 tay + cổ, dày 1,2 cm), cổ áo hướng về phía người may (−z); màu đặt qua material.color theo đơn đang chạy
+function shirtGeo(){
+  return gc('shirtFlat', () => {
+    const sh = new THREE.Shape();
+    sh.moveTo(-.12, .19); sh.quadraticCurveTo(0, .12, .12, .19);
+    sh.lineTo(.2, .17); sh.lineTo(.34, .06); sh.lineTo(.29, -.02); sh.lineTo(.2, .03);
+    sh.lineTo(.2, -.2); sh.lineTo(-.2, -.2); sh.lineTo(-.2, .03);
+    sh.lineTo(-.29, -.02); sh.lineTo(-.34, .06); sh.lineTo(-.2, .17); sh.lineTo(-.12, .19);
+    const g = new THREE.ExtrudeGeometry(sh, { depth:.012, bevelEnabled:false }); g.rotateX(-Math.PI/2);
+    return g;
+  });
+}
+const shirtPiece = (x, y, z, sc) => { const m = new THREE.Mesh(shirtGeo(), new THREE.MeshBasicMaterial({ color:COL.garment })); m.position.set(x, y, z); m.scale.setScalar(sc); m.userData.z0 = z; return m; };
 // Một vị trí làm việc: phần tĩnh gộp + phần động (vải, kim, bánh đà, bàn là)
 function makeStation(kind, o, standing, gType){
   const g = new THREE.Group(), sty = (kind === 'sewing' || kind === 'overlock') ? machineStyle(o.equip) : null;
   const geo = stationStatic(kind, sty, standing);
   if (geo.matte){ const m = new THREE.Mesh(geo.matte, MAT.matte); m.castShadow = m.receiveShadow = true; g.add(m); }
   if (geo.metal){ const m = new THREE.Mesh(geo.metal, MAT.metal); m.castShadow = true; g.add(m); }
+  if (geo.tint){   // chồng áo: vật liệu riêng của vị trí, đổi màu theo đơn (userData.tint)
+    const tm = MAT.garm.clone(); tm.color.setHex(kind === 'rack' ? COL.garment : COL.finished);
+    const m = new THREE.Mesh(geo.tint, tm); m.castShadow = m.receiveShadow = true; g.add(m); g.userData.tint = tm;
+  }
   const u = g.userData;
   if (sty){
     const sc = sty.scale || 1;
-    u.piece = new THREE.Mesh(box(.44, .006, .34), mat(COL.garment, { roughness:.9 })); u.piece.position.set(-.2, .768, -.05); g.add(u.piece);
+    u.piece = shirtPiece(-.12, .762, .1, 1); g.add(u.piece);   // áo đang may, nằm trước đầu máy
     u.wheel = new THREE.Mesh(wheelGeo(), MAT.metal); u.wheel.position.set(-.02 + (kind === 'sewing' ? .285 : .2)*sc, .76 + (kind === 'sewing' ? .27 : .12)*sc, .02); g.add(u.wheel);
     if (kind === 'sewing'){
       u.needle = new THREE.Mesh(cyl(.006, .006, .07, 6), mat(0xc9ced3, { metalness:.8, roughness:.3 }));
@@ -447,14 +475,14 @@ function makeStation(kind, o, standing, gType){
     }
   } else if (kind === 'iron'){
     u.iron = new THREE.Mesh(ironGeo(), MAT.matte); u.ironX = .1; u.iron.position.set(.1, .93, 0); u.iron.castShadow = true; g.add(u.iron);
-    u.piece = new THREE.Mesh(box(.6, .006, .34), mat(COL.finished, { roughness:.9 })); u.piece.position.set(.05, .927, 0); g.add(u.piece);
+    u.piece = shirtPiece(.05, .921, 0, 1); g.add(u.piece);
   } else if (kind === 'vacuum'){
-    u.piece = new THREE.Mesh(box(.5, .006, .36), mat(COL.finished, { roughness:.9 })); u.piece.position.set(-.1, .904, -.08); g.add(u.piece);
+    u.piece = shirtPiece(-.1, .898, -.08, .9); g.add(u.piece);
   } else if (kind === 'table'){
     if (standing){ const glow = new THREE.Mesh(new THREE.PlaneGeometry(1.2, .48), new THREE.MeshBasicMaterial({ color:0xf4f8ff })); glow.position.set(0, 1.22, .34); glow.rotation.y = Math.PI; g.add(glow); }
-    u.piece = new THREE.Mesh(box(.5, .006, .36), mat(COL.finished, { roughness:.9 })); u.piece.position.set(-.15, (standing ? .9 : .76) + .004, -.05); g.add(u.piece);
+    u.piece = shirtPiece(-.15, (standing ? .9 : .76) - .002, -.05, .9); g.add(u.piece);
   } else if (kind === 'rack'){
-    const gm = new THREE.InstancedMesh(garmentGeo(gType || 'ao'), MAT.matte, 9), M = new THREE.Matrix4();
+    const gm = new THREE.InstancedMesh(garmentGeo(gType || 'ao'), MAT.garm, 9), M = new THREE.Matrix4();
     for (let k = 0; k < 9; k++){ M.makeTranslation(-.6 + k*.15, 1.86, 0); gm.setMatrixAt(k, M); }
     gm.castShadow = true; g.add(gm);
   }
@@ -648,5 +676,5 @@ function buildHall(o){
   return { hall, roof };
 }
 
-root.MoHinh3D = { MAT, mat, COL, seeded, pick3, SKINS, HAIRS, GC, gc, box, cyl, sph, hemi, cone, torus, lathe, rrShape, ext, rbox, DUMMY, part, pm, mergeParts, bake, shade, HIP_M, HIP_F, TORSO_M, TORSO_F, workerLook, buildBody, buildArm, armPos, armPose, HEAD_S, FACE, faceMaterial, HEAD_GEO, WB, WA, makeWorker, pose, ghostWorkerGeo, equipKind, machineStyle, lockShape, boardShape, THREAD, sewTable, threadStand, wheelGeo, ironGeo, garmentStack, SC, stationStatic, makeStation, garmentGeo, canvasTex, FLOOR_TEX, WALL_TEX, WIN_TEX, STRIPE_TEX, buildHall };
+root.MoHinh3D = { MAT, mat, COL, seeded, pick3, SKINS, HAIRS, GC, gc, box, cyl, sph, hemi, cone, torus, lathe, rrShape, ext, rbox, DUMMY, part, pm, mergeParts, bake, shade, HIP_M, HIP_F, TORSO_M, TORSO_F, workerLook, buildBody, buildArm, armPos, armPose, HEAD_S, FACE, faceMaterial, HEAD_GEO, WB, WA, makeWorker, pose, ghostWorkerGeo, equipKind, machineStyle, lockShape, boardShape, THREAD, sewTable, threadStand, wheelGeo, ironGeo, garmentStack, SC, stationStatic, makeStation, shirtGeo, garmentGeo, canvasTex, FLOOR_TEX, WALL_TEX, WIN_TEX, STRIPE_TEX, buildHall };
 })(this);

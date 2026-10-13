@@ -477,6 +477,31 @@ function parseEts(rows) {
     hasStartEnd: tickets.some(t => isFinite(t.start) && isFinite(t.end) && t.end > t.start), hasTc: tickets.some(t => t.tc > 0) };
 }
 
+// Bảng MỤC TIÊU SAH (file SAH_TARGET_2U01.xlsx, 13/10/2026): ngày hiệu lực | ngành | xưởng | chuyền | mục tiêu SAH | tổng giờ làm | giờ bắt đầu | giờ ăn chính từ-đến | giờ ăn phụ từ-đến.
+// Trả { 'YYYY-MM-DD': { '201S01': { xuong, target, hours (phút), start 'hh:mm', end 'hh:mm' (= bắt đầu + giờ làm + giờ ăn), breaks 'hh:mm-hh:mm, …' } } }; không thấy bảng → null.
+// Kế hoạch này là nguồn của OAS: Accumulate target = target × giờ đã làm ÷ tổng giờ làm.
+function parseSahTarget(rows) {
+  let h = -1;
+  for (let r = 0; r < Math.min(rows.length, 30); r++) { const cs = (rows[r] || []).map(norm); if (cs.some(c => /muc tieu/.test(c)) && cs.some(c => /^chuyen/.test(c))) { h = r; break; } }
+  if (h < 0) return null;
+  const hd = (rows[h] || []).map(norm), col = re => hd.findIndex(c => re.test(c));
+  const C = { date: col(/ngay/), xuong: col(/^xuong/), line: col(/^chuyen/), target: col(/muc tieu/), hours: col(/tong so gio/), start: col(/gio bat dau/), b1: col(/gio an chinh/), b2: col(/gio an phu/) };
+  const tm = v => { if (typeof v === 'number' && v > 0 && v < 1) return Math.round(v * 1440); const m = String(v == null ? '' : v).match(/(\d+)\s*[hH:]\s*(\d*)/); return m ? +m[1] * 60 + (+m[2] || 0) : NaN; };
+  const hh = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+  const iso = v => { const d = typeof v === 'number' ? xlDate(v) : (m => (m ? new Date(+m[3], +m[2] - 1, +m[1]) : null))(String(v).match(/(\d+)\/(\d+)\/(\d{4})/)); return d && !isNaN(d) ? d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') : ''; };
+  const out = {}; let n = 0;
+  for (let r = h + 1; r < rows.length; r++) {
+    const x = rows[r] || [], line = txt(x[C.line]), target = num(x[C.target]), d = iso(x[C.date]);
+    if (!/^\d{3}S\d+/i.test(line) || !(target > 0) || !d) continue;
+    const s = tm(x[C.start]), w = tm(x[C.hours]); if (!isFinite(s) || !isFinite(w)) continue;
+    const br = [C.b1, C.b2].map(c => (c >= 0 ? [tm(x[c]), tm(x[c + 1])] : null)).filter(b => b && isFinite(b[0]) && isFinite(b[1]) && b[1] > b[0]);
+    const end = s + w + br.reduce((a, b) => a + (b[1] - b[0]), 0);
+    (out[d] = out[d] || {})[line.toUpperCase()] = { xuong: txt(x[C.xuong]), target, hours: w, start: hh(s), end: hh(end), breaks: br.map(b => hh(b[0]) + '-' + hh(b[1])).join(', ') };
+    n++;
+  }
+  return n ? out : null;
+}
+
 // Giờ làm việc: cfg = { start:'07:30', end:'20:30', breaks:'12:00-13:00, 16:30-17:00' }
 function workClock(cfg) {
   const s = clockSec(cfg.start), e = clockSec(cfg.end);
@@ -702,7 +727,7 @@ const FORMULAS = [
   { key: 'lbr_sam', note: {"vi":"LBR tính bằng phút chuẩn mỗi người (SAM ÷ người quy đổi) thay cho CT đo được: tổng ÷ (lớn nhất × số công đoạn). Cho biết bố trí người đã chia việc đều chưa; thấp = có công đoạn gánh quá nặng so với các công đoạn khác.","en":"LBR using standard minutes per person (SAM ÷ FTE) instead of measured CT: sum ÷ (largest × no. of operations). Shows whether staffing splits the work evenly; low = some operation carries far more than others."}, lv: 'line', vi: 'LBR theo SAM (chia việc)', en: 'LBR by SAM (workload)', def: 'sumWL / (maxWL * nOps)', vars: ['sumWL', 'maxWL', 'nOps'], bad: NaN, pct: true },
   { key: 'plan_sah', note: {"vi":"Kế hoạch cả ngày tính bằng SAH khi quản đốc không nhập target: người kế hoạch × giờ làm cả ngày × hiệu suất mục tiêu × hệ số đường cong học (mã mới / lặp lại).","en":"Day plan in SAH when no supervisor target: planned people × day hours × target efficiency × learning-curve factor (new / repeat style)."}, lv: 'line', vi: 'Kế hoạch SAH cả ngày (khi không có target quản đốc)', en: 'Planned SAH / day (no supervisor target)', def: 'peoplePlan * totalHours * effTarget * factor', vars: ['peoplePlan', 'people', 'totalHours', 'effTarget', 'factor', 'totalMin'], bad: 0 },
   { key: 'plan_now_sah', note: {"vi":"Phần kế hoạch phải đạt tới giờ dữ liệu: kế hoạch SAH cả ngày × giờ đã làm ÷ giờ làm cả ngày (chia đều theo thời gian).","en":"Plan due by data time: day plan SAH × hours worked ÷ day hours (spread evenly over time)."}, lv: 'line', vi: 'Kế hoạch SAH tới giờ dữ liệu', en: 'Planned SAH to data time', def: 'planSAH * workHours / totalHours', vars: ['planSAH', 'workHours', 'totalHours', 'workMin', 'totalMin'], bad: 0 },
-  { key: 'progress', note: {"vi":"SAH đã ra chuyền (sản lượng công đoạn cuối × ΣSAM ÷ 60) chia cho kế hoạch SAH tới giờ. 100% = đúng tiến độ; dùng để tô xanh / vàng / đỏ.","en":"SAH out of the line (last-operation output × ΣSAM ÷ 60) divided by planned SAH to now. 100% = on schedule; drives green / yellow / red."}, lv: 'line', vi: 'Tiến độ chuyền', en: 'Line progress', def: 'outSAH / planNowSAH', vars: ['outSAH', 'planNowSAH', 'planSAH', 'sah', 'workHours', 'totalHours', 'outEM', 'planNow', 'planEM', 'earned', 'workMin', 'totalMin'], bad: NaN, pct: true },
+  { key: 'progress', note: {"vi":"Như OAS: Actual SAH (SAH thực tế = Σ SAM × SL các phiếu ETS ÷ 60) chia cho Accumulate target (kế hoạch SAH tới giờ). 100% = đúng tiến độ; < 90% đỏ, 90–100% vàng, 100–110% xanh, ≥ 110% tím.","en":"As in OAS: Actual SAH (earned SAH = Σ SAM × qty of ETS tickets ÷ 60) divided by the accumulate target (planned SAH to now). 100% = on schedule; < 90% red, 90–100% yellow, 100–110% green, ≥ 110% purple."}, lv: 'line', vi: 'Tiến độ chuyền', en: 'Line progress', def: 'sah / planNowSAH', vars: ['outSAH', 'planNowSAH', 'planSAH', 'sah', 'workHours', 'totalHours', 'outEM', 'planNow', 'planEM', 'earned', 'workMin', 'totalMin'], bad: NaN, pct: true },
   { key: 'style_target', note: {"vi":"Target sp/ngày của mã hàng khi không có target quản đốc: kế hoạch SAH cả ngày × 60 × tỉ trọng mã ÷ ΣSAM mã, làm tròn.","en":"Style target pcs/day without a supervisor target: day plan SAH × 60 × style share ÷ style ΣSAM, rounded."}, lv: 'line', vi: 'Target mã hàng theo SAM (sp/ngày)', en: 'Style target by SAM (pcs/day)', def: 'round(planSAH * 60 * share / sumSam)', vars: ['planSAH', 'share', 'sumSam', 'factor', 'planEM'], bad: NaN },
 ];
 // Bộ công thức dùng khi tính: ô trống / sai → mặc định. → { ev(key, vars), err: { key: thông báo } }
@@ -739,7 +764,7 @@ const DEFAULT_LINE = {
   styles: {},                                  // { 'mã ETS': { ie:'mã IE', target:null (target quản đốc), start:'YYYY-MM-DD', level:'Mã lặp lại' } }
   ops: { first: '33', last: '84', tap: ['34', '40'], check: ['141', '150', '151'], exclude: ['270'] },
   samOverride: {},                             // SAM nhập tay theo mã công đoạn ETS, VD { '33': 0.15 }
-  samSrc: 'ie',                                // nguồn SAM ưu tiên: 'ie' = file IE (thiếu thì SAM trên phiếu ETS), 'ets' = SAM trên phiếu ETS (phiếu không có SAM thì file IE)
+  samSrc: 'ets',                               // nguồn SAM ưu tiên (13/10/2026: mặc định ETS cho mọi thiết bị, để PC và điện thoại ra cùng số): 'ets' = SAM trên phiếu ETS (phiếu không có SAM thì file IE), 'ie' = file IE (thiếu thì SAM trên phiếu ETS); chỉ chọn IE khi đã lưu tay (samSrcSet)
   stationOp: {},                               // đổi công đoạn của trạm (bấm thẻ trên đầu trạm 3D): { trạm: mã CĐ }
   stationEmp: {},                              // gán tay trạm → mã CN, VD { '9': '408386' }, '-' = để trống (ETS không có số trạm)
   freePos: {},                                 // công nhân đặt ra ngoài trạm trên 3D: { mã CN: [x, z] } (m)
@@ -753,7 +778,8 @@ const DEFAULT_LINE = {
     levels: [{ name: 'Mã mới', en: 'New style', pct: [0.5, 0.65, 0.8, 0.9, 0.95, 1] },
       { name: 'Mã lặp lại', en: 'Repeat style', pct: [0.7, 0.85, 0.95, 1] }],
   },
-  status: { green: 0.95, red: 0.85, stallMin: 60, staleMin: 90, shortPeople: 0.1, warmupMin: 60,
+  status: { green: 1.0, red: 0.9, purple: 1.1, stallMin: 60,   // màu chuyền theo OAS (13/10): < 90% đỏ · 90–100% vàng · 100–110% xanh · ≥ 110% tím (Actual SAH ÷ Accumulate target)
+    staleMin: 90, shortPeople: 0.1, warmupMin: 60,
     gapPct: 0.1,                               // tắc nghẽn: SL lũy kế thấp hơn công đoạn đứng trước ≥ 10% (hàng dồn trước công đoạn)
     skillEff: 1.3, skillPeople: 2,             // phụ thuộc tay nghề: %EFF công đoạn ≥ 130% và ≤ 2 người
     wGreen: 0.9, wYellow: 0.8,                 // (cũ, không dùng từ 09/10)
@@ -762,7 +788,10 @@ const DEFAULT_LINE = {
 const clone = o => JSON.parse(JSON.stringify(o));
 function lineConfig(cfg) {                     // ghép tham số người dùng lên mặc định
   const d = clone(DEFAULT_LINE), c = cfg || {};
+  const oldSt = c.status && c.status.purple == null;     // cài đặt lưu trước 13/10 (85 / 95%): đổi sang mốc OAS 90 / 100 / 110%
   Object.keys(c).forEach(k => { d[k] = c[k] && typeof c[k] === 'object' && !Array.isArray(c[k]) && d[k] && typeof d[k] === 'object' ? Object.assign(d[k], c[k]) : c[k]; });
+  if (oldSt) Object.assign(d.status, { red: 0.9, green: 1.0, purple: 1.1 });
+  if (!c.samSrcSet) d.samSrc = 'ets';                       // cấu hình lưu trước 13/10 (mặc định cũ 'ie' tuỳ máy) → ETS; chọn tay trong ⚙ thì được giữ
   return d;
 }
 // Số ngày làm việc (bỏ Chủ nhật) từ ngày bắt đầu mã tới ngày xét, ngày bắt đầu = 1
@@ -1035,7 +1064,8 @@ function lineStatus(E, cfg, ie, opt) {
   const factor = styles.length ? styles.reduce((a, s) => a + s.factor * shareOf(s), 0) : 1;
   // Kế hoạch phút chuẩn cả ngày: có target quản đốc thì dùng, không thì người × phút × hiệu suất mục tiêu × đường cong học
   const allQd = styles.length && styles.every(s => s.targetQd);
-  const planEM = allQd ? styles.reduce((a, s) => a + s.targetQd * s.sumSam, 0)
+  const planEM = cfg.sahTarget > 0 ? cfg.sahTarget * 60        // mục tiêu SAH của OAS (file SAH_TARGET): ưu tiên, để màu chuyền trùng OAS
+    : allQd ? styles.reduce((a, s) => a + s.targetQd * s.sumSam, 0)
     : F('plan_sah', { peoplePlan: cfg.people, people: inLine.length, totalHours, effTarget: cfg.effTarget, factor, totalMin }) * 60;
   styles.forEach(s => { s.target = s.targetQd || F('style_target', { planSAH: planEM / 60, planEM, share: shareOf(s), sumSam: s.sumSam, factor: s.factor }); s.targetSrc = s.targetQd ? 'qd' : 'sam'; });
   // Target từng đơn = target mã chia theo khung giờ của đơn
@@ -1052,7 +1082,10 @@ function lineStatus(E, cfg, ie, opt) {
   const forecast = { out: outNow, target: tgtDay, pace, paceSrc: r60 > 0 ? '60' : 'avg', remH, end: Math.round(outNow + pace * remH),
     need: remH > 0 ? Math.max(0, tgtDay - outNow) / remH : NaN };
   forecast.gap = forecast.end - tgtDay;
-  const planNow = F('plan_now_sah', { planSAH: planEM / 60, workHours, totalHours, workMin, totalMin }) * 60;
+  // Accumulate target như OAS: tính theo GIỜ ĐỒNG HỒ hiện tại (opt.clock, giây trong ngày) khi đang xem mới nhất của ngày hôm nay, không phải giờ phiếu cuối của file ETS
+  // (file xuất trễ vài phút thì OAS vẫn tính tới giờ hiện tại → chuyền "đỏ" hơn). Xem lại / ngày cũ: tính tới giờ dữ liệu như trước.
+  const accMin = isFinite(opt.clock) && isFinite(dataAt) ? Math.max(dataW, Wc.work(Math.min(Math.max(opt.clock, dataAt), Wc.e))) / 60 : workMin;
+  const planNow = F('plan_now_sah', { planSAH: planEM / 60, workHours: accMin / 60, totalHours, workMin: accMin, totalMin }) * 60;
   const progress = F('progress', { outSAH: outEM / 60, planNowSAH: planNow / 60, planSAH: planEM / 60, sah: earned / 60, workHours, totalHours, outEM, planNow, planEM, earned, workMin, totalMin });
 
   // Tắc nghẽn = công đoạn đang giới hạn sản lượng chuyền (KHÔNG phải %EFF công đoạn cao nhất: %EFF cao mà vẫn theo kịp = người giỏi).
@@ -1116,15 +1149,17 @@ function lineStatus(E, cfg, ie, opt) {
   else if (now - dataAt >= st.staleMin * 60) { state = 'gray'; why.push(W(`Dữ liệu cũ: mới nhất lúc ${hhmm(dataAt)}.`, `Stale data: latest at ${hhmm(dataAt)}.`)); }
   else if (dataW < st.warmupMin * 60) { state = 'start'; why.push(W('Đang khởi động chuyền (chưa đủ 1 giờ dữ liệu).', 'Line warming up (less than 1 hour of data).')); }
   else {
-    const red = [], yel = [];
+    const red = [], yel = [], pu = isFinite(st.purple) ? st.purple : 1.1;
+    // Màu chuyền theo OAS: chỉ do tiến độ (Actual SAH ÷ Accumulate target); các cảnh báo khác (ngừng, thiếu người…) vẫn liệt kê ở "why" nhưng không đổi màu
+    state = !isFinite(progress) ? 'gray' : progress < st.red ? 'red' : progress < st.green ? 'yellow' : progress < pu ? 'green' : 'purple';
     if (progress < st.red) red.push(W(`Tiến độ ${Math.round(progress * 100)}% (< ${Math.round(st.red * 100)}%).`, `Progress ${Math.round(progress * 100)}% (< ${Math.round(st.red * 100)}%).`));
     else if (progress < st.green) yel.push(W(`Tiến độ ${Math.round(progress * 100)}% (< ${Math.round(st.green * 100)}%).`, `Progress ${Math.round(progress * 100)}% (< ${Math.round(st.green * 100)}%).`));
+    else if (progress >= pu) why.push(W(`Tiến độ ${Math.round(progress * 100)}% (≥ ${Math.round(pu * 100)}%): vượt kế hoạch.`, `Progress ${Math.round(progress * 100)}% (≥ ${Math.round(pu * 100)}%): above plan.`));
     if (!isFinite(lastOut) || dataAt - lastOut >= st.stallMin * 60) red.push(W(`Không có hàng ra chuyền từ ${isFinite(lastOut) ? hhmm(lastOut) : 'đầu ca'}.`, `No output since ${isFinite(lastOut) ? hhmm(lastOut) : 'shift start'}.`));
     if (inLine.length < cfg.people * (1 - st.shortPeople)) red.push(W(`Thiếu người: ${inLine.length}/${cfg.people}.`, `Short of people: ${inLine.length}/${cfg.people}.`));
     const stl = ops.filter(o => o.stalled && o.kind === 'line');
     if (stl.length) yel.push(W(`Công đoạn ngừng: ${stl.map(o => o.op).join(', ')}.`, `Stopped operations: ${stl.map(o => o.op).join(', ')}.`));
     if (eff < cfg.effTarget * factor) yel.push(W(`Hiệu suất ${Math.round(eff * 100)}% (< ${Math.round(cfg.effTarget * factor * 100)}%).`, `Efficiency ${Math.round(eff * 100)}% (< ${Math.round(cfg.effTarget * factor * 100)}%).`));
-    state = red.length ? 'red' : yel.length ? 'yellow' : 'green';
     why.push(...red, ...yel);
   }
 
@@ -1218,7 +1253,7 @@ function autoStations(stations, workers, skip) {
 
 const PT = { GROUPS, norm, num, groupOf, equipName, equipCode, classify, defaultPick, parseSam, parseLayout, parseFin, buildStyle, analyze, banRange,
   codeKey, styleCore, codeMatch, clockSec, hhmm, parseEts, workClock, etsCodes, buildReplay,
-  DEFAULT_LINE, lineConfig, workDayNo, garmentColor, parseBulletin, parseHc, parseEffCsv, xlDate, isNewHire, learnFactor, lineStatus, lineBalance, assignStations, autoStations, compileExpr, FORMULAS, FORMULA_VARS, FV_SHORT, formulaSet };
+  DEFAULT_LINE, lineConfig, workDayNo, garmentColor, parseBulletin, parseHc, parseEffCsv, parseSahTarget, xlDate, isNewHire, learnFactor, lineStatus, lineBalance, assignStations, autoStations, compileExpr, FORMULAS, FORMULA_VARS, FV_SHORT, formulaSet };
 if (typeof module !== 'undefined' && module.exports) module.exports = PT;
 else root.PT = PT;
 })(this);

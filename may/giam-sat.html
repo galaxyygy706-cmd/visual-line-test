@@ -71,6 +71,7 @@ table.ops.cmpct td.num em,table.ops.cmpct td.cd em{display:block;font:500 10.5px
 .clrs span.clr{flex:0 0 auto;display:flex;align-items:center;gap:4px;font:inherit;color:var(--muted)} .clrs input[type=color]{width:42px;height:26px;padding:0 2px} .clrs em{font-size:11px;font-style:normal;width:80px}
 .vbar{position:absolute;left:12px;bottom:12px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;max-width:calc(100% - 540px)}
 .vbar .btn,.vbar .seg{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.vbar .btn .ic,.qmenu .ic{display:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .walk-hint{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(16,24,36,.82);color:#fff;border-radius:8px;padding:7px 12px;font-size:12.5px;line-height:1.5;text-align:center;pointer-events:none;max-width:calc(100% - 24px)}
 .walk-hint kbd{display:inline-block;min-width:18px;padding:0 4px;border:1px solid rgba(255,255,255,.45);border-radius:4px;font:600 11.5px var(--f-mono);text-align:center}
 .walk-cross{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;pointer-events:none;opacity:.6}
@@ -222,6 +223,7 @@ details.more[open] summary{margin-bottom:10px}
 .sh{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .stage{position:relative;height:500px;border-radius:8px;overflow:hidden;background:var(--panel-2);border:1px solid var(--line)}
 .app .stage{height:auto;min-height:0;border-radius:10px}
+#mFix{display:contents}
 .stage:fullscreen{height:100%;border-radius:0;border:0}
 .stage canvas{display:block;width:100%;height:100%;outline:none}
 .stage .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;color:var(--muted);font-size:13px}
@@ -394,6 +396,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
 .app{grid-template-rows:auto auto minmax(0,1fr)}
 .vl-top{grid-column:1/-1;margin:-16px -16px 0;min-height:56px;padding:6px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;background:linear-gradient(90deg,#16305c,#1f3f78);color:#fff}
 .vl-logo{display:flex;align-items:center;gap:10px}
+.vl-b-m{display:none}
 .vl-logo i{width:34px;height:34px;border-radius:8px;background:#fff;display:grid;place-items:center;color:#16305c;font:700 17px var(--f-display);font-style:normal} .vl-logo i img{width:82%;height:auto;display:block}   /* logo Tinh Lợi (tinhloi.com) */
 .vl-logo b{display:block;font:700 22px/1 var(--f-display);letter-spacing:.03em}
 .vl-logo small{display:block;font:500 11px var(--f-body);opacity:.78;letter-spacing:.04em;text-transform:uppercase}
@@ -460,6 +463,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
 .stage .tip .nrec .nact,.mrow .nact{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap}
 .mrow{cursor:default;flex-wrap:wrap} .mrow .mgo{display:flex;flex-direction:column;min-width:0;flex:1;cursor:pointer}
 .pit b{font-size:14px;color:var(--pc)} .pit small{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pit small .pl{font-weight:800;font-size:13.5px;color:var(--fg)}   /* tên chuyền + trạm / công đoạn: đậm, màu chữ chính (13/10) */
 .pnone{margin:10px 0 0;color:var(--ok);font-weight:600}
 #secTime h2{font:700 15px var(--f-body);letter-spacing:0;text-transform:none;color:var(--fg)}
 #secTime .tl{flex-wrap:nowrap;gap:8px} #secTime .tl output{font:700 26px/1 var(--f-display);min-width:60px}
@@ -536,8 +540,11 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
 @media (max-width:700px){
   html,body{height:auto} body{font-size:15px}
   .app{height:auto;padding:8px;gap:10px;grid-template-columns:minmax(0,1fr);grid-template-rows:none}
-  .vl-top{margin:-8px -8px 0;padding:6px 12px;gap:4px 10px;min-height:48px}
-  .vl-logo b{font-size:18px} .vl-logo small,.vl-nav,.vl-crumb,.vl-act,.vl-clock small{display:none} .vl-clock b{font-size:22px} .vl-clock{padding-left:10px} .vl-right{gap:8px}
+  .vl-top{margin:-8px -8px 0;padding:0 12px;gap:4px 10px;min-height:44px;height:44px;flex-wrap:nowrap}
+  .vl-logo{flex:1;gap:8px} .vl-logo i{width:26px;height:26px;border-radius:7px} .vl-b-d{display:inline} .vl-b-m{display:none}
+  .vl-top .seg button{padding:3px 8px;font-size:12px;min-height:0} .vl-top .seg{border-radius:8px;padding:2px;border-color:transparent;background:rgba(255,255,255,.14)} .vl-top .seg button{border-radius:6px}
+  .vl-clock{display:flex;align-items:center;gap:5px} .vl-clock::before{content:"";width:16px;height:16px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat}
+  .vl-logo b{font-size:15px;letter-spacing:.4px} .vl-logo small,.vl-nav,.vl-crumb,.vl-act,.vl-clock small{display:none} .vl-clock b{font-size:15px} .vl-clock{padding-left:10px} .vl-right{gap:8px}
   .kpi-row,.kpi-row.m-cmp,.kpi-row.m-tile{display:flex;overflow-x:auto;gap:8px;scroll-snap-type:x proximity;padding-bottom:4px;-webkit-overflow-scrolling:touch}
   .kpi-row .kc{flex:0 0 78%;max-width:300px;scroll-snap-align:start} .kpi-row.m-tile .kt,.kpi-row.m-cmp .kc{flex:0 0 150px}
   .m-only{display:block}
@@ -553,33 +560,66 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .mb .n{position:absolute;right:7px;top:7px}
   .mr{width:100%;display:flex;align-items:center;gap:10px;padding:7px 10px;margin-bottom:7px;min-height:52px} .mr > span:first-child{flex:1;min-width:0} .mr .ar{color:var(--muted);font-size:20px}
   .mb.off,.mr.off{opacity:.45;cursor:default} .mr.all{background:var(--accent-soft);border-left-color:var(--accent)}
-  .m-chips{display:flex!important;gap:6px;overflow-x:auto;padding:6px 2px 2px;-webkit-overflow-scrolling:touch}
-  .m-chips .mc{flex:0 0 84px;height:52px;position:relative;text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--c,var(--gray));border-radius:8px;padding:2px 6px;min-height:0}
-  .m-chips .mc b{display:block;font-size:13.5px;line-height:1.15} .m-chips .mc em{font-style:normal;font-weight:700;font-size:14.5px} .m-chips .mc.on{outline:2px solid var(--accent)}
-  .m-chips .mc .n{position:absolute;right:5px;bottom:5px;background:var(--crit);color:#fff;border-radius:9px;font-size:10px;font-weight:700;padding:0 5px}
+  /* Thẻ chuyền v3/v4 (13/10): chấm + mã, % to cùng màu trạng thái, thanh tiến độ mảnh; thẻ chọn = nền nhạt + viền 1 px + nâng nhẹ; nhiều chuyền (> 6): thẻ gọn, cần chú ý lên đầu, dải màu, nút "Tất cả" */
+  .m-chips{display:flex!important;gap:8px;overflow-x:auto;padding:8px 2px 6px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;scrollbar-width:none} .m-chips::-webkit-scrollbar{display:none}
+  .m-chips .mc{flex:0 0 92px;scroll-snap-align:start;position:relative;text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px 8px;min-height:56px;cursor:pointer}
+  .m-chips .mc b{display:flex;align-items:center;gap:5px;font-size:12.5px;line-height:1.2;color:var(--muted)} .m-chips .mc b .dot{width:8px;height:8px;border-radius:50%;background:var(--k,var(--gray));flex:none}
+  .m-chips .mc em{display:block;font-style:normal;font-weight:800;font-size:22px;line-height:1.15;color:var(--k,var(--fg));font-variant-numeric:tabular-nums}
+  .m-chips .mc u{display:block;height:3px;border-radius:2px;background:var(--line);margin-top:5px;overflow:hidden;text-decoration:none} .m-chips .mc u::after{content:"";display:block;height:100%;width:var(--w,0);background:var(--k,var(--gray))}
+  .m-chips .mc.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 3px 10px rgba(31,95,191,.25);transform:translateY(-1px)} .m-chips .mc.on b{color:var(--fg)}
+  .m-chips .mc .n{position:absolute;right:6px;top:6px;min-width:17px;height:17px;display:grid;place-items:center;background:var(--crit);color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;padding:0 4px}
+  .m-chips.many .mc{flex-basis:64px;padding:5px 7px 6px;min-height:50px} .m-chips.many .mc b{font-size:12px} .m-chips.many .mc em{font-size:18px}
+  .m-chips .mc.more{flex:0 0 68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--accent);border:1px dashed var(--accent);font-size:12px;font-weight:700;background:var(--panel)}
+  .m-chips .mc.more svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .m-rib{margin:0 2px} .m-rib .rb{display:flex;gap:2px;height:10px} .m-rib .rb i{flex:1;border-radius:2px;background:var(--k);cursor:pointer} .m-rib .rb i.on{outline:2px solid var(--accent);outline-offset:1px}
+  .m-rib .rc{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:4px} .m-rib .rc b{color:var(--fg)} .m-rib .rc i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;background:var(--k)}
+  #mSheet{position:fixed;inset:0;z-index:90;background:rgba(10,20,40,.45);display:flex;align-items:flex-end} #mSheet[hidden]{display:none}
+  #mSheet .shd{width:100%;max-height:82vh;overflow:auto;background:var(--panel);border-radius:18px 18px 0 0;padding:8px 14px 18px;box-shadow:0 -6px 20px rgba(0,0,0,.25)}
+  #mSheet .grip{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 8px}
+  #mSheet .hd2{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px} #mSheet .hd2 h2{font:700 16px var(--f-body);letter-spacing:0;text-transform:none;color:var(--fg);margin:0} #mSheet .x{width:34px;height:34px;border-radius:50%;border:0;background:var(--panel-2);color:var(--muted);font-size:16px;cursor:pointer;min-height:0}
+  #mSheet .cn{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px} #mSheet .cn span{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:12px;background:color-mix(in srgb,var(--k) 14%,var(--panel));color:var(--k)}
+  #mSheet .st{display:flex;gap:6px;margin-bottom:10px;font-size:12.5px;flex-wrap:wrap} #mSheet .st button{padding:5px 10px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--muted);font:inherit;min-height:0;cursor:pointer} #mSheet .st button.on{background:var(--fg);color:var(--panel);border-color:var(--fg)}
+  #mSheet .gr{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+  #mSheet .g{position:relative;text-align:left;font:inherit;color:inherit;border-radius:10px;padding:7px 8px 8px;min-height:58px;cursor:pointer;background:color-mix(in srgb,var(--k) 13%,var(--panel));border:1px solid color-mix(in srgb,var(--k) 35%,var(--panel))}
+  #mSheet .g b{display:block;font-size:12.5px;color:var(--fg)} #mSheet .g em{display:block;font-style:normal;font-weight:800;font-size:20px;line-height:1.2;color:var(--k)} #mSheet .g.on{border:2px solid var(--accent);box-shadow:0 2px 8px rgba(31,95,191,.3)}
+  #mSheet .g .n{position:absolute;right:5px;top:5px;min-width:16px;height:16px;display:grid;place-items:center;background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 4px}
+  #mSheet .ft{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
   .m-strip{font-size:12.5px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .m-strip b{color:var(--accent)}
   #mNav{display:flex;position:fixed;left:0;right:0;bottom:0;height:58px;z-index:70;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0)}
   #mNav button{flex:1;min-height:0;border:0;border-radius:0;background:none;font:600 11px var(--f-body);color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;cursor:pointer}
-  #mNav button i{font-style:normal;font-size:21px;line-height:1;transition:transform .18s,margin .18s}
+  #mNav button i{font-style:normal;font-size:21px;line-height:1;transition:transform .18s,margin .18s;display:grid;place-items:center} #mNav button i svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   #mNav button.on{color:var(--accent);font-weight:700;justify-content:flex-end;padding-bottom:5px}
   #mNav button.on i{width:46px;height:46px;margin-top:-24px;display:grid;place-items:center;border-radius:50%;background:var(--panel);border:2px solid var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.28);font-size:23px}
   #mNav button.on span{top:-18px}
   #mNav{overflow:visible}
   #v3Qual .btn{white-space:nowrap;min-height:34px;padding:0 10px}
   #mNav button span{position:absolute;top:3px;left:calc(50% + 6px);background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 5px}
-  body[data-mt="home"] #mChips,body[data-mt="home"] #mStrip,body[data-mt="home"] .stage,body[data-mt="home"] .panel,body[data-mt="home"] .bot-row,body[data-mt="home"] #empty{display:none!important}
+  body[data-mt="home"] #mChips,body[data-mt="home"] #mRib,body[data-mt="home"] #mStrip,body[data-mt="home"] .stage,body[data-mt="home"] .panel,body[data-mt="home"] .bot-row,body[data-mt="home"] #empty{display:none!important}
   body:not([data-mt="home"]) #mHome{display:none}
   body[data-mt="mon"] #view > :not(#secProb),body[data-mt="mon"] .bot-row{display:none!important}
   body[data-mt="prob"] #view > :not(#secProb):not(#secMach),body[data-mt="prob"] .bot-row{display:none!important}
   body[data-mt="mach"] #view > :not(#secMach),body[data-mt="mach"] .bot-row{display:none!important}
   body[data-mt="stat"] #view > :is(#secProb,#secMach,#alerts){display:none!important}
-  body:not([data-mt="home"]) .app .stage{position:sticky;top:0;z-index:45}
-  body[data-mt="stat"] #secTime{position:sticky;top:170px;z-index:40;background:var(--panel);box-shadow:0 3px 8px rgba(0,0,0,.18)}
-  body[data-mt="mon"] .app .stage{height:42vh;min-height:270px}
-  body:not([data-mt="mon"]) .app .stage{height:170px;min-height:0}
+  body[data-mt="stat"] #view > .bot-row{order:3;margin-bottom:0}
+  .bot-row .bot-tabs{order:-1}   /* bảng 3 tab lên trên, 2 biểu đồ nhỏ xuống dưới */   /* bảng Tổng quan / Công đoạn / Công nhân lên ngay sau "Xem tại giờ" (trước đây nằm cuối trang, phải cuộn ~3000 px mới thấy) */
+  #mFix{display:flex;flex-direction:column;gap:8px;margin:-8px -8px 0;padding:0 8px 6px;background:var(--bg)}
+  #mFix .vl-top,#mFix .m-crumb{margin-left:-8px;margin-right:-8px;margin-top:0}
+  body:not([data-mt="home"]) #mFix{position:sticky;top:0;z-index:55;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+  /* tab Chỉ số: "Xem tại giờ" cuộn cùng nội dung (dính thêm 143 px nữa thì chỉ còn ~70 px nhìn bảng) */
+  body[data-mt="mon"] .app .stage,body[data-mt="prob"] .app .stage,body[data-mt="mach"] .app .stage,body[data-mt="stat"] .app .stage{height:34vh;min-height:240px}   /* 4 tab cùng cỡ; vừa đủ nhìn, chừa chỗ cuộn nội dung bên dưới */
+  body[data-mt="home"] .app .stage{height:170px;min-height:0}
   .app .stage{height:42vh;min-height:270px}
   .vbar{left:6px;right:6px;bottom:6px;gap:4px;flex-wrap:wrap}
-  #v3Walk,#v3Undo,#v3New,#v3Mark,#v3Full,#v3Top,#v3Help,#v3Leg,#v3Lines{display:none!important}
+  #v3Walk,#v3Undo,#v3New,#v3Mark,#v3Top,#v3Help,#v3Leg,#v3Lines,#v3PNav{display:none!important}
+  /* 13/10: Toàn cảnh + Toàn màn hình = nút icon góc phải dưới khung 3D (Toàn cảnh bên trái nút toàn màn hình); Đồ họa góc trái dưới */
+  .stage .vbar{inset:0;left:0;right:0;bottom:0;max-width:none;pointer-events:none;display:block} .stage .vbar > *{pointer-events:auto}
+  #v3Qual{position:absolute;left:8px;bottom:8px}
+  #v3Home,#v3Full,#v3QBtn{width:40px;height:40px;min-height:0;padding:0;font-size:0;display:flex!important;align-items:center;justify-content:center;border-radius:10px;background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  #v3Home,#v3Full{position:absolute;bottom:8px} #v3QBtn .qt{display:none} #v3QBtn .ic{display:block;width:26px;height:26px}
+  .qmenu{min-width:176px} .qmenu button{display:flex!important;align-items:center;gap:10px;font-size:14px;padding:9px 14px;white-space:nowrap} .qmenu .ic{display:block;width:24px;height:24px;flex:none}
+  #v3Full{right:8px} #v3Home{right:56px}
+  #v3Home .ic,#v3Full .ic{display:block;width:22px;height:22px}
+  .app .stage:fullscreen{height:100%;min-height:0;border-radius:0}
   .pban{max-width:calc(100% - 24px);top:8px;left:8px;font-size:12.5px}
   .stage .tip.card{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:100%;max-width:none;min-width:0;border-radius:16px 16px 0 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.35);overflow-y:auto}
   .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
@@ -603,18 +643,24 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .plist{max-height:none;gap:5px;margin-top:6px} .pit{padding:5px 10px;gap:8px;min-height:0} .pit .pd{font-size:16px} .pit b{font-size:13.5px;line-height:1.2} .pit small{font-size:12px;white-space:nowrap}
   .panel .sec h2,.panel #secTime h2,.panel .sec h3{font-size:15px} .panel .sec{padding:10px 12px}
   .bot-row{grid-template-columns:1fr;height:auto} .bot-row .bot-body{max-height:none}
+  /* điện thoại: bỏ chế độ Thu gọn / Mở rộng của hàng dưới (đã lưu "s" thì bảng bị ẩn hẳn, "l" thì cao cố định) */
+  .bot-row[data-sz] {height:auto;grid-template-columns:1fr} .bot-row[data-sz="s"] .bot-body,.bot-row[data-sz="s"] .bot-box:not(.bot-tabs){display:flex} .bot-row[data-sz="s"] .bot-body{display:block} #botSm,#botLg{display:none!important}
   .bars{min-height:150px}
-  .app>*,.panel,.panel>*,#view>*,.bot-row>*,.bot-box,.bot-body{min-width:0;max-width:100%} .app>.vl-top,.app>.m-crumb{max-width:none} .sec,.bot-body,.tblw,#ordx{overflow-x:auto}
+  .app>*,.panel,.panel>*,#view>*,.bot-row>*,.bot-box,.bot-body{min-width:0;max-width:100%} .app>.vl-top,.app>.m-crumb,.app>#mFix,#mFix .vl-top,#mFix .m-crumb{max-width:none} .sec,.bot-body,.tblw,#ordx{overflow-x:auto}
   .bot-h{flex-wrap:wrap} #botLg,#botSm{display:none!important}
 }
 
+.hl.purple{border-left-color:#8e44ad} .hl.purple .st{color:#8e44ad} .status.purple{background:#8e44ad} .kc.purple{border-left-color:#8e44ad} .kc.purple .kc-t > span{color:#8e44ad} .kt.purple{border-top-color:#8e44ad}
+.pit.mrow small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.4}
+.ord-old{color:#b4501a;font-weight:700} .ord-new{color:#1d7a46;font-weight:700}
 </style>
 </head>
 <body>
 <div class="app" id="app">
   <!-- Thanh trên (giao diện mới 10/10) -->
+  <div id="mFix">   <!-- 13/10: trên điện thoại (trừ tab Home) cố định từ logo tới khung 3D, phần dưới cuộn; máy tính: display:contents (không đổi bố cục) -->
   <header class="vl-top" id="vlTop">
-    <div class="vl-logo"><i><img src="../lib/logo-tinh-loi.png" alt="Tinh Lợi"></i><div><b>VISUALIZATION</b><small data-en="Production line monitor · Tinh Loi">Giám sát chuyền sản xuất · Tinh Lợi</small></div></div>
+    <div class="vl-logo"><i><img src="../lib/logo-tinh-loi.png" alt="Tinh Lợi"></i><div><b><span class="vl-b-d">VISUALIZATION</span><span class="vl-b-m">VISUAL LINE</span></b><small data-en="Production line monitor · Tinh Loi">Giám sát chuyền sản xuất · Tinh Lợi</small></div></div>
     <nav class="vl-nav">
       <a href="../visualization.html" data-en="Home">Trang chủ</a>
       <a href="chuyen-may.html" data-en="Sewing line">Chuyền may</a>
@@ -634,8 +680,8 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   </header>
   <!-- Điện thoại (≤ 700 px): đường dẫn, Home (Block → Xưởng → Chuyền), chip chuyền, tóm tắt; thanh dưới ở cuối trang -->
   <nav class="m-only m-crumb" id="mCrumb" aria-label="Vị trí / Location"></nav>
-  <section class="m-only" id="mHome"></section>
   <div class="m-only m-chips" id="mChips"></div>
+  <div class="m-only m-rib" id="mRib" hidden></div>
   <div class="m-only m-strip" id="mStrip"></div>
   <!-- Hàng thẻ KPI từng chuyền: ≤ 6 chuyền thẻ đầy đủ, 7–12 thẻ gọn, 13+ ô nhỏ; thẻ "Cả block" cuối hàng -->
   <div class="kpi-row" id="kpiRow" hidden></div>
@@ -646,7 +692,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
     <div class="vbar">
       <div class="seg" id="v3Lines" role="group" aria-label="Góc nhìn chuyền / Line view" hidden></div>   <!-- ẩn 12/10: thừa, đã có thẻ KPI chuyền / "Cả block" phía trên -->
 
-      <button class="btn sm" id="v3Home" data-en="🏠 Overview" data-en-title="Back to the whole-factory view" title="Quay về toàn cảnh">🏠 Toàn cảnh</button>
+      <button class="btn sm" id="v3Home" data-en="🏠 Overview" data-en-title="Back to the whole-factory view" title="Quay về toàn cảnh" aria-label="Toàn cảnh / Overview"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>🏠 Toàn cảnh</button>
       <div class="seg pnav" id="v3PNav" role="group" aria-label="Vấn đề cần xử lý / Problems to handle">
         <button id="v3PPrev" data-en-title="Previous problem" title="Vấn đề trước">◀</button>
         <button id="v3PNext" class="pn-main"></button>
@@ -671,7 +717,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
           <button data-m="all" data-en="Show all" data-en-title="Every problem mark at once (can be crowded)" title="Hiện mọi dấu vấn đề cùng lúc (có thể rối)">Hiện hết</button>
         </div>
       </div>
-      <button class="btn sm" id="v3Full" data-en="Full screen">Toàn màn hình</button>
+      <button class="btn sm" id="v3Full" data-en="Full screen" data-en-title="Full screen (phone: rotates to landscape)" title="Toàn màn hình (điện thoại: xoay ngang)" aria-label="Toàn màn hình / Full screen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Toàn màn hình</button>
     </div>
     <div class="leg" id="v3Leg">
       <span><i style="background:#c63a2f"></i><b data-en="Bottleneck">Tắc nghẽn</b></span>
@@ -694,6 +740,8 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
     <div class="walk-cross" id="v3Cross" hidden></div>
     <div class="tip edit" id="v3Edit" hidden></div>
   </div>
+  </div>
+  <section class="m-only" id="mHome"></section>
 
   <!-- Bảng bên phải -->
   <aside class="panel" id="panel">
@@ -707,6 +755,8 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
         <input type="file" id="scpIn" accept=".xlsx,.xls" hidden>
         <button class="btn" id="bEffDir" data-en="📁 %EFF folder" data-en-title="Choose the %EFF folder once (e.g. du-lieu/%EFF 2U01, file *_individual_Eff.csv): monthly and daily %EFF per operator, shown in the operator card; re-read on every sync" title="Chọn thư mục %EFF một lần (VD du-lieu/%EFF 2U01, file *_individual_Eff.csv): %EFF từng công nhân theo tháng và theo ngày, hiện trong bảng nổi công nhân; đọc lại mỗi lần đồng bộ">📁 Thư mục %EFF</button>
         <input type="file" id="effIn" accept=".csv" hidden>
+        <button class="btn" id="bSahDir" data-en="📁 SAH target" data-en-title="Choose the SAH Target folder once (file SAH_TARGET_*.xlsx from OAS): daily SAH target, working hours and breaks per line; the line colour then matches OAS" title="Chọn thư mục Sah target một lần (file SAH_TARGET_*.xlsx của OAS): mục tiêu SAH, giờ làm, giờ ăn từng chuyền theo ngày; màu chuyền sẽ trùng OAS">📁 SAH target</button>
+        <input type="file" id="sahIn" accept=".xlsx,.xls" hidden>
         <button class="btn" id="bSync" data-en="🔄 Sync" data-en-title="Read the ETS + IE + SCP folders now (also grants read permission again)" title="Đọc ngay thư mục ETS + IE + SCP (cũng dùng để cho phép đọc lại thư mục)">🔄 Đồng bộ</button>
         <button class="btn pri" id="bShow" data-en="▶ Presentation" data-en-title="Full screen, scenes change automatically (→ ← Space Esc)" title="Toàn màn hình, tự chuyển cảnh (→ ← Space Esc)">▶ Trình chiếu</button>
         <input type="file" id="etsIn" accept=".xlsx,.xls" multiple hidden>
@@ -888,6 +938,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
       <button class="btn" type="button" id="cfgExp" data-en="Export settings + IE (.json)">Xuất cài đặt + IE (.json)</button>
       <button class="btn" type="button" id="cfgImp" data-en="Import (.json)">Nhập (.json)</button>
       <button class="btn" type="button" id="cfgDef" data-en="Restore defaults">Khôi phục mặc định</button>
+      <button class="btn" type="button" id="cfgShare" hidden data-en="☁ Use this device's settings as the shared ones" data-en-title="Publish this device's line settings + formulas to the server: every device (PC, phone) then uses the same settings and gets the same numbers" title="Đưa tham số chuyền + công thức của máy này lên máy chủ làm bộ chung: mọi thiết bị (PC, điện thoại) dùng cùng 1 bộ nên ra cùng số">☁ Dùng cấu hình máy này làm chung</button>
       <span style="flex:1"></span>
       <button class="btn" value="cancel" data-en="Cancel">Hủy</button>
       <button class="btn pri" id="cfgOk" value="ok" data-en="Save">Lưu</button>
@@ -925,6 +976,7 @@ function save() {
   if (saveHold) { saveDirty = true; return; }
   try { localStorage.setItem(KEY, JSON.stringify(ST)); }
   catch (e) { showMsg(T('Không lưu được vào bộ nhớ trình duyệt (đầy?). Dữ liệu chỉ giữ tới khi đóng trang.', 'Could not save to browser storage (full?). Data is kept only until the page is closed.'), true); }
+  try { if (typeof CFGS !== 'undefined') CFGS.touch(); } catch (e) {}      // có bộ cấu hình chung: đẩy thay đổi lên máy chủ
 }
 // ---------- Ghi chú vấn đề + máy hỏng (plan 9.1 / 9.6) ----------
 // Bản ghi: { id, kind: 'note' | 'machine', line, ban (null = người ngoài trạm), emp, type, text, by, at, status: new | doing | done, doneAt, hist: [{ at, status, by }] }
@@ -950,6 +1002,7 @@ const NT = (() => {
     all: () => list,
     active: () => list.filter(r => r.status !== 'done'),
     has: (line, ban, kind) => act(line, ban, kind).length > 0,
+    machStatus: (line, ban) => { const a = act(line, ban, 'machine'); return a.some(r => r.status !== 'doing') ? 'new' : a.length ? 'doing' : ''; },   // 'new' = máy hỏng chờ sửa (đỏ), 'doing' = đang sửa (tím)
     count: (line, ban, kind) => act(line, ban, kind).length,
     useServer(cb) { srv = true; onChange = cb; pull(); setInterval(() => { if (!document.hidden) pull(); }, 15000); document.addEventListener('visibilitychange', () => { if (!document.hidden) pull(); }); },
     add(r) {
@@ -966,9 +1019,40 @@ const NT = (() => {
 const NOTE_CATS = { qual: ['Chất lượng', 'Quality'], mat: ['Vật tư', 'Materials'], ppl: ['Nhân sự', 'People'], oth: ['Khác', 'Other'] };
 const MACH_TYPES = { thread: ['Đứt chỉ / lỗi chỉ', 'Thread break / fault'], needle: ['Kẹt / gãy kim', 'Needle jam / broken'], motor: ['Mô-tơ / điện', 'Motor / electrical'], oth: ['Khác', 'Other'] };
 const NSTAT = { new: ['Mới', 'New'], doing: ['Đang xử lý', 'In progress'], done: ['Đã xong', 'Done'] };
+const MACH_CLR = r => (r && r.status === 'doing' ? '#7b3fb5' : '#d0281c');          // máy hỏng chờ sửa = đỏ, đang sửa = tím
 const MSTAT = { new: ['Chờ sửa', 'Waiting'], doing: ['Đang sửa', 'Being repaired'], done: ['Đã sửa xong', 'Repaired'] };
 const noteTypeName = r => T(...((r.kind === 'machine' ? MACH_TYPES : NOTE_CATS)[r.type] || ['–', '–']));
 const noteStatName = r => T(...((r.kind === 'machine' ? MSTAT : NSTAT)[r.status]));
+// ---------- Cấu hình chuyền dùng chung (13/10/2026) ----------
+// Mỗi trình duyệt tự giữ tham số chuyền (nguồn SAM, ca, người, công đoạn…) → PC và điện thoại ra số khác nhau. Có máy chủ: 1 bộ chung, ai lưu thì mọi máy nhận.
+// Chưa có bộ chung thì chưa làm gì; bấm "☁ Dùng cấu hình máy này làm chung" (⚙ Cài đặt) ở máy chuẩn 1 lần, từ đó mọi thay đổi tự đồng bộ.
+const CFGS = (() => {
+  let on = false, last = '', at = 0, timer = 0;
+  const snap = () => JSON.stringify({ l: ST.lines, f: ST.formulas || {} });
+  function push() {
+    if (!on) return; const s = snap(); if (s === last) return; last = s;
+    fetch('/api/config', { method: 'PUT', body: JSON.stringify({ by: noteWho(), lines: ST.lines, formulas: ST.formulas || {} }) }).then(r => r.json()).then(j => { if (j && j.at) at = j.at; }).catch(() => { last = ''; });
+  }
+  function adopt(j) {
+    const before = snap(); at = j.at;
+    Object.keys(j.lines).forEach(k => { ST.lines[k] = j.lines[k]; }); if (j.formulas) ST.formulas = j.formulas;
+    last = snap();
+    if (last !== before) { save(); try { render(); } catch (e) {} }
+  }
+  async function pull() {
+    try {
+      const j = await (await fetch('/api/config', { cache: 'no-store' })).json();
+      if (!j || !j.lines) return false;
+      on = true; if (j.at > at) adopt(j); return true;
+    } catch (e) { return false; }
+  }
+  return {
+    get on() { return on; },
+    touch() { if (!on) return; clearTimeout(timer); timer = setTimeout(push, 800); },
+    publish() { on = true; last = ''; push(); },
+    start() { pull(); setInterval(() => { if (!document.hidden) pull(); }, 20000); document.addEventListener('visibilitychange', () => { if (!document.hidden) pull(); }); },
+  };
+})();
 const noteWho = () => { if (SRV && SRV.user) return SRV.user; try { return localStorage.getItem('vl-user-name') || ''; } catch (e) { return ''; } };   // SRV.user = tài khoản công ty (proxy IT chuyển qua X-Remote-User)
 const noteTime = iso => { const d = new Date(iso); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'); };
 const waitTxt = iso => { const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000)); return m >= 60 ? Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0') : m + '′'; };
@@ -1012,7 +1096,7 @@ function saveSummary(LL) {
       if (!L) return;
       const f = L.forecast || {}, out = L.styles.reduce((a, s) => a + s.out, 0);
       S.lines[id] = { state: L.state, eff: L.eff, effTarget: L.effTarget, sah: L.sah, hrs: L.earned > 0 && L.eff > 0 ? L.earned / L.eff / 60 : 0,
-        out, target: f.target || 0, gap: f.target > 0 && isFinite(f.end) ? f.end - f.target : null, people: L.people,
+        out, target: f.target || 0, gap: isFinite(L.sah) && L.planSAH > 0 ? L.sah - L.planSAH : null, people: L.people,
         order: ordLine(L).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&'), date: L.date || '', dataAt: hm(L.dataAt), saved: Date.now() };
     });
     S.at = Date.now();
@@ -1036,14 +1120,28 @@ function ieMap(cfg) {
 }
 let until = NaN;                                // giờ đang xem (NaN = mới nhất)
 // Tính trạng thái chuyền với công thức chung (ST.formulas, sửa trong ⚙)
-const LS = (E, cfg, opt) => PT.lineStatus(E, cfg, ieMap(cfg), Object.assign({ formulas: ST.formulas || {} }, opt || {}));
+// Mục tiêu SAH (file SAH_TARGET của OAS) theo ngày + chuyền: { 'YYYY-MM-DD': { '201S01': { target, start, end, breaks, … } } }; có thì đè kế hoạch SAH và giờ làm của chuyền ngày đó
+let SAH = {}, sahVer = 0;
+const sahCfg = (E, cfg) => {
+  const d = E && E.date, e = d && SAH[d] && SAH[d][String((cfg && cfg.group) || E.group || '').toUpperCase()];
+  return e ? Object.assign({}, cfg, { shift: Object.assign({}, cfg.shift || {}, { start: e.start, end: e.end, breaks: e.breaks }), sahTarget: e.target }) : cfg;
+};
+// Giờ đồng hồ (giây trong ngày) để tính Accumulate target như OAS: chỉ khi xem mới nhất của chính ngày hôm nay (xem lại / ngày cũ: NaN)
+(() => { const f = document.getElementById('mFix'); if (f && window.ResizeObserver) new ResizeObserver(() => document.documentElement.style.setProperty('--mfixH', Math.round(f.getBoundingClientRect().height - 8) + 'px')).observe(f); })();   // thẻ "Xem tại giờ" (tab Chỉ số) dính ngay dưới phần cố định
+const clockNow = (E, opt) => {
+  if (!E || !E.date || (opt && isFinite(opt.until))) return NaN;
+  const d = new Date(), iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  return E.date === iso ? d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds() : NaN;
+};
+const LS = (E, cfg, opt) => PT.lineStatus(E, sahCfg(E, cfg), ieMap(cfg), Object.assign({ formulas: ST.formulas || {}, clock: clockNow(E, opt) }, opt || {}));
+setInterval(() => { try { if (!isFinite(until) && !document.hidden && typeof render === 'function' && ST.cur) render(); } catch (e) {} }, 60000);   // Accumulate target chạy theo đồng hồ: vẽ lại mỗi phút
 const compute = () => LS(curE(), curCfg(), isFinite(until) ? { until } : {});
 // Giờ dữ liệu mới nhất của chuyền (cuối thanh thời gian): nhớ theo Data ETS + cấu hình, không tính lại cả ngày mỗi lần kéo / xem lại
 // Cả ngày (mới nhất) cũng dùng dựng bộ trạm 3D khi xem lại: bộ trạm cố định, không dựng lại 3D / nhảy camera mỗi bước giờ
 const LATEST = new WeakMap();
 function fullL(E, cfg, L) {
   if (!E || !cfg) return null;
-  const k = JSON.stringify(cfg) + '|' + Object.keys(ST.ie).join(','), m = LATEST.get(E);
+  const k = JSON.stringify(cfg) + '|' + Object.keys(ST.ie).join(',') + '|' + sahVer + '|' + Math.floor(Date.now() / 60000), m = LATEST.get(E);
   if (!isFinite(until) && L) { LATEST.set(E, { k, L }); return L; }
   if (m && m.k === k) return m.L;
   const F = LS(E, cfg); LATEST.set(E, { k, L: F }); return F;
@@ -1239,10 +1337,10 @@ async function syncDirs(o = {}) {
   if (syncBusy) return; syncBusy = true; saveHold++;
   const out = [], need = [];
   try {
-    const hE = await dirH('etsDir', 'ets'), hI = await dirH('ieDir', 'ie'), hS = await dirH('scpDir', 'scp'), hF = await dirH('effDir', 'eff');
-    if (!hE && !hI && !hS && !hF) { if (o.ask) showMsg(T('Chưa chọn thư mục: bấm "📁 Thư mục ETS" và "📁 Thư mục IE".', 'No folder chosen: press "📁 ETS folder" and "📁 IE folder".'), true); return; }
+    const hE = await dirH('etsDir', 'ets'), hI = await dirH('ieDir', 'ie'), hS = await dirH('scpDir', 'scp'), hF = await dirH('effDir', 'eff'), hA = await dirH('sahDir', 'sah');
+    if (!hE && !hI && !hS && !hF && !hA) { if (o.ask) showMsg(T('Chưa chọn thư mục: bấm "📁 Thư mục ETS" và "📁 Thư mục IE".', 'No folder chosen: press "📁 ETS folder" and "📁 IE folder".'), true); return; }
     // Chỉ tin danh sách "đã nạp" khi dữ liệu của loại đó còn trong bộ nhớ trình duyệt; mất dữ liệu thì đọc lại hết
-    const have = { ets: () => Object.keys(ST.ets).length > 0, ie: () => Object.values(ST.ie).some(x => x.dir != null), scp: () => !!HC, eff: () => !!EFF };
+    const have = { ets: () => Object.keys(ST.ets).length > 0, ie: () => Object.values(ST.ie).some(x => x.dir != null), scp: () => !!HC, eff: () => !!EFF, sah: () => Object.keys(SAH).length > 0 };
     const changed = (kind, files) => { const m = syncSeen[kind] || (syncSeen[kind] = {}), ok = have[kind] ? have[kind]() : true; return files.filter(f => o.force || !ok || m[f.name] !== f.lastModified); };
     const seen = (kind, f) => { (syncSeen[kind] || (syncSeen[kind] = {}))[f.name] = f.lastModified; };
     // ETS: file mới sửa, nạp theo giờ sửa (file mới hơn của cùng tổ ghi đè); file không phải Data ETS thì bỏ qua
@@ -1272,6 +1370,15 @@ async function syncDirs(o = {}) {
         seen('scp', f);
       }
     }
+    // Mục tiêu SAH của OAS: file SAH_TARGET_*.xlsx (mới sửa)
+    if (hA) {
+      const r = await dirFiles(hA, o.ask);
+      if (r.need) need.push('SAH');
+      else for (const f of changed('sah', r.files).sort((a, b) => a.lastModified - b.lastModified)) {
+        try { const H = loadSahBook(await readBook(f), f.name); if (H) out.push(T(`SAH target: ${f.name} (${H.n} chuyền · ${H.days} ngày)`, `SAH target: ${f.name} (${H.n} lines · ${H.days} day(s))`)); } catch (e) {}
+        seen('sah', f);
+      }
+    }
     // %EFF công nhân: file CSV trong thư mục %EFF (mới sửa)
     if (hF) {
       const r = await dirFiles(hF, o.ask, /\.csv$/i);
@@ -1297,6 +1404,24 @@ $('bScpDir').onclick = async () => {
   try { const h = await window.showDirectoryPicker({ id: 'vl-scp', mode: 'read' }); await kvSet('scpDir', h); delete syncSeen.scp; await syncDirs({ ask: true }); }
   catch (err) { if (err.name !== 'AbortError') showMsg(err.message, true); }
 };
+function loadSahBook(wb, file) {
+  let add = null;
+  for (const nm of wb.SheetNames) { add = PT.parseSahTarget(XLSX.utils.sheet_to_json(wb.Sheets[nm], { header: 1, raw: true, defval: '' })); if (add) break; }
+  if (!add) return null;
+  let n = 0; Object.entries(add).forEach(([d, ls]) => { SAH[d] = Object.assign(SAH[d] || {}, ls); n += Object.keys(ls).length; });
+  sahVer++; kvSet('sah', SAH);
+  return { n, days: Object.keys(add).length, file };
+}
+$('bSahDir').onclick = async () => {
+  if (!window.showDirectoryPicker) { $('sahIn').click(); return; }
+  try { const h = await window.showDirectoryPicker({ id: 'vl-sah', mode: 'read' }); await kvSet('sahDir', h); delete syncSeen.sah; await syncDirs({ ask: true }); }
+  catch (err) { if (err.name !== 'AbortError') showMsg(err.message, true); }
+};
+$('sahIn').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { const H = loadSahBook(await readBook(f), f.name); render(); showMsg(H ? T(`Đã nhập ${f.name}: mục tiêu SAH ${H.n} chuyền · ${H.days} ngày.`, `Imported ${f.name}: SAH target for ${H.n} lines · ${H.days} day(s).`) : T(`${f.name}: không thấy bảng MỤC TIÊU SAH (cột Chuyền, Mục Tiêu SAH).`, `${f.name}: no SAH target table found (Line, SAH target columns).`), !H); }
+  catch (err) { showMsg(err.message, true); }
+});
 $('bEffDir').onclick = async () => {
   if (!window.showDirectoryPicker) { $('effIn').click(); return; }       // không nhớ được thư mục: chọn file CSV
   try { const h = await window.showDirectoryPicker({ id: 'vl-eff', mode: 'read' }); await kvSet('effDir', h); delete syncSeen.eff; await syncDirs({ ask: true }); }
@@ -1464,7 +1589,8 @@ function drawCfg() {
       <p class="note est">${T('Số ước tính theo kinh nghiệm chung ngành may, chưa phải số của xưởng: hiệu chỉnh bằng dữ liệu đổi mã thực tế. Ô trống = lấy ô bên trái.', 'Industry rule-of-thumb estimates, not this factory\'s figures: calibrate with real changeover data. Blank cell = same as the cell on its left.')}</p>
     </fieldset>
     <fieldset><legend>${T('Ngưỡng trạng thái', 'Status thresholds')}</legend>
-      ${fld('t_green', 'Xanh khi tiến độ ≥ (%)', 'Green when progress ≥ (%)', Math.round(s.green * 100), 'number', '1')}
+      ${fld('t_purple', 'Tím khi tiến độ ≥ (%)', 'Purple when progress ≥ (%)', Math.round((s.purple || 1.1) * 100), 'number', '1')}
+      ${fld('t_green', 'Xanh khi tiến độ ≥ (%) (dưới mốc này là vàng)', 'Green when progress ≥ (%) (yellow below it)', Math.round(s.green * 100), 'number', '1')}
       ${fld('t_red', 'Đỏ khi tiến độ < (%)', 'Red when progress < (%)', Math.round(s.red * 100), 'number', '1')}
       ${fld('t_stall', 'Ngừng khi không có Data ETS mới (phút)', 'Stopped when no new ETS data for (min)', s.stallMin, 'number', '1')}
       ${fld('t_stale', 'Dữ liệu cũ sau (phút)', 'Stale data after (min)', s.staleMin, 'number', '1')}
@@ -1640,7 +1766,7 @@ function readCfg() {
     c.stationEmp = {};
     cfgStations.forEach((t, i) => { const e = $('se' + i) && $('se' + i).value.trim(); if (e) c.stationEmp[t.ban] = e; });
   }
-  c.samSrc = v('o_samsrc') === 'ets' ? 'ets' : 'ie';
+  c.samSrc = v('o_samsrc') === 'ets' ? 'ets' : 'ie'; c.samSrcSet = true;
   c.samOverride = {};
   String(v('o_sam')).split(/;/).forEach(p => { const m = p.split('='); const x = PT.num(m[1]); if (m[0] && m[0].trim() && isFinite(x)) c.samOverride[m[0].trim()] = x; });
   const levels = c.curve.levels, nDay = Math.max(1, ...levels.map(l => l.pct.length));
@@ -1650,7 +1776,7 @@ function readCfg() {
     l.pct = p;
   });
   c.curve.repeatDays = n('c_rep', c.curve.repeatDays);
-  Object.assign(c.status, { green: n('t_green', 95) / 100, red: n('t_red', 85) / 100, stallMin: n('t_stall', 60), staleMin: n('t_stale', 90), shortPeople: n('t_short', 10) / 100, warmupMin: n('t_warm', 60), gapPct: n('t_gap', 10) / 100, skillEff: n('t_skE', 130) / 100, skillPeople: n('t_skP', 2), wRed: n('t_wR', 50) / 100, wYel: Math.max(n('t_wY', 60), n('t_wR', 50)) / 100, wBlue: Math.max(n('t_wB', 80), n('t_wY', 60), n('t_wR', 50)) / 100 });
+  Object.assign(c.status, { green: n('t_green', 100) / 100, red: n('t_red', 90) / 100, purple: n('t_purple', 110) / 100, stallMin: n('t_stall', 60), staleMin: n('t_stale', 90), shortPeople: n('t_short', 10) / 100, warmupMin: n('t_warm', 60), gapPct: n('t_gap', 10) / 100, skillEff: n('t_skE', 130) / 100, skillPeople: n('t_skP', 2), wRed: n('t_wR', 50) / 100, wYel: Math.max(n('t_wY', 60), n('t_wR', 50)) / 100, wBlue: Math.max(n('t_wB', 80), n('t_wY', 60), n('t_wR', 50)) / 100 });
   c.carryMin = n('t_carry', c.carryMin);
   c._showSec = Math.max(5, Math.round(n('sh_sec', showSec())));
   c._syncMin = Math.max(1, Math.round(n('sy_min', syncMin())));
@@ -1699,7 +1825,7 @@ $('cfgIn').addEventListener('change', async e => {
 
 // ---------- Vẽ ----------
 const STATE = {
-  green: ['Chạy tốt', 'Running well'], yellow: ['Cần chú ý', 'Needs attention'], red: ['Có vấn đề', 'Problem'],
+  green: ['Chạy tốt', 'Running well'], yellow: ['Cần chú ý', 'Needs attention'], red: ['Có vấn đề', 'Problem'], purple: ['Vượt kế hoạch', 'Above plan'],
   gray: ['Chưa đủ dữ liệu', 'No current data'], start: ['Đang khởi động', 'Warming up'],
 };
 const CHIP = { ctbn: ['CT', 'CT'], bn: ['Tắc nghẽn', 'Bottleneck'], skill: ['Phụ thuộc tay nghề', 'Skill-dependent'], near: ['Sát nhịp', 'Near limit'], ok: ['Ổn', 'OK'], start: ['Khởi động', 'Starting'], stall: ['Ngừng', 'Stopped'] };
@@ -1710,6 +1836,8 @@ const hm = s => (isFinite(s) ? PT.hhmm(s) : '--:--');
 const styleShort = v => { const m = String(v || '').match(/[A-Za-z]\d+[A-Za-z]*$/); return m ? m[0].toUpperCase() : String(v || ''); };
 const ordStyle = (L, o) => styleShort(o.style);
 const ordName = (L, o) => ordStyle(L, o) + (o.color ? ' · ' + o.color : '');
+// Tên rất ngắn cho điện thoại: style + chữ cái màu sau dấu / (N389 · 00/B WHITE → N389B, N280 · 60/E LIGHT BLUE → N280E)
+const ordShort = (L, o) => { const m = String(o.color || '').match(/\/\s*([A-Za-z])(?![A-Za-z0-9])/); return ordStyle(L, o) + (m ? m[1].toUpperCase() : ''); };
 const ordOf = (L, k) => (L.orders || []).find(o => o.key === k);
 // Màu áo (⚙ Cài đặt → Màu áo, lưu ST.colors theo tên màu ETS; trống = tự đoán từ tên) → '#rrggbb' hoặc ''
 const colorHex = name => (ST.colors && ST.colors[name]) || PT.garmentColor(name);
@@ -1747,10 +1875,10 @@ function signOf0(id, L) {
       { k: T('Màu:', 'Colour:'), v: (h && h.color) || '–' }] };
 }
 // Đơn đang chạy (1 dòng chữ): đang chuyển đơn → "đơn cũ → đơn mới (giờ)"
-function ordLine(L, br) {
-  const P = L.orderPhase || {}, h = ordOf(L, P.head), o = ordOf(L, P.out);
-  if (P.phase === 'change' && h && o) return `⇄ ${esc(ordName(L, o))}${br ? '<br>' : ' '}→ ${esc(ordName(L, h))} (${hm(P.since)})`;
-  return h ? esc(ordName(L, h)) : esc(L.styles.map(t => styleShort(t.style)).join(', '));
+function ordLine(L, br, short) {
+  const P = L.orderPhase || {}, h = ordOf(L, P.head), o = ordOf(L, P.out), nm = short ? ordShort : ordName;
+  if (P.phase === 'change' && h && o) return `⇄ ${esc(nm(L, o))}${br ? '<br>' : ' '}→ ${esc(nm(L, h))} (${hm(P.since)})`;
+  return h ? esc(nm(L, h)) : esc(L.styles.map(t => styleShort(t.style)).join(', '));
 }
 // Dự báo cuối ca (L.forecast): mức màu theo dự báo ÷ target (≥ 100% xanh, ≥ 95% vàng, thấp hơn đỏ); chữ giải thích
 const fcCls = f => (!f || !(f.target > 0) ? '' : f.end >= f.target ? 'good' : f.end >= f.target * 0.95 ? 'warn' : 'bad');
@@ -2309,7 +2437,7 @@ const wLow = (L, w) => !w.stalled && w.earned > 0 && w.workHours >= 0.5 && w.eff
 const workerTag = (L, w) => Object.assign(w.earned > 0
   ? { lines: [`${nf(w.primaryQty)} ${T('sp', 'pcs')}`, `${nf(w.rate)}/h · `], color: tagHex(L, w), eff: { txt: pct(w.eff), color: effHex(L, w) } }
   : { lines: [`${nf(w.primaryQty)} ${T('sp', 'pcs')}`, `${nf(w.rate)}/h · ${T('chưa SAM', 'no SAM')}`], color: tagHex(L, w) },
-  (newTagOn && isNewEmp(w.emp) ? { badge: T('MỚI', 'NEW') } : wLow(L, w) ? { badge: '!' } : {}), wLow(L, w) ? { low: true } : {});
+  (newTagOn && isNewEmp(w.emp) ? { badge: T('MỚI', 'NEW') } : {}), wLow(L, w) ? { low: true } : {});   // %EFF thấp: chỉ dấu "!" đỏ trên đầu (low), không còn ô "!" cam trên thẻ sàn (13/10)
 // Chấm trên nhãn trạm khi đang chuyển đơn: người ngồi trạm đang làm đơn mới (xanh dương) / đơn cũ (xám)
 const ORD_DOT = { head: '#2391b5', out: '#7a8596' };
 const ordDot = (L, w) => { const P = L.orderPhase || {}; return P.phase !== 'change' || !w || w.none || !w.lastOrd ? '' : w.lastOrd === P.head ? ORD_DOT.head : w.lastOrd === P.out ? ORD_DOT.out : ''; };
@@ -2326,7 +2454,7 @@ function stationInfo(L, style, st, A, lineId) {
   let tag = null;
   if (w && !w.none) tag = workerTag(L, w);
   else tag = { lines: [`0 ${T('sp', 'pcs')}`, `0/h · –`], color: '#9aa3b1' };   // máy không có người ngồi: sản lượng 0
-  return { ban: st.ban, status: worst ? worst.status : 'none', broken: NT.has(lineId, st.ban, 'machine'), notes: NT.count(lineId, st.ban, 'note'), dot: ordDot(L, w), samTxt: st.blank ? '' : samTxt(ops),
+  return { ban: st.ban, status: worst ? worst.status : 'none', broken: NT.machStatus(lineId, st.ban), notes: NT.count(lineId, st.ban, 'note'), dot: ordDot(L, w), samTxt: st.blank ? '' : samTxt(ops),
     title: st.head ? `${T('Đầu chuyền', 'Line head')} · ${st.code}` : st.blank ? `${st.ban} · –` : `${st.extra ? st.anchorBan + '+' : st.ban} · ${st.code}${st.layoutCode ? ' ✎' : ''}`,
     sub: st.extra ? T(`${st.name} (trạm phụ)`, `${st.name} (extra)`) : st.blank ? T('Trạm trống', 'Empty station') : st.name, bn: ops.some(o => o.key === L.bottleneck), ops, worker: w, auto: as && as.auto, tag, gender: w && !w.none ? genderOf(w.emp) : '',
     code: st.code, name: st.name, layoutCode: st.layoutCode, layoutName: st.layoutName, extra: st.extra, anchorBan: st.anchorBan, head: st.head, blank: st.blank };
@@ -2376,23 +2504,23 @@ function draw3D(LL) {
   $('v3Free').textContent = free.length ? T(`Chưa có trạm (${free.length} người, ngồi máy ở cụm ngoài chuyền phía đầu chuyền trên 3D): ${free.join(', ')}. Kéo thả công nhân vào trạm, hoặc gán trong ⚙ Cài đặt.`,
     `No station (${free.length} operators, at machines in the off-line cluster at the line head in 3D): ${free.join(', ')}. Drag operators onto a station, or assign in ⚙ Settings.`) : '';
 }
-const STATE_HEX = { green: '#2e9a66', yellow: '#d39a12', red: '#c63a2f', start: '#2391b5', gray: '#9aa3b1' };
+const STATE_HEX = { green: '#2e9a66', yellow: '#d39a12', red: '#c63a2f', purple: '#8e44ad', start: '#2391b5', gray: '#9aa3b1' };   // màu chuyền theo OAS: đỏ < 90% · vàng 90–100% · xanh 100–110% · tím ≥ 110% tiến độ
 // HUD trên 3D: mỗi chuyền 1 ô (bấm = chọn chuyền + camera bay tới); thanh nút góc nhìn
 // Hàng thẻ KPI trên cùng: ≤ 6 chuyền thẻ đầy đủ, 7–12 thẻ gọn, 13+ ô nhỏ (mã + %EFF + dự báo − target); "Cả block" cuối hàng; bấm = chọn chuyền + camera bay tới
 // kpiCards(LL, mode, withSum, active): HTML các thẻ (mode full | cmp | tile); active = mã chuyền đang chọn (viền)
 function kpiCards(LL, mode, withSum, active, allOn) {
   const n = LL.length;
-  const gapOf = L => { const f = L.forecast; return f && f.target > 0 && isFinite(f.end) ? f.end - f.target : NaN; };
+  const gapOf = L => (isFinite(L.sah) && L.planSAH > 0 ? L.sah - L.planSAH : NaN);       // SAH − Target (như "Shortages" của OAS): SAH thực tế − mục tiêu SAH cả ngày
   const sg = v => (isFinite(v) ? (v >= 0 ? '+' : '−') + nf(Math.abs(v)) : '–');
   const gc = v => (!isFinite(v) ? '' : v >= 0 ? 'good' : 'bad');
   const outOf = L => L.styles.reduce((a, t) => a + t.out, 0);
   const one = ({ id, L, cfg }) => {
     const sx = STATE[L.state] || STATE.gray, g = gapOf(L), on = id === active ? ' on' : '', hi = headInfo(L, cfg);
-    const tip = esc(ordLine(L).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&') + (hi.kind ? ' · ' + hi.kind : ''));
+    const tip = esc(ordLine(L).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&') + (hi.kind ? ' · ' + hi.kind : '') + ` · ${T('Tiến độ', 'Progress')} ${pct(L.progress)} (${T('SAH thực tế ÷ Accumulate target', 'Actual SAH ÷ accumulate target')})` + (L.planSAH > 0 ? ` · SAH − Target ${sg(g)} · ${T('so với tới giờ', 'vs now')} ${sg(L.sah - L.planNowSAH)} SAH` : ''));
     if (mode === 'tile') return `<button class="kt ${L.state}${on}" data-line="${esc(id)}" title="${tip}"><b>${esc(id.replace(/^\d+(?=[A-Za-z])/, ''))}</b><span class="${effCls(L)}">${pct(L.eff)}</span><small class="${gc(g)}">${sg(g)}</small></button>`;
     if (mode === 'cmp') return `<button class="kc ${L.state}${on}" data-line="${esc(id)}" title="${tip}"><span class="kc-t"><b>${esc(id)}</b><span>${T(sx[0], sx[1])}</span></span><span class="kc-k2"><b class="${effCls(L)}">${pct(L.eff)}</b><span class="${gc(g) === 'good' ? 'fc-good' : gc(g) === 'bad' ? 'fc-bad' : ''}">${sg(g)}</span></span></button>`;
     return `<button class="kc ${L.state}${on}" data-line="${esc(id)}" title="${tip}"><span class="kc-t"><b>${esc(id)}</b><span>${T(sx[0], sx[1])}</span></span><span class="kc-o">${ordLine(L)}</span>
-      <span class="kc-k kc-k4"><span><i>%EFF</i><b class="${effCls(L)}">${pct(L.eff)}</b></span><span><i>${T('Ra chuyền', 'Output')}</i><b>${nf(outOf(L))}</b></span><span><i>${T('SAH (thực tế)', 'Actual SAH')}</i><b>${L.sah > 0 ? nf(L.sah, 1) : '–'}</b></span><span><i>${T('Dự báo − target', 'Forecast − target')}</i><b class="${gc(g)}">${sg(g)}</b></span></span></button>`;
+      <span class="kc-k kc-k4"><span><i>%EFF</i><b class="${effCls(L)}">${pct(L.eff)}</b></span><span><i>${T('Ra chuyền', 'Output')}</i><b>${nf(outOf(L))}</b></span><span><i>${T('SAH (thực tế)', 'Actual SAH')}</i><b>${L.sah > 0 ? nf(L.sah, 1) : '–'}</b></span><span><i>${T('SAH − Target', 'SAH − Target')}</i><b class="${gc(g)}">${sg(g)}</b></span></span></button>`;
   };
   // Cả block: %EFF = Σ SAH chính ÷ Σ giờ (SAH ÷ %EFF từng chuyền); dự báo − target cộng các chuyền có target
   const Ls = LL.map(x => x.L), earned = Ls.reduce((a, L) => a + (L.earned > 0 ? L.earned : 0), 0);
@@ -2404,7 +2532,7 @@ function kpiCards(LL, mode, withSum, active, allOn) {
   const sum = mode === 'tile'
     ? `<div class="kc kc-sum${allOn ? ' on' : ''}" data-all="1" title="${T(`${ppl} người · SAH ${nf(earned / 60, 1)}`, `${ppl} people · SAH ${nf(earned / 60, 1)}`)}"><span class="kc-t"><b>${T(`Cả ${n}`, `All ${n}`)}</b></span><span class="kc-k2"><b class="${bcls}">${pct(beff)}</b><span>${nf(out)}</span></span></div>`
     : `<div class="kc kc-sum${allOn ? ' on' : ''}" data-all="1"><span class="kc-t"><b>${T(`Cả ${n} chuyền`, `All ${n} lines`)}</b><span>Block</span></span><span class="kc-o">${T(`${ppl} người · SAH ${nf(earned / 60, 1)}`, `${ppl} people · SAH ${nf(earned / 60, 1)}`)}</span>
-      <span class="kc-k"><span><i>%EFF</i><b class="${bcls}">${pct(beff)}</b></span><span><i>${T('Ra chuyền', 'Output')}</i><b>${nf(out)}</b></span><span><i>${T('Dự báo − target', 'Forecast − target')}</i><b class="${gc(bgap)}">${sg(bgap)}</b></span></span></div>`;
+      <span class="kc-k"><span><i>%EFF</i><b class="${bcls}">${pct(beff)}</b></span><span><i>${T('Ra chuyền', 'Output')}</i><b>${nf(out)}</b></span><span><i>${T('SAH − Target', 'SAH − Target')}</i><b class="${gc(bgap)}">${sg(bgap)}</b></span></span></div>`;
   return LL.slice().reverse().map(one).join('') + (withSum ? sum : '');       // thứ tự như 3D (chuyền đầu bên phải)
 }
 function drawKpis(LL) {
@@ -2420,7 +2548,7 @@ function drawKpis(LL) {
 // Cảnh báo ưu tiên (cột phải): mọi chuyền có cảnh báo, nặng trước (đỏ → vàng); bấm = chọn chuyền + camera bay tới; dòng dưới = dữ liệu chuyền đang chọn
 function drawAlerts(LL, o) {
   o = o || { cnt: $('alCnt'), list: $('alList'), info: $('alInfo') };     // trình chiếu: o = { cnt, list, noClick, max }
-  const rank = { red: 0, yellow: 1, start: 2, gray: 3, green: 4 };
+  const rank = { red: 0, yellow: 1, start: 2, gray: 3, green: 4, purple: 5 };
   const a = LL.filter(x => x.L.why.length).sort((p, q) => (rank[p.L.state] == null ? 9 : rank[p.L.state]) - (rank[q.L.state] == null ? 9 : rank[q.L.state]) || q.L.why.length - p.L.why.length);
   const nr = a.filter(x => x.L.state === 'red').length, ny = a.filter(x => x.L.state === 'yellow').length;
   o.cnt.textContent = a.length ? ' (' + [nr && T(`${nr} đỏ`, `${nr} red`), ny && T(`${ny} vàng`, `${ny} yellow`)].filter(Boolean).join(' · ') + ')' : '';
@@ -2449,7 +2577,7 @@ function drawEffBars(LL, el) {
 // Biểu đồ tròn: số chuyền theo trạng thái
 function drawDonut(LL, el) {
   el = el || $('stDonut'); const n = LL.length, cnt = {}; LL.forEach(x => { cnt[x.L.state] = (cnt[x.L.state] || 0) + 1; });
-  const order = ['green', 'yellow', 'red', 'start', 'gray'].filter((k, i) => i < 3 || i === 4 || cnt[k]);
+  const order = ['green', 'yellow', 'red', 'start', 'gray', 'purple'].filter((k, i) => i < 3 || i === 4 || cnt[k]);
   const R = 46, C = 2 * Math.PI * R; let off = 0, arcs = '';
   order.forEach(k => { const c = cnt[k] || 0; if (!c) return; const l = c / n * C; arcs += `<circle cx="60" cy="60" r="${R}" fill="none" style="stroke:${STATE_HEX[k]}" stroke-width="16" stroke-dasharray="${Math.max(0, l - (c < n ? 2 : 0))} ${C}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`; off += l; });
   el.innerHTML = `<div class="donut"><svg viewBox="0 0 120 120" width="118" height="118"><circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--panel-2)" stroke-width="16"/>${arcs}
@@ -2459,7 +2587,7 @@ function drawDonut(LL, el) {
 // Bảng Tổng quan các chuyền (tab đầu của hàng dưới): bấm dòng = chọn chuyền; bấm tiêu đề cột = sắp xếp (mặc định thứ tự như 3D)
 let linesSort = { k: '', d: 1 };
 function drawLinesTable(LL) {
-  const rank = { red: 0, yellow: 1, start: 2, gray: 3, green: 4 };
+  const rank = { red: 0, yellow: 1, start: 2, gray: 3, green: 4, purple: 5 };
   const key = { id: x => x.id, eff: x => x.L.eff, out: x => outOfL(x.L), fc: x => (x.L.forecast ? x.L.forecast.end : NaN), st: x => rank[x.L.state] };
   let rows = LL.slice().reverse();
   if (key[linesSort.k]) rows.sort((a, b) => { const p = key[linesSort.k](a), q = key[linesSort.k](b); return (p < q ? -1 : p > q ? 1 : 0) * linesSort.d; });
@@ -2539,21 +2667,21 @@ function probCard() {
   const n = PROB.length, cur = PROB.findIndex(p => probId(p) === probKey);
   $('secProb').hidden = false;
   if (!n) { el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')}</h2><p class="pnone">✓ ${T('Hiện không có công đoạn nào có vấn đề.', 'No operation with a problem right now.')}</p>`; return; }
-  el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')} <em>(${probScope === 'all' ? T('cả xưởng', 'whole workshop') : esc(ST.cur)} · ${n})</em></h2><div class="plist">` + PROB.map((p, i) => {
+  el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')} <em>(${probScope === 'all' ? T('cả xưởng', 'whole workshop') + ' · ' + n : esc(ST.cur) + ' · ' + n + ' / ' + PROB_ALL.filter(q => q.status !== 'mach').length + ' ' + T('cả xưởng', 'workshop')})</em></h2><div class="plist">` + PROB.map((p, i) => {
     const wk = p.status === 'wlow' || p.status === 'wstall', r = p.rec;
-    if (r) return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${PROB_CLR[p.status]}"><i class="pd">${r.kind === 'machine' ? '🔧' : '📝'}</i><span><b>${T(...PROB_T[p.status])} · ${esc(noteTypeName(r))}</b>
-      <small>${esc(p.line)} · ${p.ban != null ? T('Trạm', 'St.') + ' ' + p.ban : T('Ngoài trạm', 'Off station') + ' ' + esc(p.emp || '')} · ${esc(noteStatName(r))}${r.text ? ' · ' + esc(r.text) : ''}</small></span></button>`;
+    if (r) return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${r.kind === 'machine' ? MACH_CLR(r) : PROB_CLR[p.status]}"><i class="pd">${r.kind === 'machine' ? '🔧' : '📝'}</i><span><b>${T(...PROB_T[p.status])} · ${esc(noteTypeName(r))}</b>
+      <small><span class="pl">${esc(p.line)} · ${p.ban != null ? T('Trạm', 'St.') + ' ' + p.ban : T('Ngoài trạm', 'Off station')}</span>${recWho(r) ? ' · ' + recWho(r) : ''} · ${esc(noteStatName(r))}${r.text ? ' · ' + esc(r.text) : ''}</small></span></button>`;
     return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${PROB_CLR[p.status]}"><i class="pd">${wk ? '👤' : '⚙'}</i><span><b>${T(...PROB_T[p.status])}</b>
-      <small>${wk ? `${esc(p.line)} · ${T('Trạm', 'St.')} ${p.ban} · ${esc(p.who || '')}${p.eff != null && isFinite(p.eff) ? ' ' + pct(p.eff) : ''}` : `${esc(p.line)} · ${T('CĐ', 'Op')} ${esc(p.code || '')} ${esc(p.name || '')} · ${p.bans.length} ${T('trạm', 'stations')}`}</small></span></button>`;
+      <small>${wk ? `<span class="pl">${esc(p.line)} · ${T('Trạm', 'St.')} ${p.ban}</span> · ${esc(p.who || '')}${p.eff != null && isFinite(p.eff) ? ' ' + pct(p.eff) : ''}` : `<span class="pl">${esc(p.line)} · ${T('CĐ', 'Op')} ${esc(p.code || '')} ${esc(p.name || '')}</span> · ${p.bans.length} ${T('trạm', 'stations')}`}</small></span></button>`;
   }).join('') + '</div>';
   el.querySelectorAll('.pit').forEach(b => { b.onclick = () => probGo(+b.dataset.i); });
 }
 // ---------- Điện thoại (plan 9.7): thanh dưới + Home Block → Xưởng → Chuyền ----------
 // mTab: home | mon (giám sát 3D) | prob (cần xử lý) | mach (máy chờ sửa) | stat (chỉ số / biểu đồ); body[data-mt] điều khiển phần hiện (CSS ≤ 700 px). Máy tính: không ảnh hưởng.
 let mTab = QS.get('xuong') || QS.get('chuyen') ? 'mon' : 'home', mBlock = '', mXuong = '';
-const M_RANK = { red: 4, yellow: 3, start: 2, green: 1, gray: 0 };
-const mOrd = L => ordLine(L).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const mGap = L => { const f = L.forecast; return f && f.target > 0 && isFinite(f.end) ? f.end - f.target : NaN; };
+const M_RANK = { red: 4, yellow: 3, start: 2, green: 1, purple: 1, gray: 0 };
+const mOrd = L => ordLine(L, false, true).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const mGap = L => (isFinite(L.sah) && L.planSAH > 0 ? L.sah - L.planSAH : NaN);        // SAH − Target (SAH thực tế − mục tiêu SAH cả ngày)
 const mOut = L => L.styles.reduce((a, t) => a + t.out, 0);
 const mSg = v => (isFinite(v) ? (v >= 0 ? '+' : '−') + nf(Math.abs(v)) : '–');
 const mProbN = id => PROB_ALL.filter(q => q.line === id && q.status !== 'mach').length;
@@ -2565,18 +2693,58 @@ function mAgg(list) {                                    // gộp nhiều chuy�
     effTarget: list.length ? list.reduce((a, x) => a + (x.L.effTarget || 0), 0) / list.length : 0 };
 }
 const mClr = st => STATE_HEX[st] || STATE_HEX.gray;
+// Nhiều chuyền (> M_MANY): thẻ gọn, chuyền cần chú ý (đỏ → vàng → …) lên đầu, dải màu + khung lưới "Tất cả"
+const M_ICO = (() => { const s = p => '<svg viewBox="0 0 24 24" aria-hidden="true">' + p + '</svg>'; return {
+  home: s('<path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>'),
+  mon: s('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l3-3 3 2 4-4"/>'),
+  prob: s('<path d="M12 3 2 20h20L12 3z"/><path d="M12 10v5M12 17.5v.5"/>'),
+  mach: s('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
+  stat: s('<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>') }; })();
+// Điện thoại: chuyển hàng dưới (Tổng quan / Công đoạn / Công nhân) vào cột phải (#view) để xếp ngay sau "Xem tại giờ"; máy tính để nguyên chỗ cũ
+(() => {
+  const mq = window.matchMedia('(max-width:700px)'), bot = $('botRow'), view = $('view'), app = $('app');
+  const place = () => { if (!bot || !view || !app) return; if (mq.matches) { if (bot.parentNode !== view) view.appendChild(bot); } else if (bot.parentNode !== app) app.insertBefore(bot, $('shSide')); };
+  place(); mq.addEventListener('change', place);
+})();
+const M_MANY = 6; let mChipSel = '', mSort = 'att';
+const M_ATT = { red: 0, yellow: 1, start: 2, gray: 3, green: 4, purple: 5 };
+function mSortLines(list, how) {
+  const byId = (p, q) => String(p.id).localeCompare(String(q.id), undefined, { numeric: true });
+  const ar = list.slice();
+  if (how === 'att') return ar.sort((p, q) => (M_ATT[p.L.state] ?? 3) - (M_ATT[q.L.state] ?? 3) || (isFinite(p.L.progress) ? p.L.progress : 9) - (isFinite(q.L.progress) ? q.L.progress : 9) || byId(p, q));
+  if (how === 'eff') return ar.sort((p, q) => (isFinite(q.L.eff) ? q.L.eff : -1) - (isFinite(p.L.eff) ? p.L.eff : -1) || byId(p, q));
+  return ar.sort(byId);
+}
+function mSheetOpen(open) {
+  let s = $('mSheet'); if (!s) { s = document.createElement('div'); s.id = 'mSheet'; s.hidden = true; document.body.appendChild(s); s.onclick = e => { if (e.target === s) mSheetOpen(false); }; }
+  if (!open) { s.hidden = true; return; }
+  const list = mLinesOf(id => !mXuong || (NM && NM.xuongOf(id) === mXuong)), cnt = { red: 0, yellow: 0, green: 0, purple: 0 };
+  list.forEach(x => { if (cnt[x.L.state] != null) cnt[x.L.state]++; });
+  const sorts = [['att', 'Cần chú ý trước', 'Needs attention'], ['id', 'Theo mã chuyền', 'By line code'], ['eff', '%EFF cao → thấp', '%EFF high → low']];
+  s.innerHTML = `<div class="shd"><div class="grip"></div><div class="hd2"><h2>${mXuong ? T('Xưởng', 'Workshop') + ' ' + esc(mXuong) + ' · ' : ''}${list.length} ${T('chuyền', 'lines')}</h2><button class="x" type="button" aria-label="Đóng / Close">✕</button></div>
+    <div class="cn">${[['red', 'đỏ', 'red'], ['yellow', 'vàng', 'yellow'], ['green', 'xanh', 'green'], ['purple', 'tím', 'purple']].map(([k, vi, en]) => `<span style="--k:${mClr(k)}">${cnt[k]} ${T(vi, en)}</span>`).join('')}</div>
+    <div class="st">${sorts.map(o => `<button type="button" data-so="${o[0]}" class="${mSort === o[0] ? 'on' : ''}">${T(o[1], o[2])}</button>`).join('')}</div>
+    <div class="gr">${mSortLines(list, mSort).map(({ id, L }) => `<button type="button" class="g${probScope !== 'all' && id === ST.cur ? ' on' : ''}" data-line="${esc(id)}" style="--k:${mClr(L.state)}"><b>${esc(id)}</b><em>${pct(L.eff)}</em>${mProbN(id) ? `<span class="n">${mProbN(id)}</span>` : ''}</button>`).join('')}</div>
+    <div class="ft">${T('Bấm một ô để chọn chuyền và đóng khung', 'Tap a tile to select the line and close')}</div></div>`;
+  s.querySelector('.x').onclick = () => mSheetOpen(false);
+  s.querySelectorAll('[data-so]').forEach(b => { b.onclick = () => { mSort = b.dataset.so; mSheetOpen(true); }; });
+  s.querySelectorAll('[data-line]').forEach(b => { b.onclick = () => { selectLine(b.dataset.line, true); mSheetOpen(false); }; });
+  s.hidden = false;
+}
+const mEffClr = (e, t) => { const r = e / t; return !isFinite(r) ? 'inherit' : r >= 1 ? 'var(--ok)' : r >= 0.9 ? 'var(--near)' : 'var(--crit)'; };   // %EFF so mục tiêu: như effCls (máy tính)
 function mSet(tab, keep) {
   mTab = tab; document.body.dataset.mt = tab;
   if (tab === 'home' && !keep) { /* giữ cấp đang xem */ }
-  mDraw(); window.scrollTo(0, 0);
+  mDraw(); try { machCard(); } catch (e) {}   // tab Máy trống vẫn hiện lời giải thích
+  window.scrollTo(0, 0);
   if (V3 && tab !== 'home') setTimeout(() => { try { V3.resize(); } catch (e) {} }, 60);
 }
 function mDraw() {
   const nav = $('mNav'); if (!nav) return;
   document.body.dataset.mt = mTab;
-  const nProb = PROB.filter(q => q.status !== 'mach').length, nMach = PROB.filter(q => q.status === 'mach').length;
+  const nProb = PROB_ALL.filter(q => q.status !== 'mach').length, nMach = PROB_ALL.filter(q => q.status === 'mach').length;   // tổng mọi chuyền (cùng số với badge Block)
   const tabs = [['home', '🏠', 'Home', 'Home'], ['mon', '📺', 'Giám sát', 'Monitor'], ['prob', '⚠', 'Xử lý', 'To do', nProb], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
-  nav.innerHTML = tabs.map(t => `<button data-mt="${t[0]}" class="${mTab === t[0] ? 'on' : ''}"><i>${t[1]}</i>${T(t[2], t[3])}${t[4] ? `<span>${t[4]}</span>` : ''}</button>`).join('');
+  nav.innerHTML = tabs.map(t => `<button data-mt="${t[0]}" class="${mTab === t[0] ? 'on' : ''}"><i>${M_ICO[t[0]]}</i>${T(t[2], t[3])}${t[4] ? `<span>${t[4]}</span>` : ''}</button>`).join('');
   nav.querySelectorAll('button').forEach(b => { b.onclick = () => { const t = b.dataset.mt; if (t === 'home' && mTab === 'home') { mBlock = ''; mXuong = ''; } mSet(t); }; });
   const cr = $('mCrumb'), home = $('mHome'), bk = NM && mBlock ? NM.blocks.find(b => b.id === mBlock) : null;
   const bkN = bk ? T(bk.name.vi, bk.name.en) : '';
@@ -2586,7 +2754,7 @@ function mDraw() {
     if (!mBlock) cr.innerHTML = '<b>Tinh Lợi</b>';
     cr.querySelectorAll('[data-lv]').forEach(a => { a.onclick = () => { if (a.dataset.lv === '0') { mBlock = ''; mXuong = ''; } else mXuong = ''; mDraw(); }; });
     let h = '';
-    const effTxt = a => `<em style="color:${mClr(a.state)}">${pct(a.eff)}</em>`;
+    const effTxt = a => `<em style="color:${mEffClr(a.eff, a.effTarget)}">${pct(a.eff)}</em>`;
     if (!NM) h = `<p class="note">${T('Chưa tải được danh sách Block / Xưởng.', 'Block / workshop list not loaded.')}</p>`;
     else if (!mBlock) {
       h = `<div class="mh">Block</div><div class="mg">` + NM.blocks.map(b => {
@@ -2603,7 +2771,7 @@ function mDraw() {
       }).join('') : `<p class="note">${T('Block này chưa khai báo xưởng.', 'No workshop declared for this block yet.')}</p>`);
     } else {
       const list = mLinesOf(id => NM.xuongOf(id) === mXuong), a = mAgg(list);
-      h = `<div class="mh">${T('Chuyền', 'Lines')} · ${T('Xưởng', 'Workshop')} ${esc(mXuong)}</div>` + list.slice().reverse().map(({ id, L }) => `<button class="mr" data-l="${esc(id)}" style="--c:${mClr(L.state)}"><span><b>${esc(id)}</b><small>${esc(mOrd(L))} · ${T(...(STATE[L.state] || STATE.gray))}</small></span><em style="color:${mClr(L.state)}">${pct(L.eff)}</em>${mProbN(id) ? `<span class="n">${mProbN(id)}</span>` : ''}<span class="ar">›</span></button>`).join('')
+      h = `<div class="mh">${T('Chuyền', 'Lines')} · ${T('Xưởng', 'Workshop')} ${esc(mXuong)}</div>` + list.slice().sort((p, q) => String(p.id).localeCompare(String(q.id), undefined, { numeric: true })).map(({ id, L }) => `<button class="mr" data-l="${esc(id)}" style="--c:${mClr(L.state)}"><span><b>${esc(id)}</b><small>${esc(mOrd(L))} · ${T(...(STATE[L.state] || STATE.gray))}</small></span><em style="color:${mClr(L.state)}">${pct(L.eff)}</em>${mProbN(id) ? `<span class="n">${mProbN(id)}</span>` : ''}<span class="ar">›</span></button>`).join('')
         + (list.length ? `<button class="mr all" data-all="1"><span><b>${T('Cả xưởng', 'Whole workshop')} ${esc(mXuong)}</b><small>${T('Xem 3D toàn bộ', 'See the whole workshop in 3D')} · ${T(`${a.ppl} người`, `${a.ppl} people`)}</small></span>${effTxt(a)}<span class="ar">›</span></button>` : '');
     }
     home.innerHTML = h;
@@ -2615,11 +2783,28 @@ function mDraw() {
     const pre = [bk ? esc(bkN) : '', mXuong ? esc(mXuong) : ''].filter(Boolean);
     cr.innerHTML = (pre.length ? pre.join(' › ') + ' › ' : '') + `<b>${probScope === 'all' ? T('Cả xưởng', 'Whole workshop') : esc(ST.cur || '')}</b>`;
     const list = mLinesOf(id => !mXuong || (NM && NM.xuongOf(id) === mXuong));
-    const ch = list.slice().reverse().map(({ id, L }) => `<button class="mc${probScope !== 'all' && id === ST.cur ? ' on' : ''}" data-line="${esc(id)}" style="--c:${mClr(L.state)}"><b>${esc(id)}</b><em style="color:${mClr(L.state)}">${pct(L.eff)}</em>${mProbN(id) ? `<span class="n">${mProbN(id)}</span>` : ''}</button>`).join('');
-    const a = mAgg(list);
-    $('mChips').innerHTML = (list.length > 1 ? `<button class="mc${probScope === 'all' ? ' on' : ''}" data-all="1" style="--c:#2361a8;flex-basis:68px"><b>${T('Tất cả', 'All')}</b><em style="color:#2361a8">${pct(a.eff)}</em>${a.probs ? `<span class="n">${a.probs}</span>` : ''}</button>` : '') + ch;
-    $('mChips').querySelectorAll('[data-line]').forEach(b => { b.onclick = () => selectLine(b.dataset.line, true); });
-    $('mChips').querySelectorAll('[data-all]').forEach(b => { b.onclick = probAll; });
+    const many = list.length > M_MANY, a = mAgg(list);
+    const ordl = mSortLines(list, many ? 'att' : 'id');
+    const chip = ({ id, L }) => {
+      const pr = isFinite(L.progress) ? Math.max(0, Math.min(1, L.progress)) : 0, np = mProbN(id);
+      return `<button class="mc${probScope !== 'all' && id === ST.cur ? ' on' : ''}" data-line="${esc(id)}" style="--k:${mClr(L.state)};--w:${Math.round(pr * 100)}%"><b><i class="dot"></i>${esc(id)}</b><em>${pct(L.eff)}</em><u></u>${np ? `<span class="n">${np}</span>` : ''}</button>`;
+    };
+    const chEl = $('mChips'), keepX = chEl.scrollLeft, selKey = probScope === 'all' ? '*' : ST.cur;
+    chEl.classList.toggle('many', many);
+    chEl.innerHTML = (list.length > 1 ? `<button class="mc all${probScope === 'all' ? ' on' : ''}" data-all="1" style="--k:var(--fg)"><b>${T('Tất cả', 'All')}</b><em>${pct(a.eff)}</em><u style="--w:100%"></u>${a.probs ? `<span class="n">${a.probs}</span>` : ''}</button>` : '') + ordl.map(chip).join('')
+      + (many ? `<button class="mc more" data-sheet="1"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>${T('Tất cả', 'All')} ${list.length}</button>` : '');
+    chEl.querySelectorAll('[data-line]').forEach(b => { b.onclick = () => selectLine(b.dataset.line, true); });
+    chEl.querySelectorAll('[data-all]').forEach(b => { b.onclick = probAll; });
+    chEl.querySelectorAll('[data-sheet]').forEach(b => { b.onclick = () => mSheetOpen(true); });
+    const onEl = chEl.querySelector('.mc.on');
+    if (mChipSel !== selKey && onEl) { mChipSel = selKey; chEl.scrollLeft = Math.max(0, onEl.offsetLeft - (chEl.clientWidth - onEl.offsetWidth) / 2); } else chEl.scrollLeft = keepX;   // chọn chuyền khác → cuộn thẻ vào giữa; vẽ lại định kỳ → giữ vị trí vuốt
+    const rib = $('mRib'); rib.hidden = !many;
+    if (many) {
+      const cnt = { red: 0, yellow: 0, green: 0, purple: 0 }; list.forEach(x => { if (cnt[x.L.state] != null) cnt[x.L.state]++; });
+      rib.innerHTML = `<div class="rb">${ordl.map(x => `<i data-line="${esc(x.id)}" class="${probScope !== 'all' && x.id === ST.cur ? 'on' : ''}" style="--k:${mClr(x.L.state)}"></i>`).join('')}</div><div class="rc">${[['red', 'đỏ', 'red'], ['yellow', 'vàng', 'yellow'], ['green', 'xanh', 'green'], ['purple', 'tím', 'purple']].map(([k, vi, en]) => `<span><i style="--k:${mClr(k)}"></i><b>${cnt[k]}</b> ${T(vi, en)}</span>`).join('')}</div>`;
+      rib.querySelectorAll('[data-line]').forEach(b => { b.onclick = () => selectLine(b.dataset.line, true); });
+    }
+    if ($('mSheet') && !$('mSheet').hidden) mSheetOpen(true);
     const cur = list.find(x => x.id === ST.cur);
     $('mStrip').innerHTML = probScope === 'all' || !cur ? `<b>${T('Cả xưởng', 'All lines')}</b> · %EFF <b>${pct(a.eff)}</b> · ${a.ppl} ${T('người', 'people')} · SAH <b>${nf(a.sah, 1)}</b>`
       : `<b>${esc(cur.id)}</b> · ${esc(mOrd(cur.L))} · %EFF <b>${pct(cur.L.eff)}</b> · ${T('Ra', 'Out')} <b>${nf(mOut(cur.L))}</b> · SAH <b>${cur.L.sah > 0 ? nf(cur.L.sah, 1) : '–'}</b> · <b style="color:var(--${mGap(cur.L) >= 0 ? 'ok' : 'crit'})">${mSg(mGap(cur.L))}</b>`;
@@ -2627,13 +2812,25 @@ function mDraw() {
 }
 I18N.on(() => mDraw());
 // Thẻ "🔧 Máy chờ sửa" (cột phải): máy hỏng chưa sửa xong theo phạm vi đang xem, chờ lâu nhất lên đầu; đổi trạng thái ngay trên dòng
+// Người ngồi máy của bản ghi: theo trạm (xếp trạm hiện tại) hoặc mã NV đã ghi cho người ngoài trạm → "TÊN · mã"
+const recWho = r => {
+  const D = V3D[r.line]; if (!D) return '';
+  const emp = r.ban != null ? (D.A.byBan[r.ban] && D.A.byBan[r.ban].emp) : r.emp; if (!emp) return r.ban != null ? '👤 ' + T('trạm đang trống', 'station empty') : '';
+  const w = D.L.workers.find(x => String(x.emp) === String(emp));
+  return `👤 ${esc((w && w.name) || T('chưa rõ tên', 'unknown name'))} · ${T('mã', 'ID')} ${esc(String(emp))}`;
+};
 function machCard() {
   const sec = $('secMach'), el = $('machx'); if (!sec || !el) return;
   const list = PROB_ALL.filter(p => p.status === 'mach' && (probScope === 'all' || p.line === ST.cur)).map(p => p.rec).sort((a, b) => new Date(a.at) - new Date(b.at));
-  sec.hidden = !list.length;
-  if (!list.length) { el.innerHTML = ''; return; }
-  el.innerHTML = `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')} <em>(${list.length})</em></h2><div class="plist">` + list.map(r => `<div class="pit mrow" style="--pc:${PROB_CLR.mach}"><i class="pd">🔧</i>
-    <span class="mgo" data-go="${r.id}"><b>${esc(noteTypeName(r))} · ${esc(noteStatName(r))}</b><small>${esc(r.line)} · ${r.ban != null ? T('Trạm', 'St.') + ' ' + r.ban : T('Ngoài trạm', 'Off station') + ' ' + esc(r.emp || '')} · ${T('chờ', 'waiting')} ${waitTxt(r.at)}${r.text ? ' · ' + esc(r.text) : ''}</small></span>
+  const emptyPh = !list.length && isPhoneUi() && mTab === 'mach';
+  sec.hidden = !list.length && !emptyPh;
+  if (!list.length) {
+    el.innerHTML = emptyPh ? `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')}</h2><p class="pnone">✓ ${T('Không có máy hỏng nào đang chờ sửa.', 'No broken machine waiting for repair.')}</p><p class="note">${T('Muốn báo máy hỏng: mở 📺 Giám sát, bấm vào trạm, chọn 🔧 Máy hỏng.', 'To report a broken machine: open 📺 Monitor, tap the station, choose 🔧 Broken machine.')}</p><button class="btn pri" id="mGoMon">📺 ${T('Mở Giám sát', 'Open Monitor')}</button>` : '';
+    const g = $('mGoMon'); if (g) g.onclick = () => mSet('mon');
+    return;
+  }
+  el.innerHTML = `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')} <em>(${list.length})</em></h2><div class="plist">` + list.map(r => `<div class="pit mrow" style="--pc:${MACH_CLR(r)}"><i class="pd">🔧</i>
+    <span class="mgo" data-go="${r.id}"><b>${esc(noteTypeName(r))} · ${esc(noteStatName(r))}</b><small><span class="pl">${esc(r.line)} · ${r.ban != null ? T('Trạm', 'St.') + ' ' + r.ban : T('Ngoài trạm', 'Off station')}</span>${recWho(r) ? '<br>' + recWho(r) + '<br>' : ' · '}${T('chờ', 'waiting')} ${waitTxt(r.at)}${r.text ? ' · ' + esc(r.text) : ''}</small></span>
     <span class="nact">${r.status === 'new' ? `<button class="btn sm" data-nid="${r.id}" data-nst="doing">${T('Đang sửa', 'Start repair')}</button>` : ''}<button class="btn sm pri" data-nid="${r.id}" data-nst="done">${T('Đã sửa xong', 'Repaired')}</button></span></div>`).join('') + '</div>';
   el.querySelectorAll('[data-nst]').forEach(b => { b.onclick = () => { NT.setStatus(b.dataset.nid, b.dataset.nst, noteWho()); afterNotes(); }; });
   el.querySelectorAll('[data-go]').forEach(b => { b.onclick = () => { const i = PROB.findIndex(p => p.rec && p.rec.id === b.dataset.go); if (i >= 0) probGo(i); }; });
@@ -2902,7 +3099,7 @@ function noteParts(o) {
       <input data-f="by" value="${esc(noteWho())}" placeholder="${esc(T('Người ghi (tên)', 'Reported by (name)'))}">
       <div class="nbtn"><button class="btn sm pri" data-nsave>${T('Lưu', 'Save')}</button><button class="btn sm" data-ncancel>${T('Hủy', 'Cancel')}</button></div></div>`;
   const nDone = recs.filter(r => r.status === 'done').length;
-  const list = recs.filter(r => noteHist || r.status !== 'done').slice(0, 20).map(r => `<div class="nrec${r.status === 'done' ? ' done' : ''}" style="--pc:${PROB_CLR[r.kind === 'machine' ? 'mach' : 'note']}">
+  const list = recs.filter(r => noteHist || r.status !== 'done').slice(0, 20).map(r => `<div class="nrec${r.status === 'done' ? ' done' : ''}" style="--pc:${r.kind === 'machine' ? MACH_CLR(r) : PROB_CLR.note}">
       <span>${r.kind === 'machine' ? '🔧' : '📝'} <strong>${esc(noteTypeName(r))}</strong> · ${esc(noteStatName(r))}</span>${r.text ? `<span> — ${esc(r.text)}</span>` : ''}
       <small>${esc(r.by || T('(không tên)', '(no name)'))} · ${noteTime(r.at)}${r.doneAt ? ' → ' + noteTime(r.doneAt) : ''}</small>${r.photo ? `<a href="/photo/${esc(r.photo)}" target="_blank" rel="noopener"><img class="nph" src="/photo/${esc(r.photo)}" alt="${esc(T('Ảnh đính kèm', 'Attached photo'))}"></a>` : ''}
       <div class="nact">${r.status === 'new' ? `<button class="btn sm" data-nid="${r.id}" data-nst="doing">${T(r.kind === 'machine' ? 'Đang sửa' : 'Đang xử lý', r.kind === 'machine' ? 'Start repair' : 'In progress')}</button>` : ''}${r.status !== 'done' ? `<button class="btn sm pri" data-nid="${r.id}" data-nst="done">${T(r.kind === 'machine' ? 'Đã sửa xong' : 'Đã xong', r.kind === 'machine' ? 'Repaired' : 'Done')}</button>` : `<button class="btn sm" data-nid="${r.id}" data-nst="new">${T('Mở lại', 'Reopen')}</button>`}</div></div>`).join('');
@@ -3015,12 +3212,20 @@ function tipHtml(o, full) {
   else h += `<p class="note">${w ? T(`Mã NV ${esc(w.emp)}: không có Data ETS.`, `Emp. ${esc(w.emp)}: no ETS data.`) : T('Chưa có công nhân.', 'No operator.')}</p>`;
   h += opBlocks(L, ops);
   if (!ops.length && !o.free) h += `<p class="note">${T('Không có Data ETS cho công đoạn này.', 'No ETS data for this operation.')}</p>`;
-  if (!full && !o.free && (o.info.broken || o.info.notes)) h += `<p class="note">${o.info.broken ? '🔧 ' + T('Máy hỏng', 'Machine down') : ''}${o.info.broken && o.info.notes ? ' · ' : ''}${o.info.notes ? '📝 ' + o.info.notes + ' ' + T('ghi chú', 'note(s)') : ''}</p>`;
+  if (!full && !o.free && (o.info.broken || o.info.notes)) h += `<p class="note">${o.info.broken ? '🔧 ' + (o.info.broken === 'doing' ? T('Đang sửa máy', 'Machine being repaired') : T('Máy hỏng', 'Machine down')) : ''}${o.info.broken && o.info.notes ? ' · ' : ''}${o.info.notes ? '📝 ' + o.info.notes + ' ' + T('ghi chú', 'note(s)') : ''}</p>`;
   return h;
 }
 // Khối "Cả công đoạn" (thẻ rê chuột, bảng nổi, khung điện thoại); không hiện công đoạn 84 (09/10)
+// Đang đổi đơn (orderPhase 'change'): ghi rõ khối thuộc mã nào, đơn cũ (đang ra dần) hay đơn mới (đang lên) để không nhầm 2 khối cùng công đoạn
+function opOrderNote(L, p) {
+  if (!L || !L.orderPhase || L.orderPhase.phase !== 'change' || !p.style) return '';
+  const head = (L.orders || []).find(o => o.key === L.orderPhase.head), isNew = head && p.style in (head.sq || {});
+  if (!isNew && !(L.oldStyles || []).includes(p.style)) return '';
+  const sc = (window.PT && PT.styleCore(p.style) || p.style).toUpperCase();
+  return ` (style ${esc(sc)}) <span class="ord-${isNew ? 'new' : 'old'}">${isNew ? T('đơn mới đang lên', 'new order ramping up') : T('đơn cũ', 'old order')}</span>`;
+}
 function opBlocks(L, ops) {
-  return ops.filter(p => !wkHide(p.op)).map(p => `<h4>${T('Cả công đoạn', 'Whole operation')} ${esc(p.op)}</h4><dl>
+  return ops.filter(p => !wkHide(p.op)).map(p => `<h4>${T('Cả công đoạn', 'Whole operation')} ${esc(p.op)}${opOrderNote(L, p)}</h4><dl>
       <dt>${T('Người', 'People')}</dt><dd>${p.people} · ${T('quy đổi', 'FTE')} ${nf(p.fte, 1)}</dd>
       <dt>${T('Sản lượng', 'Output')}</dt><dd>${nf(p.qty)}</dd>
       <dt>${T('sp/giờ TB · 60′ gần nhất', 'pcs/h avg · last 60′')}</dt><dd>${nf(p.rate)} · ${nf(p.rate60)}</dd>
@@ -3163,13 +3368,26 @@ function walkUi(on) {
   b.onclick = () => { newTagOn = !newTagOn; set(newTagOn); try { localStorage.setItem('sam3d-newTag', newTagOn ? '1' : '0'); } catch (e) {} render(); b.blur(); };
 })();
 $('v3Walk').onclick = () => { if (!V3) return; V3.walk(!V3.walking); $('v3Walk').blur(); };   // bỏ focus nút: phím cách / Enter không bật tắt lại
-$('v3Full').onclick = () => { const s = $('stage'); if (document.fullscreenElement) document.exitFullscreen(); else if (s.requestFullscreen) s.requestFullscreen(); };
+$('v3Full').onclick = () => {
+  const s = $('stage');
+  if (document.fullscreenElement) { document.exitFullscreen(); return; }
+  if (!s.requestFullscreen) return;
+  const p = s.requestFullscreen();
+  if (isPhoneUi() && p && p.then) p.then(() => { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} }).catch(() => {});   // điện thoại: xoay ngang cho khung 3D (trình duyệt không cho thì thôi)
+};
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) { try { screen.orientation.unlock(); } catch (e) {} }
+  setTimeout(() => { try { V3 && V3.resize(); } catch (e) {} }, 120);
+});
 // Đồ họa 3D: bấm nút → danh sách Cao / Trung bình / Thấp (lib/lite.js). Đổi mức thì dựng lại cảnh 3D ngay (khử răng cưa, độ phân giải, số phân đoạn đều đặt lúc dựng)
 (function () {
   const box = $('v3Qual'), bt = $('v3QBtn'), menu = $('v3QMenu'), cur = () => (window.Lite3D && Lite3D.level) || 'high';
   const NAME = { high: ['Cao', 'High'], mid: ['Trung bình', 'Medium'], low: ['Thấp', 'Low'] };
+  const qBadge = l => { const t = { low: ['SD', 10.5], mid: ['HD', 10.5], high: ['FHD', 8.2] }[l] || ['HD', 10.5]; return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="5" width="21" height="14" rx="3"/><text x="12" y="15.6" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-weight="800" font-size="${t[1]}" fill="currentColor" stroke="none">${t[0]}</text></svg>`; };
+  menu.querySelectorAll('button').forEach(b => { if (!b.querySelector('.ic')) b.insertAdjacentHTML('afterbegin', qBadge(b.dataset.q)); });   // điện thoại: icon SD / HD / FHD trước tên mức
   const mark = () => {
-    bt.textContent = T('Đồ họa: ', 'Graphics: ') + T(...NAME[cur()]) + ' ▾';
+    bt.innerHTML = qBadge(cur()) + '<span class="qt">' + T('Đồ họa: ', 'Graphics: ') + T(...NAME[cur()]) + ' ▾</span>';
+      bt.setAttribute('aria-label', T('Đồ họa: ', 'Graphics: ') + T(...NAME[cur()]));
     menu.querySelectorAll('button').forEach(b => { const on = b.dataset.q === cur(); b.classList.toggle('on', on); b.setAttribute('aria-checked', on ? 'true' : 'false'); });
   };
   const open = v => { menu.hidden = !v; bt.setAttribute('aria-expanded', v ? 'true' : 'false'); };
@@ -3514,19 +3732,21 @@ window.VL = {
 render();
 // Mở trang: đọc thư mục ETS + IE đã chọn (chưa có quyền thì báo bấm 🔄), rồi tự quét mỗi ST.syncMin phút
 kvGet('eff').then(v => { if (v && v.map) { EFF = v; if (cardO) cardDraw(); } });
-kvGet('hc').then(v => { if (v && v.map) { HC = v; render(); } });   // nhân sự (SCP) đã lưu
+kvGet('hc').then(v => { if (v && v.map) { HC = v; render(); } });
+kvGet('sah').then(v => { if (v && typeof v === 'object' && !v.kind) { SAH = v; sahVer++; render(); } });   // mục tiêu SAH (OAS) đã lưu   // nhân sự (SCP) đã lưu
 // Mở trang: đợi nhân sự + %EFF đã lưu nạp xong rồi mới quét thư mục; chỉ đọc file mới / đã sửa (trước đây đọc lại toàn bộ mỗi lần mở → đứng hình vài giây)
 (async () => {
   try {                                                    // trang mở qua máy chủ nội bộ? → dùng thư mục chung, ẩn nút chọn thư mục
     if (/^https?:$/.test(location.protocol)) { const r = await fetch('/api/ping', { cache: 'no-store' }), j = r.ok && await r.json(); if (j && j.ok) SRV = j; }
   } catch (e) {}
   try { if ('serviceWorker' in navigator && window.isSecureContext && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('../sw.js'); } catch (e) {}
+  if (SRV && SRV.config) { CFGS.start(); const sb = $('cfgShare'); if (sb) { sb.hidden = false; sb.onclick = () => { CFGS.publish(); showMsg(T('Đã đưa cấu hình máy này lên làm cấu hình chung: PC và điện thoại sẽ dùng cùng bộ này (cập nhật trong khoảng 20 giây).', 'This device settings are now the shared ones: PC and phone will use the same set (within ~20 s).')); }; } }
   if (SRV && SRV.notes) NT.useServer(() => { try { if (V3) draw3D(lastLL); if (cardO) cardDraw(false); } catch (e) {} });   // ghi chú từ máy / điện thoại khác tới → vẽ lại
   if (SRV) {
-    ['bEtsDir', 'bIeDir', 'bScpDir', 'bEffDir'].forEach(id => { const b = $(id); if (b && SRV.dirs[id.slice(1, -3).toLowerCase()]) b.style.display = 'none'; });
+    ['bEtsDir', 'bIeDir', 'bScpDir', 'bEffDir', 'bSahDir'].forEach(id => { const b = $(id); if (b && SRV.dirs[id.slice(1, -3).toLowerCase()]) b.style.display = 'none'; });
     $('bSync').title = T('Đọc ngay thư mục chung (ETS, IE, SCP, %EFF) cấu hình trong duong-dan.json', 'Read the shared folders (ETS, IE, SCP, %EFF) set in duong-dan.json now');
   }
-  if (window.showDirectoryPicker || SRV) { syncSchedule(); Promise.all([kvGet('eff'), kvGet('hc')]).catch(() => 0).then(() => setTimeout(() => syncDirs({}), 300)); }
+  if (window.showDirectoryPicker || SRV) { syncSchedule(); Promise.all([kvGet('eff'), kvGet('hc'), kvGet('sah')]).catch(() => 0).then(() => setTimeout(() => syncDirs({}), 300)); }
 })();
 try { if (sessionStorage.getItem('giam-sat-reset')) { sessionStorage.removeItem('giam-sat-reset'); showMsg(T('Đã xóa file ETS + IE. Nhập lại: file ETS trước, rồi file IE.', 'ETS + IE files cleared. Import again: the ETS file first, then the IE file.')); } } catch (e) {}
 // Mở trang với ?trinh-chieu=1 (PC / TV bật sẵn, trình duyệt toàn màn hình: trinh-chieu.bat) → vào trình chiếu luôn
