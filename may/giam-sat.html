@@ -193,6 +193,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .legend2 i.dash{height:0;width:16px;border-top:2px dashed var(--fg);border-radius:0}
 
 .tblw{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+/* bảng Công đoạn / Công nhân (hàng dưới): hàng tiêu đề cố định khi cuộn (overflow-x:auto của .tblw biến nó thành khung cuộn nên sticky không ăn → bỏ ở đây; bảng gọn không cần cuộn ngang) */
+.bot-body .tblw{overflow:visible} .bot-body .ops th{z-index:3;box-shadow:0 1px 0 var(--line)}
 table.ops{width:100%;border-collapse:collapse;font-size:12.5px;min-width:620px}
 .ops th{font:600 10.5px var(--f-body);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:7px 6px;background:var(--panel-2);border-bottom:1px solid var(--line);position:sticky;top:0}
 .ops th.num{text-align:right}
@@ -626,6 +628,8 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   /* Tab Chỉ số (13/10): chỉ 4 phần theo thứ tự So sánh %EFF các chuyền → Sản lượng TB từng công đoạn → Cân bằng chuyền → Ra chuyền theo giờ; còn lại ẩn */
   body[data-mt="stat"] #view > :not(.bot-row):not(#secRate):not(#secBal):not(#secHour){display:none!important}
   body[data-mt="stat"] .bot-row .bot-box:not(:first-child){display:none!important}
+  body[data-mt="stat"] .bot-body,body[data-mt="stat"] .bot-body .pt.sec,body[data-mt="stat"] .bot-body .tblw{overflow:visible}   /* tiêu đề bảng dính ngay dưới khối cố định phía trên */
+  body[data-mt="stat"] .bot-body .ops th{top:calc(var(--mfixH,0px) + 8px)}
   body[data-mt="stat"] #secRate{order:2} body[data-mt="stat"] #secBal{order:3} body[data-mt="stat"] #secHour{order:4}   /* bảng Tổng quan / Công đoạn / Công nhân lên ngay sau "Xem tại giờ" (trước đây nằm cuối trang, phải cuộn ~3000 px mới thấy) */
   #mFix{display:flex;flex-direction:column;gap:8px;margin:-8px -8px 0;padding:0 8px 6px;background:var(--bg)}
   #mFix .vl-top,#mFix .m-crumb{margin-left:-8px;margin-right:-8px;margin-top:0}
@@ -647,7 +651,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .app .stage:fullscreen{height:100%;min-height:0;border-radius:0}
   .pban{max-width:calc(100% - 24px);top:8px;left:8px;font-size:12.5px}
   .stage .tip.card{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:100%;max-width:none;min-width:0;border-radius:16px 16px 0 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.35);overflow-y:auto}
-  .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
+  .stage .tip.card.shm{max-height:none!important;overflow:hidden} .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
   /* khung công nhân mức vừa (13/10, phương án B): 3 ô số lớn %EFF / sp·giờ / sản lượng */
   .stage .tip .ph-w b.wn{font:800 16px var(--f-body);color:var(--fg)}
   .ph-t3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 12px 2px} .ph-t3 > div{background:var(--panel-2);border-radius:10px;padding:6px 9px} .ph-t3 small{display:block;font-size:11px;color:var(--muted)} .ph-t3 b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
@@ -659,13 +663,21 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .nwho{margin-top:10px;font-size:12.5px;color:var(--muted)} .nwho b{color:var(--fg)} .nwho u{color:var(--accent);text-decoration:none;font-weight:700;cursor:pointer} .nwho input{width:100%;font:14px var(--f-body);padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
   .nbtns{display:flex;gap:8px;margin-top:12px} .nbtns .btn{min-height:46px;font-size:14px;font-weight:700;border-radius:10px} .nbtns .btn:first-child{flex:0 0 76px} .nbtns .btn.pri{flex:1}
   .nfB.mach .nbtns .btn.pri{background:#d0281c;border-color:#d0281c;color:#fff} .nfB.note .nbtns .btn.pri{background:#e8742a;border-color:#e8742a;color:#fff}
+  .bnx{margin:6px 0 4px} .bns{display:flex;gap:8px;align-items:center;border:1px solid #efc4be;background:#fdf3f1;border-radius:10px;padding:9px 10px;font-weight:800;color:var(--crit);cursor:pointer;font-size:13px;line-height:1.3}
+  .bns.skill{border-color:#f3cfa6;background:#fdf6ee;color:#c25a12} .bns small{color:var(--fg);font-weight:600;font-size:12.5px} .bns .car{margin-left:auto;color:var(--muted);transition:transform .15s} .bnx.open .bns .car{transform:rotate(180deg)}
+  .bnd{display:none;padding:8px 2px 2px;font-size:12.5px;color:var(--muted);line-height:1.5} .bnx.open .bnd{display:block}
+  .bnm{display:grid;grid-template-columns:78px 1fr 46px;gap:6px 8px;align-items:center;font-size:12px;color:var(--fg)} .bnm b{text-align:right;font-weight:800}
+  .bnbar{height:8px;border-radius:4px;background:var(--panel-2);overflow:visible;position:relative;border:1px solid var(--line)} .bnbar i{position:absolute;left:0;top:0;bottom:0;background:var(--crit);border-radius:4px} .bnbar i.o{background:#e8742a} .bnbar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg)}
+  .bnn{font-size:11.5px;margin:3px 0 0} .bnc{margin-top:8px;background:#fdeede;color:#c25a12;border-radius:8px;padding:7px 10px;font-weight:800;font-size:12.5px} .bnw{margin:6px 2px 0} .stage .tip .bnw b,.stage .tip .bns b,.stage .tip .bnm b{display:inline;font:800 12.5px var(--f-body);color:var(--fg)} .stage .tip .bnm b{display:block;text-align:right}
+  .ph-mini{display:flex;align-items:center;gap:8px;font-size:14px;padding:0 0 8px} .ph-mini .wn{font:800 15px var(--f-body)} .ph-mini .x{margin-left:auto;min-height:36px;min-width:36px;font-size:16px} .ph-mini em{font-style:normal;color:var(--muted);font-size:12.5px}
+  [data-shdrag]{touch-action:none;cursor:grab} .stage .tip.card.dragging{transition:none!important;overflow:hidden}
   .ph-hd{padding:6px 12px 0;touch-action:none} .ph-hd .hdl{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 6px}
   .ph-t{display:flex;align-items:center;gap:7px;flex-wrap:wrap} .ph-t b{font:700 16px var(--f-display);display:inline} .ph-t .chip{margin-left:0} .ph-t .x{margin-left:auto;min-height:40px;min-width:40px;font-size:18px}
   .ph-w{font-size:13px;padding:2px 12px 6px} .stage .tip .ph-w b{display:inline;font:700 13px var(--f-mono)} .stage .tip .ph-t b{display:inline}
   .ph-b{display:flex;gap:6px;padding:0 12px;margin:0} .ph-b .btn{flex:1;min-height:40px;font-size:13.5px;font-weight:600;justify-content:center}
   .ph-more{text-align:center;color:var(--accent);font-size:12.5px;font-weight:600;padding:6px 0 8px;cursor:pointer}
   .ph-mid{padding:0 12px 6px}
-  .stage .tip .ph-mid dl{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 10px;font-size:12.5px;margin:6px 0} .stage .tip .ph-mid dd{text-align:right;margin:0;font:600 12px var(--f-mono)} .stage .tip .ph-mid dt{color:var(--muted)}
+  .stage .tip .ph-mid dl{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 10px;font-size:12.5px;margin:6px 0} .stage .tip .ph-mid dd{text-align:right;margin:0;font:600 12px var(--f-mono);white-space:nowrap} .stage .tip .ph-mid dt{color:var(--muted)}
   .ph-sec{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:9px 0 7px;font-size:13.5px;font-weight:600;color:var(--accent);cursor:pointer} .ph-sec em{font-style:normal;color:var(--muted);font-weight:400;font-size:12px}
   .ph-mid .nsec{border:0;margin:0;padding:0}
   .stage .tip.card .cbar{cursor:default;padding:10px 12px} .stage .tip.card .cbar .btn{min-width:44px;min-height:40px}
@@ -769,7 +781,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
     <div class="tip card" id="v3Card" role="dialog" hidden></div>
     <div class="pban" id="v3PBan" hidden></div>
     <div class="mhelp" id="v3Help" hidden>
-      <span data-en-html="<b>Drag</b>: rotate · <b>Right-drag</b>: move · <b>Scroll</b>: zoom · <b>Double-click</b> a station: fly there">🖱 <b>Kéo chuột</b>: xoay · <b>Chuột phải</b>: dịch · <b>Lăn</b>: phóng to / thu nhỏ · <b>Nhấp đúp</b> vào trạm: bay tới</span>
+      <span data-en-html="<b>Drag</b>: move · <b>Right-drag</b>: rotate · <b>Scroll</b>: zoom · <b>Double-click</b> a station: fly there">🖱 <b>Kéo chuột</b>: dịch · <b>Chuột phải</b>: xoay · <b>Lăn</b>: phóng to / thu nhỏ · <b>Nhấp đúp</b> vào trạm: bay tới</span>
       <button id="v3HelpX" aria-label="Đóng / Close" data-en-title="Hide" title="Ẩn">✕</button>
     </div>
     <div class="walk-hint" id="v3WalkHint" hidden data-en-html="<b>Walk mode</b> · <kbd>W</kbd><kbd>S</kbd> forward / back · <kbd>A</kbd><kbd>D</kbd> sideways · <kbd>←</kbd><kbd>→</kbd> or drag the mouse to look around · <kbd>Shift</kbd> walk faster · <kbd>Esc</kbd> exit"><b>Đi dạo</b> · <kbd>W</kbd><kbd>S</kbd> tiến / lùi · <kbd>A</kbd><kbd>D</kbd> sang ngang · <kbd>←</kbd><kbd>→</kbd> hoặc kéo chuột để nhìn quanh · <kbd>Shift</kbd> đi nhanh · <kbd>Esc</kbd> thoát</div>
@@ -2445,7 +2457,24 @@ function effStations(I, cfg, L) {
   return baseStations(I, cfg, L).map(t => ov[t.ban] ? Object.assign({}, t, { code: ov[t.ban], name: opNameOf(I, L, ov[t.ban]) || '', layoutCode: t.code, layoutName: t.name }) : t);
 }
 // Thẻ rê chuột: công đoạn tắc nghẽn → nhịp cần, hàng dồn, nguyên nhân; phụ thuộc tay nghề → cảnh báo
+// Điện thoại (13/10, kết hợp phương án C + D): 1 dòng tóm tắt (bấm mở), chi tiết = thanh sp/giờ so nhịp cần + thanh lệch so CĐ trước + ô nguyên nhân + câu lý do đầy đủ
+const bnOpen = new Set();
+function bnPhone(L, p) {
+  const open = bnOpen.has(p.key) ? ' open' : '';
+  if (p.status === 'skill') return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns skill"><span>🟠 ${T('Phụ thuộc tay nghề', 'Skill-dependent')} <small>· ${pct(p.load)} · ${p.people} ${T('người', 'ppl')}</small></span><span class="car">▾</span></div>
+    <div class="bnd">${T(`%EFF công đoạn ${pct(p.load)}, ${p.people} người: 1 người vắng / chậm sẽ thành tắc nghẽn`, `op %EFF ${pct(p.load)}, ${p.people} operator(s): one absent / slow makes it a bottleneck`)}</div></div>`;
+  if (p.key !== L.bottleneck) return '';
+  const w = p.why || {}, byRate = p.trig !== 'gap', byGap = p.trig !== 'rate', hasNeed = isFinite(p.need);
+  const cause = w.kind === 'people' ? T(`thiếu ~${nf(Math.ceil(w.add * 10) / 10, 1)} người`, `short ~${nf(Math.ceil(w.add * 10) / 10, 1)} FTE`) : w.emp ? T(`tay nghề: ${esc(w.name || w.emp)} ${pct(w.eff)}`, `skill: ${esc(w.name || w.emp)} ${pct(w.eff)}`) : T('tay nghề', 'skill');
+  const causeFull = w.kind === 'people' ? T(`thiếu người: thêm ~${nf(Math.ceil(w.add * 10) / 10, 1)} người quy đổi`, `short of people: add ~${nf(Math.ceil(w.add * 10) / 10, 1)} FTE`) : w.emp ? T(`tay nghề: %EFF thấp nhất ${esc(w.name || w.emp)} ${pct(w.eff)}`, `skill: lowest %EFF ${esc(w.name || w.emp)} ${pct(w.eff)}`) : T('tay nghề', 'skill');
+  const why = [byGap ? T(`hàng dồn: SL thấp hơn CĐ ${esc(p.prevOp)} ${pct(p.gap)}`, `WIP piling up: output ${pct(p.gap)} below op ${esc(p.prevOp)}`) : '', byRate && hasNeed ? T(`chậm hơn nhịp cần ${nf(p.need)} sp/giờ`, `below the required pace ${nf(p.need)} pcs/h`) : ''].filter(Boolean).join(' · ');
+  const sc = Math.max(p.rate, hasNeed ? p.need : 0, 1) * 1.08, rw = Math.min(100, p.rate / sc * 100);
+  const bars = `<div class="bnm"><span>${T('sp / giờ', 'pcs / h')}</span><div class="bnbar"><i style="width:${rw.toFixed(0)}%"></i>${hasNeed ? `<u style="left:${Math.min(99, p.need / sc * 100).toFixed(0)}%"></u>` : ''}</div><b>${nf(p.rate)}</b>${byGap && isFinite(p.gap) ? `<span>${T('so CĐ', 'vs op')} ${esc(p.prevOp)}</span><div class="bnbar"><i class="o" style="width:${Math.max(2, Math.min(100, (1 - p.gap) * 100)).toFixed(0)}%"></i></div><b>−${pct(p.gap)}</b>` : ''}</div>${hasNeed ? `<p class="bnn">${T('vạch đen = nhịp cần', 'black mark = required pace')} ${nf(p.need)}</p>` : ''}`;
+  return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns"><span>🔴 ${T('Tắc nghẽn', 'Bottleneck')} ${nf(p.rate)} ${T('sp/giờ', 'pcs/h')} <small>· ${cause}</small></span><span class="car">▾</span></div>
+    <div class="bnd">${bars}<div class="bnc">${T('Nguyên nhân', 'Cause')}: ${causeFull}</div>${why ? `<p class="bnw"><b>${T('Lý do', 'Reason')}:</b> ${why}</p>` : ''}</div></div>`;
+}
 function bnRows(L, p) {
+  if (isPhoneUi()) return '';   // điện thoại: dùng bnPhone (tóm tắt 1 dòng + chi tiết bấm mở) đặt trên bảng
   if (p.status === 'skill') return `<dt style="color:#e8742a">${T('Phụ thuộc tay nghề', 'Skill-dependent')}</dt><dd>${T(`%EFF công đoạn ${pct(p.load)}, ${p.people} người: 1 người vắng / chậm sẽ thành tắc nghẽn`, `op %EFF ${pct(p.load)}, ${p.people} operator(s): one absent / slow makes it a bottleneck`)}</dd>`;
   if (p.key !== L.bottleneck) return '';
   const w = p.why || {}, byRate = p.trig !== 'gap', byGap = p.trig !== 'rate';
@@ -3104,7 +3133,7 @@ function cardDraw(force) {
   if (!force && ae && box.contains(ae) && ae.closest('.nform')) return;   // đang gõ ghi chú: không vẽ lại làm mất chữ
   const sc = box.scrollTop;
   if (ph) {                                                   // điện thoại: khung 3 mức
-    box.innerHTML = h; box.classList.remove('sh0', 'sh1', 'sh2'); box.classList.add('sh' + shLv);
+    box.innerHTML = h; box.classList.remove('shm', 'sh0', 'sh1', 'sh2'); box.classList.add('sh' + (shLv < 0 ? 'm' : shLv)); if (shLv <= 0) box.style.height = '';
     box.hidden = false; box.style.maxHeight = ''; box.scrollTop = sc; return;
   }
   box.innerHTML = `<div class="cbar"><span>${T('Thông tin công nhân / trạm', 'Operator / station details')}</span><button class="btn sm" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div><div class="cbody">${h}</div>`;
@@ -3112,7 +3141,7 @@ function cardDraw(force) {
   box.style.maxHeight = ($('stage').clientHeight - 16) + 'px';
   box.scrollTop = sc;
 }
-function cardClose() { cardO = null; noteForm = null; shLv = 0; shSec = ''; $('v3Card').hidden = true; }
+function cardClose() { cardO = null; noteForm = null; shLv = 0; shSec = ''; $('v3Card').style.height = ''; $('v3Card').hidden = true; }
 // Lưu ghi chú / máy hỏng từ biểu mẫu trong bảng nổi
 async function photoUp(file) {
   const bmp = await createImageBitmap(file), k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
@@ -3187,9 +3216,10 @@ function phoneSheet(o) {
   const title = o.free ? `${T('Ngoài trạm', 'Off station')}${w && w.primary ? ` · ${T('CĐ', 'Op')} ${esc(w.primary)}` : ''}` : `${T('Trạm', 'Station')} ${esc(st.extra ? st.anchorBan + '+' : o.t.ban)} · ${T('CĐ', 'Op')} ${esc(st.code)}`;
   const wl = has ? `<b class="wn">${esc(w.name || w.emp)}</b> · <b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : T('chưa SAM', 'no SAM')}</b> · ${nf(w.rate)} ${T('sp/giờ', 'pcs/h')} · ${nf(w.primaryQty)} ${T('sp', 'pcs')}`
     : w ? T(`Mã NV ${esc(w.emp)}: không có Data ETS.`, `Emp. ${esc(w.emp)}: no ETS data.`) : T('Chưa có công nhân.', 'No operator.');
+  if (shLv < 0 && !noteForm) return `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-mini"><b class="wn">${has ? esc(w.name || w.emp) : title}</b>${has ? ` <b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b>` : ''}<em>${T('Trạm', 'St.')} ${o.free ? '–' : esc(st.extra ? st.anchorBan + '+' : o.t.ban)}</em><button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>`;
   if (noteForm && shLv >= 1) return phoneForm(o, w, title);
   let h = `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-t"><b>${title}</b>${ch ? chipHtml(st.status) : ''}<button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>
-    <div class="ph-w">${shLv >= 1 && has ? `<b class="wn">${esc(w.name || w.emp)}</b> · ${T('mã', 'ID')} ${esc(w.emp)}` : wl}</div>${shLv >= 1 && has ? `<div class="ph-t3"><div><small>%EFF</small><b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b></div><div><small>${T('sp / giờ', 'pcs / h')}</small><b>${nf(w.rate)}</b></div><div><small>${T('Sản lượng', 'Output')}</small><b>${nf(w.primaryQty)}</b></div></div>` : ''}<div class="ph-b">${P.btns}</div>
+    <div class="ph-w" data-shdrag>${shLv >= 1 && has ? `<b class="wn">${esc(w.name || w.emp)}</b> · ${T('mã', 'ID')} ${esc(w.emp)}` : wl}</div>${shLv >= 1 && has ? `<div class="ph-t3"><div><small>%EFF</small><b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b></div><div><small>${T('sp / giờ', 'pcs / h')}</small><b>${nf(w.rate)}</b></div><div><small>${T('Sản lượng', 'Output')}</small><b>${nf(w.primaryQty)}</b></div></div>` : ''}<div class="ph-b">${P.btns}</div>
     <div class="ph-more" data-shlv>${shLv ? '▾ ' + T('Thu gọn', 'Collapse') : '▴ ' + T('Xem thêm', 'More')}</div>`;
   if (shLv >= 1) {
     h += `<div class="ph-mid">${P.form}${P.list}`;
@@ -3205,7 +3235,7 @@ function pick3D(o, e) {
   const w = o && (o.free || (o.info && !o.info.blank));
   if (!w) { cardClose(); return; }                          // bấm chỗ trống / trạm trống: đóng
   const first = !cardO || $('v3Card').hidden;
-  if (cardO !== o) { noteForm = null; shLv = isPhoneUi() ? 1 : 0; shSec = ''; }   // điện thoại: mở thẳng mức vừa (ghi chú + số liệu), vuốt xuống / Thu gọn để về mức nhỏ
+  if (cardO !== o) { noteForm = null; shLv = isPhoneUi() ? 1 : 0; shSec = ''; $('v3Card').style.height = ''; }   // điện thoại: mở thẳng mức vừa (ghi chú + số liệu), vuốt xuống / Thu gọn để về mức nhỏ
   cardO = o; $('v3Tip').hidden = true; cardDraw();
   if (isPhoneUi()) return;                                  // điện thoại: khung cố định dưới màn hình
   if (first) {                                              // mở lần đầu: cạnh chỗ bấm; đang mở thì giữ chỗ người dùng đã kéo tới
@@ -3220,9 +3250,11 @@ function pick3D(o, e) {
     const nf = e.target.closest('[data-nf]');
     if (nf) { noteForm = noteForm === nf.dataset.nf ? null : nf.dataset.nf; if (noteForm && shLv < 1) shLv = 1; cardDraw(true); return; }
     if (e.target.closest('[data-nhist]')) { noteHist = !noteHist; try { localStorage.setItem('vl-note-hist', noteHist ? '1' : '0'); } catch (e2) {} if (shLv < 1) shLv = 1; cardDraw(true); return; }
-    if (e.target.closest('[data-shlv]')) { shLv = shLv ? 0 : 1; shSec = ''; cardDraw(true); return; }
+    if (e.target.closest('[data-shlv]')) { shLv = shLv ? 0 : 1; shSec = ''; box.style.height = ''; cardDraw(true); return; }
     const sec = e.target.closest('[data-shsec]');
-    if (sec) { shSec = shSec === sec.dataset.shsec ? '' : sec.dataset.shsec; shLv = shSec ? 2 : 1; cardDraw(true); return; }
+    if (sec) { shSec = shSec === sec.dataset.shsec ? '' : sec.dataset.shsec; shLv = shSec ? 2 : 1; box.style.height = ''; cardDraw(true); return; }
+    const bx = e.target.closest('[data-bnx] .bns');
+    if (bx) { const k = bx.closest('[data-bnx]').dataset.bnx; if (bnOpen.has(k)) bnOpen.delete(k); else bnOpen.add(k); bx.closest('[data-bnx]').classList.toggle('open'); return; }
     const chip = e.target.closest('[data-chip]');
     if (chip) { box.querySelectorAll('[data-chip]').forEach(c => c.classList.toggle('on', c === chip)); const ti = box.querySelector('[data-f="type"]'); if (ti) ti.value = chip.dataset.chip; return; }
     const wh = e.target.closest('[data-who]');
@@ -3247,13 +3279,35 @@ function pick3D(o, e) {
   });
   box.addEventListener('pointerup', () => { dg = null; });
   // Điện thoại: vuốt lên / xuống ở đầu khung để đổi mức (0 → 1 → 2; vuốt xuống ở mức 0 = đóng)
+  // Kéo thẻ bám theo ngón tay (phương án C, 13/10): 4 mức thanh tên (-1) / nhỏ (0) / vừa (1) / rộng (2); thả thì hít về mức gần nhất, hất nhanh = nhảy 1 mức, kéo xuống dưới thanh tên = đóng
+  const SNAP = () => { const vh = window.innerHeight; return [66, 150, Math.round(vh * 0.5), Math.round(vh * 0.86)]; };   // chiều cao các mức -1, 0, 1, 2
   let sw = null;
-  box.addEventListener('pointerdown', e => { if (isPhoneUi() && e.target.closest('[data-shdrag]') && !e.target.closest('[data-x]')) sw = e.clientY; });
-  box.addEventListener('pointerup', e => {
-    if (sw == null) return; const dy = e.clientY - sw; sw = null;
-    if (dy < -28) { if (shLv < 1) shLv = 1; else { shLv = 2; if (!shSec) shSec = 'eff'; } cardDraw(true); }
-    else if (dy > 28) { if (shLv === 0) cardClose(); else { shLv--; shSec = ''; cardDraw(true); } }
+  box.addEventListener('pointerdown', e => {
+    if (!isPhoneUi() || !e.target.closest('[data-shdrag]') || e.target.closest('[data-x]')) return;
+    const h0 = box.getBoundingClientRect().height, lv0 = shLv;
+    if (shLv < 1 && !noteForm) { shLv = 1; box.style.height = ''; cardDraw(true); }   // vẽ sẵn nội dung mức vừa để kéo lên có gì hiện ra
+    sw = { y: e.clientY, h: h0, t: performance.now(), lv: lv0, id: e.pointerId };
+    box.classList.add('dragging'); box.style.setProperty('max-height', 'none', 'important'); box.style.height = h0 + 'px';
+    try { box.setPointerCapture(e.pointerId); } catch (e2) {}
   });
+  box.addEventListener('pointermove', e => {
+    if (!sw) return; const S = SNAP();
+    box.style.height = Math.max(0, Math.min(S[3], sw.h + (sw.y - e.clientY))) + 'px';
+  });
+  const swEnd = e => {
+    if (!sw) return; const S = SNAP(), h = box.getBoundingClientRect().height, dy = sw.y - e.clientY, v = dy / Math.max(performance.now() - sw.t, 1), lv0 = sw.lv; sw = null;
+    box.classList.remove('dragging'); box.style.removeProperty('max-height');
+    if (Math.abs(dy) < 6) { shLv = lv0; box.style.height = ''; cardDraw(true); return; }                 // chỉ chạm, không kéo: giữ nguyên mức
+    if (h < S[0] - 30) { cardClose(); return; }
+    let best = 0; S.forEach((s, i) => { if (Math.abs(s - h) < Math.abs(S[best] - h)) best = i; });
+    if (Math.abs(v) > 0.6 && Math.abs(dy) > 20) best = Math.max(0, Math.min(3, Math.max(0, lv0 + 1) + (v > 0 ? 1 : -1)));   // hất nhanh: nhảy 1 mức từ mức đang có
+    const lv = best - 1;                                                                    // chỉ số 0..3 → mức -1..2
+    if (lv === 2 && !shSec) shSec = 'eff';
+    if (lv < 2 && lv >= 0 && lv !== 1) shSec = '';
+    if (lv === 1) shSec = '';
+    shLv = lv; box.style.height = lv >= 1 ? S[lv + 1] + 'px' : ''; cardDraw(true);
+  };
+  box.addEventListener('pointerup', swEnd); box.addEventListener('pointercancel', swEnd);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && cardO && !(V3 && V3.walking)) cardClose(); });
 })();
 
@@ -3297,11 +3351,11 @@ function opOrderNote(L, p) {
   return ` (style ${esc(sc)}) <span class="ord-${isNew ? 'new' : 'old'}">${isNew ? T('đơn mới đang lên', 'new order ramping up') : T('đơn cũ', 'old order')}</span>`;
 }
 function opBlocks(L, ops) {
-  return ops.filter(p => !wkHide(p.op)).map(p => `<h4>${T('Cả công đoạn', 'Whole operation')} ${esc(p.op)}${opOrderNote(L, p)}</h4><dl>
-      <dt>${T('Người', 'People')}</dt><dd>${p.people} · ${T('quy đổi', 'FTE')} ${nf(p.fte, 1)}</dd>
+  return ops.filter(p => !wkHide(p.op)).map(p => `<h4>${T('Cả công đoạn', 'Whole operation')} ${esc(p.op)}${opOrderNote(L, p)}</h4>${isPhoneUi() ? bnPhone(L, p) : ''}<dl>
+      ${isPhoneUi() ? `<dt>${T('Người (quy đổi)', 'People (FTE)')}</dt><dd>${p.people} (${nf(p.fte, 1)})</dd>` : `<dt>${T('Người', 'People')}</dt><dd>${p.people} · ${T('quy đổi', 'FTE')} ${nf(p.fte, 1)}</dd>`}
       <dt>${T('Sản lượng', 'Output')}</dt><dd>${nf(p.qty)}</dd>
-      <dt>${T('sp/giờ TB · 60′ gần nhất', 'pcs/h avg · last 60′')}</dt><dd>${nf(p.rate)} · ${nf(p.rate60)}</dd>
-      <dt>${T('Năng lực chuẩn (sp/giờ)', 'Std capacity (pcs/h)')}</dt><dd>${nf(p.cap)}</dd>${bnRows(L, p)}${HIDE.opDetail ? '' : `
+      <dt>${isPhoneUi() ? T('sp/giờ TB · 60′', 'pcs/h avg · 60′') : T('sp/giờ TB · 60′ gần nhất', 'pcs/h avg · last 60′')}</dt><dd>${nf(p.rate)} · ${nf(p.rate60)}</dd>
+      <dt>${isPhoneUi() ? T('Năng lực chuẩn', 'Std capacity') : T('Năng lực chuẩn (sp/giờ)', 'Std capacity (pcs/h)')}</dt><dd>${nf(p.cap)}</dd>${bnRows(L, p)}${HIDE.opDetail ? '' : `
       <dt>${T('%EFF công đoạn', 'Op %EFF')}</dt><dd>${pct(p.load)}</dd>
       <dt>CT (${T('phút/sp', 'min/pc')})</dt><dd>${nf(p.ct, 3)}${p.key === L.ctBottleneck ? ' <em>Bottleneck</em>' : ''}</dd>
       <dt>${T('Phút chuẩn/người', 'Std min/person')}</dt><dd>${nf(p.wl, 3)}</dd>`}</dl>`).join('');

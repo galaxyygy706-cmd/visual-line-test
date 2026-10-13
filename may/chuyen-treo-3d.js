@@ -44,6 +44,7 @@ function create(el, opt) {
   const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 500);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.45;   // không hạ camera sát mặt phẳng nhìn (tối thiểu ~9° so với đích) controls.minDistance = 3; controls.maxDistance = 140;
+  controls.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE };   // 13/10: chuột trái = dịch (kéo), chuột phải = xoay camera (đổi so với mặc định OrbitControls)
   scene.add(new THREE.HemisphereLight(0xf3f6ff, 0x5f6b66, 0.5));
   const sun = new THREE.DirectionalLight(0xfffaf0, 0.55);
   sun.position.set(12, 40, 20); sun.castShadow = !lite; sun.shadow.mapSize.set(lite ? 1024 : 2048, lite ? 1024 : 2048);
