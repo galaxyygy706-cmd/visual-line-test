@@ -549,7 +549,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .kpi-row,.kpi-row.m-cmp,.kpi-row.m-tile{display:flex;overflow-x:auto;gap:8px;scroll-snap-type:x proximity;padding-bottom:4px;-webkit-overflow-scrolling:touch}
   .kpi-row .kc{flex:0 0 78%;max-width:300px;scroll-snap-align:start} .kpi-row.m-tile .kt,.kpi-row.m-cmp .kc{flex:0 0 150px}
   .m-only{display:block}
-  body{padding-bottom:66px}
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
   .kpi-row,.kpi-row.m-cmp,.kpi-row.m-tile{display:none!important}
   .app{gap:8px}
   .m-crumb{margin:0 -8px;padding:7px 12px;background:var(--panel-2);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)} .m-crumb b{color:var(--fg)} .m-crumb a{color:var(--accent);font-weight:600;cursor:pointer}
@@ -593,7 +593,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   #mSheet .g .n{position:absolute;right:5px;top:5px;min-width:16px;height:16px;display:grid;place-items:center;background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 4px}
   #mSheet .ft{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
   .m-strip{font-size:12.5px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .m-strip b{color:var(--accent)}
-  #mNav{display:flex;position:fixed;left:0;right:0;bottom:0;height:58px;z-index:70;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0)}
+  #mNav{display:flex;position:fixed;left:0;right:0;bottom:0;height:calc(58px + env(safe-area-inset-bottom,0px));z-index:70;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}   /* iPhone: chiều cao cộng thêm vùng thanh Home (trước đây gộp vào 58 px nên icon + chữ bị ép, mất chữ) */
   #mNav button{flex:1;min-height:0;border:0;border-radius:0;background:none;font:600 11px var(--f-body);color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;cursor:pointer}
   #mNav button i{font-style:normal;font-size:21px;line-height:1;transition:transform .18s,margin .18s;display:grid;place-items:center} #mNav button i svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   /* Thanh dưới kiểu C (13/10): mục đang chọn = nền ô xanh nhạt + icon đậm hơn + gạch xanh sát đáy (không nổi) */
