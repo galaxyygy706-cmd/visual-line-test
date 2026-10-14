@@ -539,12 +539,12 @@ function create(el, opt) {
       if (bk) {
         const bs = x.broken === 'doing' ? 'doing' : 'new';
         if (!o.bk) { o.bk = brokenSprite(bs); o.g.add(o.bk); } else o.bk.material = brokenMat(bs);
-        o.bk.position.set(o.side * 0.3, 1.75, 0); o.bk.userData.on = true;
+        o.bk.position.set(o.side * 0.3, 1.75, !x.blank && !x.head && x.notes > 0 ? -0.2 : 0); o.bk.userData.on = true;   // cùng ghi chú: đứng cạnh nhau trên đầu
       } else if (o.bk) { o.bk.userData.on = false; o.bk.visible = false; }
       const nn = !x.blank && !x.head && x.notes > 0;
       if (nn) {
         if (!o.nt) { o.nt = noteSprite(); o.g.add(o.nt); }
-        o.nt.position.set(o.side * 0.3, 1.75, 0.5); o.nt.userData.on = true;
+        o.nt.position.set(o.side * 0.3, 1.75, bk ? 0.2 : 0); o.nt.userData.on = true;   // 14/10: icon ghi chú nằm ngay trên đầu công nhân như cờ lê (trước đây lệch 0.5 m)
       } else if (o.nt) { o.nt.userData.on = false; o.nt.visible = false; }
     });
     (L.groups || []).forEach(q => {
@@ -1052,7 +1052,11 @@ function create(el, opt) {
     let x, z, side;
     if (ref && ref.ban != null) { const o = L.stations.find(s => s.t.ban === ref.ban); if (!o) return false; side = o.side; x = o.side * (o.sx + 0.62); z = o.z; }
     else { const o = L.freeMap.get(String(ref && ref.emp)); if (!o) return false; x = o.g.position.x; z = o.g.position.z; side = x >= 0 ? 1 : -1; x += side * 0.62; }
-    moveCam(new THREE.Vector3(L.x + x + side * 5.6, 2.9, z), new THREE.Vector3(L.x + x - side * 0.6, 0.8, z), smooth);
+    // Nhìn chính diện, ôm cả công đoạn (opt.bans = mọi trạm của công đoạn) và hàng nhãn trên đầu (LABEL_Y): đích nhìn cao hơn, lùi xa theo bề ngang khung (điện thoại hẹp → lùi nhiều hơn)
+    let zc = z, span = 0;
+    if (opt && opt.bans && opt.bans.length > 1) { const zs = opt.bans.map(b => { const q = L.stations.find(s => s.t.ban === b); return q ? q.z : null; }).filter(v => v != null); if (zs.length > 1) { zc = (Math.min(...zs) + Math.max(...zs)) / 2; span = Math.max(...zs) - Math.min(...zs); } }
+    const hf = Math.atan(Math.tan(camera.fov * Math.PI / 360) * camera.aspect), d = Math.max(5.6, (Math.max(1.7, span / 2 + 1.5)) / Math.tan(hf));
+    moveCam(new THREE.Vector3(L.x + x + side * d, 2.9 + (d - 5.6) * 0.3, zc), new THREE.Vector3(L.x + x - side * 0.6, 1.5, zc), smooth);
     if (!pin) { pin = new THREE.Mesh(G.cone, keep(new THREE.MeshBasicMaterial({ color: 0x2391b5 }))); pin.rotation.x = Math.PI; pin.renderOrder = 4; scene.add(pin); }
     pin.position.set(L.x + x, 1.9, z); pin.scale.setScalar(0.5); pin.visible = true; pin.userData.until = performance.now() + ((opt && opt.pinMs) || 6000); wake();
     return true;

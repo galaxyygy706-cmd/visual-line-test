@@ -477,6 +477,15 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
 .nbtns{display:flex;gap:8px;margin-top:12px} .nbtns .btn{min-height:46px;font-size:14px;font-weight:700;border-radius:10px} .nbtns .btn:first-child{flex:0 0 76px} .nbtns .btn.pri{flex:1}
 .nfB.mach .nbtns .btn.pri{background:#d0281c;border-color:#d0281c;color:#fff} .nfB.note .nbtns .btn.pri{background:#e8742a;border-color:#e8742a;color:#fff}
 /* Khối Tắc nghẽn / Phụ thuộc tay nghề (13/10): PC và điện thoại cùng nội dung */
+.bns.tn{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;align-items:start;position:relative;padding:6px 26px 6px 9px;border:1px solid color-mix(in srgb,var(--crit) 45%,transparent);background:color-mix(in srgb,var(--crit) 12%,var(--panel));border-radius:9px;font-weight:400;color:var(--fg);line-height:1.3}
+.bns.tn.skill{border-color:color-mix(in srgb,#e8742a 45%,transparent);background:color-mix(in srgb,#e8742a 12%,var(--panel))}
+.stage .tip .bns.tn small,.bns.tn small{display:block;font:500 9px var(--f-body);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.stage .tip .bns.tn b,.bns.tn b{display:block;font:800 11.5px var(--f-body);color:var(--fg);text-align:left} .stage .tip .bns.tn .r b,.bns.tn .r b{color:var(--crit)} .bns.tn.skill .r b{color:#c25a12}
+.bns.tn .car{position:absolute;right:9px;top:50%;transform:translateY(-50%);margin:0} .bnx.open .bns.tn .car{transform:translateY(-50%) rotate(180deg)}
+.bnx.open .bns.tn{border-radius:9px 9px 0 0} .bnx.open .bnd{border:1px solid color-mix(in srgb,var(--crit) 25%,transparent);border-top:0;border-radius:0 0 9px 9px;background:color-mix(in srgb,var(--crit) 5%,var(--panel));padding:6px 9px;margin-top:0}
+body.cr .bns.tn .r b,body.cr .stage .tip .bns.tn .r b{color:#ff9a9a} :root[data-theme="dark"] .bns.tn.skill .r b,body.cr .bns.tn.skill .r b{color:#ffb070}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bns.tn.skill .r b{color:#ffb070} :root:not([data-theme="light"]) .bnc{background:color-mix(in srgb,#f08a3c 14%,var(--panel));color:#ffb070}}
+:root[data-theme="dark"] .bnc,body.cr .bnc{background:color-mix(in srgb,#f08a3c 14%,var(--panel));color:#ffb070}
 .bnx{margin:6px 0 4px} .bns{display:flex;gap:8px;align-items:center;border:1px solid #efc4be;background:#fdf3f1;border-radius:10px;padding:9px 10px;font-weight:800;color:var(--crit);cursor:pointer;font-size:13px;line-height:1.3}
 .bns.skill{border-color:#f3cfa6;background:#fdf6ee;color:#c25a12} .bns small{color:var(--fg);font-weight:600;font-size:12.5px} .bns .car{margin-left:auto;color:var(--muted);transition:transform .15s} .bnx.open .bns .car{transform:rotate(180deg)}
 .bnd{display:none;padding:8px 2px 2px;font-size:12.5px;color:var(--muted);line-height:1.5} .bnx.open .bnd{display:block}
@@ -654,7 +663,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   body[data-mt="home"] #mChips,body[data-mt="home"] #mRib,body[data-mt="home"] #mStrip,body[data-mt="home"] .stage,body[data-mt="home"] .panel,body[data-mt="home"] .bot-row,body[data-mt="home"] #empty{display:none!important}
   body:not([data-mt="home"]) #mHome{display:none}
   body[data-mt="mon"] #view > :not(#secProb),body[data-mt="mon"] .bot-row{display:none!important}
-  body[data-mt="prob"] #view > :not(#secProb):not(#secMach),body[data-mt="prob"] .bot-row{display:none!important}
+  body[data-mt="prob"] #view > :not(#secProb),body[data-mt="prob"] .bot-row{display:none!important}
   body[data-mt="mach"] #view > :not(#secMach),body[data-mt="mach"] .bot-row{display:none!important}
   body[data-mt="stat"] #view > :is(#secProb,#secMach,#alerts){display:none!important}
   body[data-mt="stat"] #view > .bot-row{order:1;margin-bottom:0}
@@ -694,6 +703,10 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .pban{max-width:calc(100% - 24px);top:8px;left:8px;font-size:12.5px}
   .stage .tip.card{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:100%;max-width:none;min-width:0;border-radius:16px 16px 0 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.35);overflow-y:auto}
   .stage .tip.card.shm{max-height:none!important;overflow:hidden} .stage .tip.card.sh0{max-height:none!important;overflow:hidden} .stage .tip.card.sh1{max-height:52vh!important} .stage .tip.card.sh2{max-height:86vh!important}
+}
+/* Thẻ công nhân dùng chung PC + điện thoại (14/10, demo the-cong-nhan-pc.html): từ đây tới hết khối .ph-mid không nằm trong @media */
+@media (min-width:701px){.ph-hd .hdl{display:none} .stage .tip.card{width:380px}}
+.stage .tip.card > *{flex-shrink:0}   /* thẻ là cột flex: không để hàng đầu / tab bị ép lại khi nội dung dài hơn chiều cao cố định */
   /* khung công nhân mức vừa (13/10, phương án B): 3 ô số lớn %EFF / sp·giờ / sản lượng */
   .stage .tip .ph-w b.wn{font:800 16px var(--f-body);color:var(--fg)}
   .ph-t3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 12px 2px} .ph-t3 > div{background:var(--panel-2);border-radius:10px;padding:6px 9px} .ph-t3 small{display:block;font-size:11px;color:var(--muted)} .ph-t3 b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
@@ -708,11 +721,33 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .ib.note.on{background:#fdeede;border-color:#e8742a} .ib.mach.on{background:#fbe9e7;border-color:#d0281c} .ib.hist.on{background:var(--panel-2);border-color:var(--fg)}
   .ibd{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;border-radius:9px;background:var(--crit);color:#fff;font:800 10px/17px var(--f-body);font-style:normal;text-align:center;padding:0 4px}
   .ph-b{display:flex;gap:6px;padding:0 12px;margin:0} .ph-b .btn{flex:1;min-height:40px;font-size:13.5px;font-weight:600;justify-content:center}
+  /* khung công nhân (14/10) — GIỐNG 100% demo docs/demo-hien-thi-van-de/the-cong-nhan-tab.html: vòng %EFF phát sáng + 3 tab + lưới thông tin + hộp công đoạn */
+  .ph-hero{display:flex;gap:10px;align-items:center;padding:4px 12px 6px}
+  .ph-ring{--p:0;--c:var(--accent);width:70px;height:70px;border-radius:50%;flex:none;display:grid;place-items:center;position:relative;background:conic-gradient(from -40deg,var(--c) calc(var(--p)*1%),rgba(255,255,255,.1) 0);filter:drop-shadow(0 0 7px var(--c))}
+  .ph-ring::before{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--panel)} .stage .tip .ph-ring b{position:relative;display:block;font:800 18px var(--f-body);color:var(--c);font-variant-numeric:tabular-nums} .ph-ring small{position:absolute;bottom:13px;font-size:7.5px;color:var(--muted)}
+  .ph-hr{flex:1;min-width:0} .ph-hr .chip{margin:0 0 2px;display:inline-block;font:800 8.5px var(--f-body);letter-spacing:.03em;padding:1px 5px;border-radius:4px} .stage .tip .ph-hr b.wn{display:block;font:800 14px var(--f-body);color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .ph-hr .sub{font-size:10px;color:var(--muted)} .ph-hr .nums{font-size:10.5px;margin-top:3px;color:var(--fg)} .stage .tip .ph-hr .nums b{display:inline;font:800 10.5px var(--f-body);color:var(--fg)}
+  .ph-tabs{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin:0 12px 7px} .stage .tip .ph-tabs b{flex:1;text-align:center;padding:6px 2px;font:700 10px var(--f-body);color:var(--muted);white-space:nowrap;cursor:pointer;display:block} .stage .tip .ph-tabs b.on{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)} .stage .tip .ph-tabs b span{background:var(--crit);color:#fff;border-radius:7px;padding:0 5px;font-size:9px;margin-left:3px}
+  .ph-gr{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;font-size:10.5px} .ph-gr div{display:flex;justify-content:space-between;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent);padding:3px 0} .ph-gr div.s2{grid-column:span 2} .ph-gr span{color:var(--muted)} .stage .tip .ph-gr b{font:700 10.5px var(--f-body);display:inline} .ph-gr em{font-style:normal;color:var(--crit);font-size:9px;margin-left:4px}
+  .ph-osec{font:700 10px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--fg) 78%,var(--muted));display:flex;justify-content:space-between;align-items:center;margin:9px 0 5px} .ph-osec .chip{font:800 8.5px var(--f-body);padding:1px 5px;border-radius:4px;letter-spacing:.03em;text-transform:none}
+  .ph-opbox{border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--panel-2) 55%,transparent);padding:6px 8px} .ph-opbox .ph-gr{grid-template-columns:1fr}
+  /* ghi chú / máy hỏng — demo the-cong-nhan-tab.html (.al + .bt): viền trái màu, 2 dòng chữ, 2 nút viên thuốc cùng hàng bên phải */
+  .ph-mid .nrec{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;border:1px solid color-mix(in srgb,var(--pc) 40%,transparent);border-left:3px solid var(--pc);border-radius:7px;background:color-mix(in srgb,var(--pc) 8%,transparent);padding:4px 7px;margin:0 0 6px;font-size:11.5px}
+  .ph-mid .nrec .nt{min-width:0;grid-column:1} .ph-mid .nrec .nt span{font-size:11.5px} .ph-mid .nrec .nt strong{font-weight:800} .ph-mid .nrec small{display:block;color:var(--muted);font-size:10px} .ph-mid .nrec a{grid-column:1/-1}
+  .stage .tip .ph-mid .nrec .nact{grid-column:2;grid-row:1;margin:0;display:flex;gap:5px;flex-wrap:nowrap;align-self:center}
+  .stage .tip .ph-mid .nrec .nact .btn{min-height:0;height:22px;padding:0 10px;font:700 10.5px var(--f-body);border-radius:12px;white-space:nowrap;display:inline-grid;place-items:center}
+  .ph-osec em{font-style:normal;color:var(--accent);font-weight:600;text-transform:none;letter-spacing:0}
+  .ph-cd{display:grid;grid-template-columns:34px 1fr auto;gap:0 8px;align-items:center;font-size:10.5px;padding:3px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)} .ph-cd:last-of-type{border-bottom:0}
+  .ph-cd .c{color:var(--muted);font-weight:700} .ph-cd .nmx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .stage .tip .ph-cd b{display:block;font:800 10.5px var(--f-body);text-align:right}
+  .ph-cd.main .c,.stage .tip .ph-cd.main b{color:var(--accent)} .ph-cd .bar2{grid-column:2/4;height:3px;border-radius:2px;background:color-mix(in srgb,var(--fg) 10%,transparent);margin-top:2px} .ph-cd .bar2 i{display:block;height:100%;border-radius:2px;background:#6fa3ff} .ph-cd.main .bar2 i{background:var(--accent)}
+  .ph-tot{display:flex;justify-content:space-between;font:800 11px var(--f-body);padding-top:4px;border-top:1px solid var(--line);margin-top:2px}
+  .ph-ordn{font-size:10.5px;margin:-2px 0 5px;color:var(--fg)} .stage .tip .ph-ordn b{display:inline;font:900 1.12em var(--f-body)}
+  .ph-add{display:flex;gap:6px;margin-top:6px} .ph-add .btn{flex:1;min-height:0;height:26px;padding:0 10px;font-size:10.5px;border-radius:13px;justify-content:center} .ph-none{font-size:11px;color:var(--muted);padding:4px 0}
   .ph-more{text-align:center;color:var(--accent);font-size:12.5px;font-weight:600;padding:6px 0 8px;cursor:pointer}
   .ph-mid{padding:0 12px 6px}
   .stage .tip .ph-mid dl{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 10px;font-size:12.5px;margin:6px 0} .stage .tip .ph-mid dd{text-align:right;margin:0;font:600 12px var(--f-mono);white-space:nowrap} .stage .tip .ph-mid dt{color:var(--muted)}
   .ph-sec{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:9px 0 7px;font-size:13.5px;font-weight:600;color:var(--accent);cursor:pointer} .ph-sec em{font-style:normal;color:var(--muted);font-weight:400;font-size:12px}
   .ph-mid .nsec{border:0;margin:0;padding:0}
+@media (max-width:700px){
   .stage .tip.card .cbar{cursor:default;padding:10px 12px} .stage .tip.card .cbar .btn{min-width:44px;min-height:40px}
   .stage .tip{display:none!important} .stage .tip.card:not([hidden]){display:block!important}
   .btn,.pit,.kc{min-height:44px} .stage .tip .nbtn .btn,.stage .tip .nact .btn{min-height:44px;padding:8px 14px;font-size:14px}
@@ -722,6 +757,36 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   .plist{max-height:none}
   #secTools{display:none!important}
   .plist{max-height:none;gap:5px;margin-top:6px} .pit{padding:5px 10px;gap:8px;min-height:0} .pit .pd{font-size:16px} .pit b{font-size:13.5px;line-height:1.2} .pit small{font-size:12px;white-space:nowrap}
+  /* 14/10: tab Xử lý — thẻ chữ nhỏ gọn hơn + thanh lọc loại / sắp xếp */
+  /* Phương án A (duyệt 14/10) — đúng mẫu docs/demo-hien-thi-van-de/xu-ly-giam-sat-4-phuong-an.html: dòng đơn 27px, chấm màu · chuyền · chi tiết … nhãn loại phải */
+  #secMach{padding:6px 8px} #secMach h2{font:700 10.5px var(--f-body);letter-spacing:.06em;margin:0 0 5px;display:flex;gap:6px;align-items:center;color:#b9cbe6} #secMach h2 em{font-size:10.5px;font-style:normal;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+  .mit{border-bottom:1px solid var(--line)} .mit:last-child{border-bottom:0} .mit .pit{border-bottom:0;width:100%}
+  .mact{display:flex;align-items:center;gap:6px;padding:0 0 6px 13px;font-size:10px;color:var(--muted)} .mact .mw{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .mact .btn{min-height:0;height:22px;padding:0 10px;font-size:10.5px;border-radius:12px}
+  #secProb{padding:6px 8px} #secProb h2{font:700 10.5px var(--f-body);letter-spacing:.06em;margin:0 0 5px;display:flex;gap:6px;align-items:center;color:#b9cbe6} #secProb h2 em{font-size:10.5px;font-style:normal;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+  #secProb .plist,#secMach .plist{gap:0;margin-top:0}
+  .pit{height:27px;min-height:0;padding:0;gap:6px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;align-items:center}
+  .pit:last-child{border-bottom:0}
+  .pit:hover,.pit.on{background:var(--accent-soft)} .pit.on{outline:0;box-shadow:inset 2px 0 0 var(--pc)}
+  .pit .pd{font-size:0;line-height:0;flex:none} .pit .pd::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pc);box-shadow:0 0 6px var(--pc)}
+  .pit>span:not(.mgo){flex:1;flex-direction:row;align-items:center;gap:6px;min-width:0}
+  .pit>span:not(.mgo) small{order:1;flex:1;min-width:0;font-size:10.5px;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pit small span{display:inline;flex-direction:initial;white-space:nowrap} .pit small .pl{font-size:10.5px;font-weight:400;color:color-mix(in srgb,var(--fg) 82%,transparent)} .pit small .pl strong{font-weight:800;color:var(--fg)}
+  .pit>span:not(.mgo) b{order:2;flex:none;max-width:44%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 9px var(--f-body);padding:1px 6px;border-radius:5px;background:color-mix(in srgb,var(--pc) 22%,transparent);color:var(--pc)}
+  .pfl{gap:4px;margin:0 0 5px} .pfl button{font:600 9.5px var(--f-body);padding:2px 7px;border-radius:10px} .pfl button i{margin-left:3px}
+  /* thẻ chuyền phía trên khung 3D: 1 hàng gọn (mẫu A) */
+  .m-chips{padding:6px 8px 3px;gap:5px}
+  .m-chips .mc,.m-chips.many .mc{flex:0 0 auto;display:flex;align-items:center;gap:4px;padding:3px 7px;min-height:0;border-radius:8px}
+  .m-chips .mc b,.m-chips.many .mc b{font-size:10px;gap:4px} .m-chips .mc em,.m-chips.many .mc em{display:inline;font-size:10px}
+  .m-chips .mc .n{position:static;min-width:13px;height:13px;font-size:9px;margin-left:1px;padding:0 3px}
+  .m-chips .mc.more{flex:0 0 auto;flex-direction:row;padding:3px 7px;font-size:10px} .m-chips .mc.more svg{width:12px;height:12px}
+  .m-strip{font-size:10px;padding:2px 9px} .m-crumb{padding:5px 12px;font-size:12.5px}
+  /* 14/10: 3 nút trên khung 3D (cấu hình · toàn cảnh · toàn màn hình) bỏ nền, chỉ còn icon trắng + bóng mờ hòa với nền gạch; bỏ thẻ "Vấn đề n/m" nổi trên khung */
+  #v3QBtn,#v3Home,#v3Full{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:#fff!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.65))}
+  #v3PBan{display:none!important}
+  .pfl{display:flex;gap:6px;overflow-x:auto;margin:8px 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch} .pfl::-webkit-scrollbar{display:none}
+  .pfl button{flex:none;font:600 12px var(--f-body);padding:4px 10px;border-radius:14px;border:1px solid var(--line);background:none;color:var(--muted);min-height:0;cursor:pointer;white-space:nowrap}
+  .pfl button i{font-style:normal;font-weight:800;margin-left:4px;color:var(--fg)} .pfl button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)} .pfl button.on i{color:var(--accent)}
+  .pfl.srt{margin:4px 0 0} .pfl.srt .lb{flex:none;align-self:center;font-size:11px;color:var(--muted);padding-right:2px}
   .panel .sec h2,.panel #secTime h2,.panel .sec h3{font-size:15px} .panel .sec{padding:10px 12px}
   .bot-row{grid-template-columns:1fr;height:auto} .bot-row .bot-body{max-height:none}
   /* điện thoại: bỏ chế độ Thu gọn / Mở rộng của hàng dưới (đã lưu "s" thì bảng bị ẩn hẳn, "l" thì cao cố định) */
@@ -2495,7 +2560,7 @@ function effStations(I, cfg, L) {
 const bnOpen = new Set();
 function bnBlock(L, p, full) {
   const open = !full || bnOpen.has(p.key) ? ' open' : '';   // thẻ rê chuột (full = false) không bấm được → mở sẵn
-  if (p.status === 'skill') return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns skill"><span>🟠 ${T('Phụ thuộc tay nghề', 'Skill-dependent')} <small>· ${pct(p.load)} · ${p.people} ${T('người', 'ppl')}</small></span><span class="car">▾</span></div>
+  if (p.status === 'skill') return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns tn skill"><div><small>${T('Phụ thuộc tay nghề', 'Skill-dependent')}</small><b>${p.people} ${T('người', 'ppl')}</b></div><div class="r"><small>%EFF ${T('CĐ', 'op')}</small><b>${pct(p.load)}</b></div><span class="car">▾</span></div>
     <div class="bnd">${T(`%EFF công đoạn ${pct(p.load)}, ${p.people} người: 1 người vắng / chậm sẽ thành tắc nghẽn`, `op %EFF ${pct(p.load)}, ${p.people} operator(s): one absent / slow makes it a bottleneck`)}</div></div>`;
   if (p.key !== L.bottleneck) return '';
   const w = p.why || {}, byRate = p.trig !== 'gap', byGap = p.trig !== 'rate', hasNeed = isFinite(p.need);
@@ -2504,7 +2569,9 @@ function bnBlock(L, p, full) {
   const why = [byGap ? T(`hàng dồn: SL thấp hơn CĐ ${esc(p.prevOp)} ${pct(p.gap)}`, `WIP piling up: output ${pct(p.gap)} below op ${esc(p.prevOp)}`) : '', byRate && hasNeed ? T(`chậm hơn nhịp cần ${nf(p.need)} sp/giờ`, `below the required pace ${nf(p.need)} pcs/h`) : ''].filter(Boolean).join(' · ');
   const sc = Math.max(p.rate, hasNeed ? p.need : 0, 1) * 1.08, rw = Math.min(100, p.rate / sc * 100);
   const bars = `<div class="bnm"><span>${T('sp / giờ', 'pcs / h')}</span><div class="bnbar"><i style="width:${rw.toFixed(0)}%"></i>${hasNeed ? `<u style="left:${Math.min(99, p.need / sc * 100).toFixed(0)}%"></u>` : ''}</div><b>${nf(p.rate)}</b>${byGap && isFinite(p.gap) ? `<span>${T('so CĐ', 'vs op')} ${esc(p.prevOp)}</span><div class="bnbar"><i class="o" style="width:${Math.max(2, Math.min(100, (1 - p.gap) * 100)).toFixed(0)}%"></i></div><b>−${pct(p.gap)}</b>` : ''}</div>${hasNeed ? `<p class="bnn">${T('vạch đen = nhịp cần', 'black mark = required pace')} ${nf(p.need)}</p>` : ''}`;
-  return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns"><span>🔴 ${T('Tắc nghẽn', 'Bottleneck')} ${nf(p.rate)} ${T('sp/giờ', 'pcs/h')} <small>· ${cause}</small></span><span class="car">▾</span></div>
+  const tL = w.kind === 'people' ? [T('Thiếu người', 'Short of people'), T(`~${nf(Math.ceil(w.add * 10) / 10, 1)} người`, `~${nf(Math.ceil(w.add * 10) / 10, 1)} FTE`)] : w.emp ? [T('Tay nghề', 'Skill'), esc(w.name || w.emp)] : [T('Nguyên nhân', 'Cause'), T('tay nghề', 'skill')];
+  const tR = w.emp && w.kind !== 'people' ? [`%EFF · ${T('sp/giờ', 'pcs/h')}`, `${pct(w.eff)} · ${nf(p.rate)}`] : [`%EFF ${T('CĐ', 'op')} · ${T('sp/giờ', 'pcs/h')}`, `${pct(p.load)} · ${nf(p.rate)}`];
+  return `<div class="bnx${open}" data-bnx="${esc(p.key)}"><div class="bns tn"><div><small>${tL[0]}</small><b>${tL[1]}</b></div><div class="r"><small>${tR[0]}</small><b>${tR[1]}</b></div><span class="car">▾</span></div>
     <div class="bnd">${bars}<div class="bnc">${T('Nguyên nhân', 'Cause')}: ${causeFull}</div>${why ? `<p class="bnw"><b>${T('Lý do', 'Reason')}:</b> ${why}</p>` : ''}</div></div>`;
 }
 // Công nhân gán vào trạm (A = PT.assignStations): thẻ sàn = SL công đoạn chính · sp/giờ · %EFF;
@@ -2726,6 +2793,8 @@ const PROB_T = { bn: ['Tắc nghẽn', 'Bottleneck'], stall: ['Công đoạn ng�
 const PROB_CLR = { bn: '#c63a2f', stall: '#39424f', skill: '#e8742a', wlow: '#c63a2f', wstall: '#39424f', mach: '#7b3fb5', note: '#d9822b' };
 const PRANK = { mach: 7, bn: 6, stall: 5, skill: 4, wlow: 3, wstall: 2, note: 1 };
 let PROB = [], PROB_ALL = [], probKey = null;
+let probFlt = '', probSort = 'sev';   // điện thoại (14/10): lọc theo loại vấn đề + sắp xếp danh sách hiển thị (không đổi PROB: nút ▶ / camera vẫn đi theo thứ tự nặng trước)
+const PROB_SH = { bn: ['Tắc nghẽn', 'Bottleneck'], stall: ['Ngừng', 'Stopped'], skill: ['Tay nghề', 'Skill'], wlow: ['CN thấp', 'Low op.'], wstall: ['CN mất DL', 'No data'], mach: ['Máy hỏng', 'Machine'], note: ['Ghi chú', 'Note'] };
 // Phạm vi danh sách: null = chuyền đang chọn (thẻ chuyền); 'all' = cả xưởng (thẻ "Cả block", nút Toàn cảnh / Cả cặp)
 let probScope = null;
 const probAll = () => { probScope = 'all'; probKey = null; v3Mode = 'all'; if (V3) V3.view('all', null, true); drawHud(lastLL); probUi(); };
@@ -2754,14 +2823,22 @@ function probCard() {
   const n = PROB.length, cur = PROB.findIndex(p => probId(p) === probKey);
   $('secProb').hidden = false;
   if (!n) { el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')}</h2><p class="pnone">✓ ${T('Hiện không có công đoạn nào có vấn đề.', 'No operation with a problem right now.')}</p>`; return; }
-  el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')} <em>(${probScope === 'all' ? T('cả xưởng', 'whole workshop') + ' · ' + n : esc(ST.cur) + ' · ' + n + ' / ' + PROB_ALL.filter(q => q.status !== 'mach').length + ' ' + T('cả xưởng', 'workshop')})</em></h2><div class="plist">` + PROB.map((p, i) => {
+  const ph = matchMedia('(max-width:700px)').matches, cnt = {}; PROB.forEach(p => { cnt[p.status] = (cnt[p.status] || 0) + 1; });
+  if (!cnt[probFlt]) probFlt = '';
+  const idx = PROB.map((p, i) => i).filter(i => !ph || !probFlt || PROB[i].status === probFlt);
+  if (ph && probSort === 'line') idx.sort((a, b) => String(PROB[a].line).localeCompare(String(PROB[b].line), undefined, { numeric: true }) || (PROB[a].ban || 0) - (PROB[b].ban || 0));
+  else if (ph && probSort === 'cnt') idx.sort((a, b) => (PROB[b].bans ? PROB[b].bans.length : 1) - (PROB[a].bans ? PROB[a].bans.length : 1) || a - b);
+  const bar = !ph ? '' : `<div class="pfl"><button data-pf="" class="${probFlt ? '' : 'on'}">${T('Tất cả', 'All')}<i>${n}</i></button>${Object.keys(PROB_SH).filter(k => cnt[k]).sort((a, b) => PRANK[b] - PRANK[a]).map(k => `<button data-pf="${k}" class="${probFlt === k ? 'on' : ''}">${T(...PROB_SH[k])}<i>${cnt[k]}</i></button>`).join('')}</div>`;
+  el.innerHTML = `<h2>${T('⚠ Cần xử lý', '⚠ To handle')} <em>(${probScope === 'all' ? T('cả xưởng', 'whole workshop') + ' · ' + n : esc(ST.cur) + ' · ' + n + ' / ' + PROB_ALL.filter(q => q.status !== 'mach').length + ' ' + T('cả xưởng', 'workshop')})</em></h2>${bar}<div class="plist">` + idx.map(i => { const p = PROB[i];
     const wk = p.status === 'wlow' || p.status === 'wstall', r = p.rec;
-    if (r) return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${r.kind === 'machine' ? MACH_CLR(r) : PROB_CLR[p.status]}"><i class="pd">${r.kind === 'machine' ? '🔧' : '📝'}</i><span><b>${T(...PROB_T[p.status])} · ${esc(noteTypeName(r))}</b>
-      <small><span class="pl">${esc(p.line)} · ${p.ban != null ? T('Trạm', 'St.') + ' ' + p.ban : T('Ngoài trạm', 'Off station')}</span>${recWho(r) ? ' · ' + recWho(r) : ''} · ${esc(noteStatName(r))}${r.text ? ' · ' + esc(r.text) : ''}</small></span></button>`;
-    return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${PROB_CLR[p.status]}"><i class="pd">${wk ? '👤' : '⚙'}</i><span><b>${T(...PROB_T[p.status])}</b>
-      <small>${wk ? `<span class="pl">${esc(p.line)} · ${T('Trạm', 'St.')} ${p.ban}</span> · ${esc(p.who || '')}${p.eff != null && isFinite(p.eff) ? ' ' + pct(p.eff) : ''}` : `<span class="pl">${esc(p.line)} · ${T('CĐ', 'Op')} ${esc(p.code || '')} ${esc(p.name || '')}</span> · ${p.bans.length} ${T('trạm', 'stations')}`}</small></span></button>`;
+    if (r) return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${r.kind === 'machine' ? MACH_CLR(r) : PROB_CLR[p.status]}"><i class="pd">${r.kind === 'machine' ? '🔧' : '📝'}</i><span><b>${(ph ? T(...PROB_SH[p.status]) : T(...PROB_T[p.status])) + ' · ' + esc(noteTypeName(r))}</b>
+      <small><span class="pl"><strong>${esc(p.line)}</strong> · ${p.ban != null ? T('Trạm', 'St.') + ' ' + p.ban : T('Ngoài trạm', 'Off station')}</span>${recWho(r) ? ' · ' + recWho(r) : ''} · ${esc(noteStatName(r))}${r.text ? ' · ' + esc(r.text) : ''}</small></span></button>`;
+    return `<button class="pit${i === cur ? ' on' : ''}" data-i="${i}" style="--pc:${PROB_CLR[p.status]}"><i class="pd">${wk ? '👤' : '⚙'}</i><span><b>${ph ? T(...PROB_SH[p.status]) : T(...PROB_T[p.status])}</b>
+      <small>${wk ? `<span class="pl"><strong>${esc(p.line)}</strong> · ${T('Trạm', 'St.')} ${p.ban}</span> · ${esc(p.who || '')}${p.eff != null && isFinite(p.eff) ? ' ' + pct(p.eff) : ''}` : `<span class="pl"><strong>${esc(p.line)}</strong> · ${T('CĐ', 'Op')} ${esc(p.code || '')} ${esc(p.name || '')}</span> · ${p.bans.length} ${T('trạm', 'stations')}`}</small></span></button>`;
   }).join('') + '</div>';
   el.querySelectorAll('.pit').forEach(b => { b.onclick = () => probGo(+b.dataset.i); });
+  el.querySelectorAll('[data-pf]').forEach(b => { b.onclick = () => { probFlt = b.dataset.pf; probCard(); }; });
+  el.querySelectorAll('[data-ps]').forEach(b => { b.onclick = () => { probSort = b.dataset.ps; probCard(); }; });
 }
 // ---------- Điện thoại (plan 9.7): thanh dưới + Home Block → Xưởng → Chuyền ----------
 // mTab: home | mon (giám sát 3D) | prob (cần xử lý) | mach (máy chờ sửa) | stat (chỉ số / biểu đồ); body[data-mt] điều khiển phần hiện (CSS ≤ 700 px). Máy tính: không ảnh hưởng.
@@ -2881,7 +2958,7 @@ function mDraw() {
   const nav = $('mNav'); if (!nav) return;
   document.body.dataset.mt = mTab; document.body.dataset.sv = mTab === 'stat' ? mSV : '';
   const nProb = PROB_ALL.filter(q => q.status !== 'mach').length, nMach = PROB_ALL.filter(q => q.status === 'mach').length;   // tổng mọi chuyền (cùng số với badge Block)
-  const tabs = [['home', '🏠', 'Home', 'Home'], ['prob', '⚠', 'Xử lý', 'To do', nProb], ['mon', '📺', 'Giám sát', 'Monitor'], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
+  const tabs = [['home', '🏠', 'Home', 'Home'], ['mon', '📺', 'Giám sát', 'Monitor', nProb], ['mach', '🔧', 'Máy', 'Repair', nMach], ['stat', '📊', 'Chỉ số', 'Stats']];
   nav.innerHTML = tabs.map(t => `<button data-mt="${t[0]}" class="${mTab === t[0] ? 'on' : ''}"><i>${M_ICO[t[0]]}</i>${T(t[2], t[3])}${t[4] ? `<span>${t[4]}</span>` : ''}</button>`).join('');
   nav.querySelectorAll('button').forEach(b => { b.onclick = () => { const t = b.dataset.mt; if (t === 'home' && mTab === 'home') { mBlock = ''; mXuong = ''; } mSet(t); }; });
   const cr = $('mCrumb'), home = $('mHome'), bk = NM && mBlock ? NM.blocks.find(b => b.id === mBlock) : null;
@@ -2962,7 +3039,7 @@ const recWho = r => {
   const D = V3D[r.line]; if (!D) return '';
   const emp = r.ban != null ? (D.A.byBan[r.ban] && D.A.byBan[r.ban].emp) : r.emp; if (!emp) return r.ban != null ? '👤 ' + T('trạm đang trống', 'station empty') : '';
   const w = D.L.workers.find(x => String(x.emp) === String(emp));
-  return `👤 ${esc((w && w.name) || T('chưa rõ tên', 'unknown name'))} · ${T('mã', 'ID')} ${esc(String(emp))}`;
+  return `👤 ${esc((w && w.name) || T('chưa rõ tên', 'unknown name'))} · ${T('MNV', 'Emp. ID')}: ${esc(String(emp))}`;
 };
 function machCard() {
   const sec = $('secMach'), el = $('machx'); if (!sec || !el) return;
@@ -2972,6 +3049,13 @@ function machCard() {
   if (!list.length) {
     el.innerHTML = emptyPh ? `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')}</h2><p class="pnone">✓ ${T('Không có máy hỏng nào đang chờ sửa.', 'No broken machine waiting for repair.')}</p><p class="note">${T('Muốn báo máy hỏng: mở 📺 Giám sát, bấm vào trạm, chọn 🔧 Máy hỏng.', 'To report a broken machine: open 📺 Monitor, tap the station, choose 🔧 Broken machine.')}</p><button class="btn pri" id="mGoMon">📺 ${T('Mở Giám sát', 'Open Monitor')}</button>` : '';
     const g = $('mGoMon'); if (g) g.onclick = () => mSet('mon');
+    return;
+  }
+  if (matchMedia('(max-width:700px)').matches) {   // điện thoại (14/10): mỗi máy 1 dòng như danh sách vấn đề (chấm · chuyền · trạm · người · nhãn) + 1 dòng chờ bao lâu + nút đổi trạng thái
+    el.innerHTML = `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')} <em>(${list.length})</em></h2><div class="plist">` + list.map(r => `<div class="mit" style="--pc:${MACH_CLR(r)}"><button class="pit" data-go="${r.id}" style="--pc:${MACH_CLR(r)}"><i class="pd">🔧</i><span><b>${T('Máy hỏng', 'Machine')} · ${esc(noteTypeName(r))}</b><small><span class="pl"><strong>${esc(r.line)}</strong> · ${r.ban != null ? T('Trạm', 'St.') + ' ' + r.ban : T('Ngoài trạm', 'Off station')}</span>${recWho(r) ? ' · ' + recWho(r) : ''}</small></span></button>
+      <div class="mact"><span class="mw">${esc(noteStatName(r))} · ${T('chờ', 'waiting')} ${waitTxt(r.at)}${r.text ? ' · ' + esc(r.text) : ''}</span>${r.status === 'new' ? `<button class="btn sm" data-nid="${r.id}" data-nst="doing">${T('Đang sửa', 'Start repair')}</button>` : ''}<button class="btn sm pri" data-nid="${r.id}" data-nst="done">${T('Đã sửa xong', 'Repaired')}</button></div></div>`).join('') + '</div>';
+    el.querySelectorAll('[data-nst]').forEach(b => { b.onclick = () => { NT.setStatus(b.dataset.nid, b.dataset.nst, noteWho()); afterNotes(); }; });
+    el.querySelectorAll('[data-go]').forEach(b => { b.onclick = () => { const i = PROB.findIndex(p => p.rec && p.rec.id === b.dataset.go); if (i >= 0) probGo(i); }; });
     return;
   }
   el.innerHTML = `<h2>${T('🔧 Máy chờ sửa', '🔧 Machines to repair')} <em>(${list.length})</em></h2><div class="plist">` + list.map(r => `<div class="pit mrow" style="--pc:${MACH_CLR(r)}"><i class="pd">🔧</i>
@@ -3003,7 +3087,7 @@ function probGo(i) {
   probKey = probId(p);
   const pn = $('panel'), sc = pn.scrollTop;
   if (probScope !== 'all' && ST.cur !== p.line) selectLine(p.line, false);
-  const ok = V3.focusEmp(p.line, p.ban != null ? { ban: p.ban } : { emp: p.emp }, true, { pinMs: 12000 });
+  const ok = V3.focusEmp(p.line, p.ban != null ? { ban: p.ban } : { emp: p.emp }, true, { pinMs: 12000, bans: p.bans });
   if (!ok) V3.view('line', p.line, true);
   probUi();
   pn.scrollTop = sc; requestAnimationFrame(() => { pn.scrollTop = sc; });
@@ -3043,6 +3127,13 @@ function tenure(d) {
   if (m < 1) { const n = Math.max(0, Math.round((now - d) / 864e5)); return T(`${n} ngày`, `${n} days`); }
   const y = Math.floor(m / 12), r = m % 12;
   return y ? T(`${y} năm${r ? ` ${r} tháng` : ''}`, `${y} y${r ? ` ${r} mo` : ''}`) : T(`${r} tháng`, `${r} mo`);
+}
+function hcPairs(emp) {
+  const x = hcOf(emp);
+  if (!x) return [[T('Bậc kỹ năng', 'Skill grade'), HC ? T('không có trong file HC', 'not in the HC file') : T('chưa có file HC (📁 Thư mục SCP)', 'no HC file (📁 SCP folder)'), 1]];
+  const j = PT.xlDate(x[1]), gone = PT.xlDate(x[3]);
+  return [[T('Bậc kỹ năng', 'Skill grade'), esc(x[2] || '–')], [T('Giới tính', 'Gender'), x[0] === 'F' ? T('Nữ', 'Female') : x[0] === 'M' ? T('Nam', 'Male') : esc(x[0] || '–')], [T('Ngày vào', 'Join date'), dmy(j) + ' · ' + tenure(j), 1]]
+    .concat(gone ? [[T('Nghỉ việc', 'Resigned'), dmy(gone), 1]] : []);
 }
 function hcRows(emp, full) {
   const x = hcOf(emp);
@@ -3189,7 +3280,7 @@ let noteHist = false;   // hiện lịch sử (bản ghi đã xong) trong khu gh
 try { noteHist = localStorage.getItem('vl-note-hist') === '1'; } catch (e) {}
 let noteForm = null;                                          // 'note' | 'machine' | null: biểu mẫu đang mở trong bảng nổi
 function cardDraw(force) {
-  const box = $('v3Card'), ph = isPhoneUi(), h = cardO && (ph ? phoneSheet(cardO) : tipHtml(cardO, true));
+  const box = $('v3Card'), ph = isPhoneUi(), h = cardO && phoneSheet(cardO);   // PC + điện thoại cùng 1 thẻ (hero + 3 tab); thẻ rê chuột vẫn là tipHtml
   if (h == null) { cardClose(); return; }
   const ae = document.activeElement;
   if (!force && ae && box.contains(ae) && (ae.closest('.nform') || ae.closest('.nfB'))) return;   // đang gõ ghi chú: không vẽ lại làm mất chữ
@@ -3198,12 +3289,12 @@ function cardDraw(force) {
     box.innerHTML = h; box.classList.remove('shm', 'sh0', 'sh1', 'sh2'); box.classList.add('sh' + (shLv < 0 ? 'm' : shLv)); if (shLv <= 0) box.style.height = '';
     box.hidden = false; box.style.maxHeight = ''; box.scrollTop = sc; return;
   }
-  box.innerHTML = `<div class="cbar"><span>${T('Thông tin công nhân / trạm', 'Operator / station details')}</span><button class="btn sm" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div><div class="cbody">${h}</div>`;
+  box.innerHTML = h; box.classList.remove('shm', 'sh0', 'sh1', 'sh2');
   box.hidden = false;
-  box.style.maxHeight = ($('stage').clientHeight - 16) + 'px';
+  box.style.maxHeight = ($('stage').clientHeight - 16) + 'px'; box.style.height = Math.min(620, $('stage').clientHeight - 16) + 'px';   // PC: cao cố định, đổi tab không co giãn
   box.scrollTop = sc;
 }
-function cardClose() { cardO = null; noteForm = null; shLv = 0; shSec = ''; $('v3Card').style.height = ''; $('v3Card').hidden = true; }
+function cardClose() { cardO = null; noteForm = null; shLv = 0; shSec = ''; shTab = 'ov'; shH = 0; $('v3Card').style.height = ''; $('v3Card').style.minHeight = ''; $('v3Card').hidden = true; }
 // Lưu ghi chú / máy hỏng từ biểu mẫu trong bảng nổi
 async function photoUp(file) {
   const bmp = await createImageBitmap(file), k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
@@ -3240,8 +3331,8 @@ function noteParts(o) {
   const form = !noteForm ? '' : noteFormB(o, noteForm === 'machine');
   const nDone = recs.filter(r => r.status === 'done').length;
   const list = recs.filter(r => noteHist || r.status !== 'done').slice(0, 20).map(r => `<div class="nrec${r.status === 'done' ? ' done' : ''}" style="--pc:${r.kind === 'machine' ? MACH_CLR(r) : PROB_CLR.note}">
-      <span>${r.kind === 'machine' ? '🔧' : '📝'} <strong>${esc(noteTypeName(r))}</strong> · ${esc(noteStatName(r))}</span>${r.text ? `<span> — ${esc(r.text)}</span>` : ''}
-      <small>${esc(r.by || T('(không tên)', '(no name)'))} · ${noteTime(r.at)}${r.doneAt ? ' → ' + noteTime(r.doneAt) : ''}</small>${r.photo ? `<a href="/photo/${esc(r.photo)}" target="_blank" rel="noopener"><img class="nph" src="/photo/${esc(r.photo)}" alt="${esc(T('Ảnh đính kèm', 'Attached photo'))}"></a>` : ''}
+      <div class="nt"><span>${r.kind === 'machine' ? '🔧' : '📝'} <strong>${esc(noteTypeName(r))}</strong> · ${esc(noteStatName(r))}</span>${r.text ? `<span> — ${esc(r.text)}</span>` : ''}
+      <small>${esc(r.by || T('(không tên)', '(no name)'))} · ${noteTime(r.at)}${r.doneAt ? ' → ' + noteTime(r.doneAt) : ''}</small></div>${r.photo ? `<a href="/photo/${esc(r.photo)}" target="_blank" rel="noopener"><img class="nph" src="/photo/${esc(r.photo)}" alt="${esc(T('Ảnh đính kèm', 'Attached photo'))}"></a>` : ''}
       <div class="nact">${r.status === 'new' ? `<button class="btn sm" data-nid="${r.id}" data-nst="doing">${T(r.kind === 'machine' ? 'Đang sửa' : 'Đang xử lý', r.kind === 'machine' ? 'Start repair' : 'In progress')}</button>` : ''}${r.status !== 'done' ? `<button class="btn sm pri" data-nid="${r.id}" data-nst="done">${T(r.kind === 'machine' ? 'Đã sửa xong' : 'Đã xong', r.kind === 'machine' ? 'Repaired' : 'Done')}</button>` : `<button class="btn sm" data-nid="${r.id}" data-nst="new">${T('Mở lại', 'Reopen')}</button>`}</div></div>`).join('');
   const btns = `<button class="btn sm${noteForm === 'note' ? ' on' : ''}" data-nf="note">📝 ${T('Ghi chú', 'Note')}</button>${o.free ? '' : `<button class="btn sm${noteForm === 'machine' ? ' on' : ''}" data-nf="machine">🔧 ${T('Máy hỏng', 'Machine down')}</button>`}${nDone ? `<button class="btn sm${noteHist ? ' on' : ''}" data-nhist aria-pressed="${noteHist}" title="${esc(T('Ẩn / hiện các ghi chú và máy hỏng đã xong', 'Show / hide finished notes and machine faults'))}">🕘 ${T('Lịch sử', 'History')} (${nDone}) ${noteHist ? '▴' : '▾'}</button>` : ''}`;
   const ic = d => `<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
@@ -3250,7 +3341,7 @@ function noteParts(o) {
   const ibtns = ib('note', noteForm === 'note', 'data-nf="note"', T('Ghi chú', 'Note'), IC.note)
     + (o.free ? '' : ib('mach', noteForm === 'machine', 'data-nf="machine"', T('Máy hỏng', 'Machine down'), IC.wr))
     + (nDone ? ib('hist', noteHist, 'data-nhist aria-pressed="' + noteHist + '"', T('Lịch sử ghi chú / máy hỏng đã xong', 'History of finished notes / machine faults'), IC.hist, nDone) : '');
-  return { btns, ibtns, form, list, nDone };
+  return { btns, ibtns, form, list, nDone, nOpen: recs.filter(r => r.status !== 'done').length };
 }
 function noteSection(o) {
   const P = noteParts(o);
@@ -3258,7 +3349,7 @@ function noteSection(o) {
 }
 // ---------- Khung trạm trên điện thoại (≤ 700 px): 3 mức, mặc định thu gọn ----------
 // shLv 0 = thu gọn (tiêu đề + người + 3 nút), 1 = vừa (+ ghi chú, số liệu), 2 = rộng (mở %EFF lịch sử / cả công đoạn: shSec). Vuốt lên / xuống ở đầu khung để đổi mức.
-let shLv = 0, shSec = '';
+let shLv = 0, shSec = '', shTab = 'ov', shH = 0;   // shH: chiều cao thẻ ở tab Tổng quan, các tab khác giữ ít nhất mức này   // shTab: ov (Tổng quan) | note (Máy / Ghi chú) | eff (%EFF lịch sử)
 const isPhoneUi = () => matchMedia('(max-width:700px)').matches;
 // Biểu mẫu Ghi chú / Máy hỏng trên điện thoại (phương án B, 13/10): chọn loại bằng chip, mô tả 1 dòng + nút camera, tên người báo nhớ sẵn, nút Gửi to
 function noteFormB(o, mach) {
@@ -3285,16 +3376,35 @@ function phoneSheet(o) {
     : w ? T(`Mã NV ${esc(w.emp)}: không có Data ETS.`, `Emp. ${esc(w.emp)}: no ETS data.`) : T('Chưa có công nhân.', 'No operator.');
   if (shLv < 0 && !noteForm) return `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-mini"><b class="wn">${has ? esc(w.name || w.emp) : title}</b>${has ? ` <b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b>` : ''}<em>${T('Trạm', 'St.')} ${o.free ? '–' : esc(st.extra ? st.anchorBan + '+' : o.t.ban)}</em><button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>`;
   if (noteForm && shLv >= 1) return phoneForm(o, w, title);
+  const hero = shLv >= 1 && has ? `<div class="ph-hero" data-shdrag><div class="ph-ring" style="--p:${w.earned > 0 ? Math.max(0, Math.min(100, w.eff * 100)) : 0};--c:${effHex(L, w)}"><b>${w.earned > 0 ? pct(w.eff) : '–'}</b><small>%EFF</small></div><div class="ph-hr">${ch ? chipHtml(st.status) : ''}<b class="wn">${esc(w.name || w.emp)}</b><div class="sub">${T('MNV', 'Emp. ID')}: ${esc(w.emp)}</div><div class="nums"><b>${nf(w.rate)}</b> ${T('sp/giờ', 'pcs/h')} · <b>${nf(w.primaryQty)}</b> ${T('sp', 'pcs')}</div></div></div>` : '';
   let h = `<div class="ph-hd" data-shdrag><div class="hdl"></div><div class="ph-t"><b>${title}</b><span class="ph-ib">${P.ibtns}</span><button class="btn sm x" data-x aria-label="${T('Đóng', 'Close')}">✕</button></div></div>
-    <div class="ph-w" data-shdrag>${ch ? chipHtml(st.status) + ' ' : ''}${shLv >= 1 && has ? `<b class="wn">${esc(w.name || w.emp)}</b> · ${T('mã', 'ID')} ${esc(w.emp)}` : wl}</div>${shLv >= 1 && has ? `<div class="ph-t3"><div><small>%EFF</small><b style="color:${effHex(L, w)}">${w.earned > 0 ? pct(w.eff) : '–'}</b></div><div><small>${T('sp / giờ', 'pcs / h')}</small><b>${nf(w.rate)}</b></div><div><small>${T('Sản lượng', 'Output')}</small><b>${nf(w.primaryQty)}</b></div></div>` : ''}
-    <div class="ph-more" data-shlv>${shLv ? '▾ ' + T('Thu gọn', 'Collapse') : '▴ ' + T('Xem thêm', 'More')}</div>`;
+    ${hero || `<div class="ph-w" data-shdrag>${ch ? chipHtml(st.status) + ' ' : ''}${wl}</div>`}
+    ${shLv ? '' : `<div class="ph-more" data-shlv>▴ ${T('Xem thêm', 'More')}</div>`}`;
   if (shLv >= 1) {
-    h += `<div class="ph-mid">${P.form}${P.list}`;
-    if (has) h += `<dl><dt>SAH</dt><dd>${nf(w.sah, 2)}</dd><dt>${T('Giờ làm', 'Hours')}</dt><dd>${nf(w.workHours, 2)}</dd>${hcRows(w.emp, true)}</dl>`;
-    if (has) h += `<div class="ph-sec" data-shsec="eff">${shSec === 'eff' ? '▾' : '▸'} ${T('%EFF lịch sử', '%EFF history')} ${new Date().getFullYear()}<em>${shSec === 'eff' ? '' : T('bấm để mở', 'tap to open')}</em></div>${shSec === 'eff' ? effHistHtml(L, w.emp) : ''}`;
-    const ob = ops.filter(q => !wkHide(q.op));
-    if (ob.length) h += `<div class="ph-sec" data-shsec="op">${shSec === 'op' ? '▾' : '▸'} ${T('Cả công đoạn', 'Whole operation')} ${esc(ob.map(q => q.op).join(', '))}<em>${shSec === 'op' ? '' : T(`${ob[0].people} người · ${nf(ob[0].qty)} sp`, `${ob[0].people} people · ${nf(ob[0].qty)} pcs`)}</em></div>${shSec === 'op' ? opBlocks(L, ob, true) : ''}`;
-    h += '</div>';
+    const gr = rows => `<div class="ph-gr">${rows.map(r => `<div${r[2] ? ' class="s2"' : ''}><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>`;
+    const addRow = `<div class="ph-add"><button class="btn sm" data-nf="note">＋ ${T('Ghi chú', 'Note')}</button>${o.free ? '' : `<button class="btn sm" data-nf="machine">＋ ${T('Máy hỏng', 'Machine down')}</button>`}</div>`;
+    const noteTab = `${P.list || `<div class="ph-none">${T('Chưa có ghi chú / máy hỏng.', 'No notes / machine faults yet.')}</div>`}${addRow}`;
+    if (!has) h += `<div class="ph-mid">${noteTab}</div>`;
+    else {
+      const tab = ['ov', 'note', 'eff'].includes(shTab) ? shTab : 'ov', tb = (k, vi, en, badge) => `<b data-shtab="${k}" class="${tab === k ? 'on' : ''}">${T(vi, en)}${badge ? `<span>${badge}</span>` : ''}</b>`;
+      h += `<div class="ph-tabs" role="tablist">${tb('ov', 'Tổng quan', 'Overview')}${tb('note', 'Máy / Ghi chú', 'Machine / Notes', P.nOpen)}${tb('eff', '%EFF lịch sử', '%EFF history')}</div><div class="ph-mid">`;
+      if (tab === 'ov') {
+        h += gr([['SAH', nf(w.sah, 2)], [T('Giờ làm', 'Hours'), nf(w.workHours, 2)]].concat(hcPairs(w.emp)));
+        const wo = wOps(w);   // [[mã CĐ, sản lượng]] giảm dần, không có CĐ 84
+        if (wo.length > 1) {
+          const mx = Math.max(...wo.map(q => q[1]), 1), pm = String(wPrim(w));
+          h += `<div class="ph-osec"><span>${T('Sản lượng theo công đoạn', 'Output by operation')}</span><em>${wo.length} ${T('CĐ', 'ops')}</em></div><div class="ph-opbox">${wo.map(([op, q]) => `<div class="ph-cd${op === pm ? ' main' : ''}"><span class="c">${op === pm ? '★ ' : ''}${esc(op)}</span><span class="nmx">${esc((L.ops.find(p => p.op === op) || {}).name || '')}</span><b>${nf(q)}</b><div class="bar2"><i style="width:${Math.round(q / mx * 100)}%"></i></div></div>`).join('')}<div class="ph-tot"><span>${T('Tổng', 'Total')}</span><span>${nf(wo.reduce((a, q) => a + q[1], 0))} ${T('sp', 'pcs')}</span></div></div>`;
+        }
+        ops.filter(q => !wkHide(q.op)).forEach(p => {
+          const rows = [[T('Người (quy đổi)', 'People (FTE)'), `${p.people} (${nf(p.fte, 1)})`], [T('Sản lượng', 'Output'), nf(p.qty)], [T('sp/giờ TB · 60′', 'pcs/h avg · 60′'), `${nf(p.rate)} · ${nf(p.rate60)}`], [T('Năng lực chuẩn', 'Std capacity'), nf(p.cap)]]
+            .concat(HIDE.opDetail ? [] : [[T('%EFF công đoạn', 'Op %EFF'), pct(p.load)], ['CT (' + T('phút/sp', 'min/pc') + ')', nf(p.ct, 3) + (p.key === L.ctBottleneck ? ' <em>Bottleneck</em>' : '')], [T('Phút chuẩn/người', 'Std min/person'), nf(p.wl, 3)]]);
+          const same = st && PT.codeMatch(st.code, p.op), nmx = (same && st.name) || p.name || '', nmOp = nmx ? ' · ' + esc(nmx) : '';
+          h += `<div class="ph-osec"><span>${T('Công đoạn', 'Operation')} ${esc(p.op)}${nmOp}</span>${same && ch ? chipHtml(st.status) : ''}</div>${opOrderNote(L, p) ? `<div class="ph-ordn">${opOrderNote(L, p).trim()}</div>` : ''}${bnBlock(L, p, true)}<div class="ph-opbox">${gr(rows)}</div>`;
+        });
+      } else if (tab === 'note') h += noteTab;
+      else h += effHistHtml(L, w.emp);
+      h += '</div>';
+    }
   }
   return h;
 }
@@ -3302,7 +3412,7 @@ function pick3D(o, e) {
   const w = o && (o.free || (o.info && !o.info.blank));
   if (!w) { cardClose(); return; }                          // bấm chỗ trống / trạm trống: đóng
   const first = !cardO || $('v3Card').hidden;
-  if (cardO !== o) { noteForm = null; shLv = isPhoneUi() ? 1 : 0; shSec = ''; $('v3Card').style.height = ''; }   // điện thoại: mở thẳng mức vừa (ghi chú + số liệu), vuốt xuống / Thu gọn để về mức nhỏ
+  if (cardO !== o) { noteForm = null; shLv = 1; shSec = ''; shTab = 'ov'; shH = 0; $('v3Card').style.height = ''; $('v3Card').style.minHeight = ''; }   // điện thoại: mở thẳng mức vừa (ghi chú + số liệu), vuốt xuống / Thu gọn để về mức nhỏ
   cardO = o; $('v3Tip').hidden = true; cardDraw();
   if (isPhoneUi()) return;                                  // điện thoại: khung cố định dưới màn hình
   if (first) {                                              // mở lần đầu: cạnh chỗ bấm; đang mở thì giữ chỗ người dùng đã kéo tới
@@ -3318,6 +3428,8 @@ function pick3D(o, e) {
     if (nf) { noteForm = noteForm === nf.dataset.nf ? null : nf.dataset.nf; if (noteForm && shLv < 1) shLv = 1; cardDraw(true); return; }
     if (e.target.closest('[data-nhist]')) { noteHist = !noteHist; try { localStorage.setItem('vl-note-hist', noteHist ? '1' : '0'); } catch (e2) {} if (shLv < 1) shLv = 1; cardDraw(true); return; }
     if (e.target.closest('[data-shlv]')) { shLv = shLv ? 0 : 1; shSec = ''; box.style.height = ''; cardDraw(true); return; }
+    const tbk = e.target.closest('[data-shtab]');
+    if (tbk) { const was = shLv; if (shTab === 'ov' && was === 1) shH = box.offsetHeight; shTab = tbk.dataset.shtab; const phn = isPhoneUi(); shLv = phn && (shTab === 'eff' || was === 2) ? 2 : 1; if (phn) box.style.height = shLv === 2 ? SNAP()[3] + 'px' : ''; cardDraw(true); box.style.minHeight = phn && shTab !== 'ov' && shLv === 1 && shH ? shH + 'px' : ''; return; }   // %EFF lịch sử cần chỗ rộng; đã kéo full thì giữ full
     const sec = e.target.closest('[data-shsec]');
     if (sec) { const was = shLv; shSec = shSec === sec.dataset.shsec ? '' : sec.dataset.shsec; shLv = shSec || was === 2 ? 2 : 1; box.style.height = shLv === 2 ? SNAP()[3] + 'px' : ''; cardDraw(true); return; }   // đã kéo / mở rộng: đóng mục không làm thẻ tụt xuống, giữ mức rộng
     const bx = e.target.closest('[data-bnx] .bns');
@@ -3336,7 +3448,7 @@ function pick3D(o, e) {
   box.addEventListener('change', e => { const p = e.target.closest && e.target.closest('[data-f="photo"]'); if (p) { const l = p.closest('.ncam'); if (l) { l.classList.toggle('has', !!(p.files && p.files[0])); l.firstElementChild.textContent = p.files && p.files[0] ? '✅' : '📷'; } } });
   box.addEventListener('toggle', e => { const m = +e.target.dataset.m; if (e.target.open) cardOpenM.add(m); else cardOpenM.delete(m); }, true);
   box.addEventListener('pointerdown', e => {
-    if (!e.target.closest('.cbar') || e.target.closest('[data-x]')) return;
+    if (isPhoneUi() || !e.target.closest('.ph-hd') || e.target.closest('[data-x], .ib, button')) return;
     dg = { x: e.clientX - box.offsetLeft, y: e.clientY - box.offsetTop }; box.setPointerCapture(e.pointerId); e.preventDefault();
   });
   box.addEventListener('pointermove', e => {
@@ -3369,7 +3481,6 @@ function pick3D(o, e) {
     let best = 0; S.forEach((s, i) => { if (Math.abs(s - h) < Math.abs(S[best] - h)) best = i; });
     if (Math.abs(v) > 0.6 && Math.abs(dy) > 20) best = Math.max(0, Math.min(3, Math.max(0, lv0 + 1) + (v > 0 ? 1 : -1)));   // hất nhanh: nhảy 1 mức từ mức đang có
     const lv = best - 1;                                                                    // chỉ số 0..3 → mức -1..2
-    if (lv === 2 && !shSec) shSec = 'eff';
     if (lv < 2 && lv >= 0 && lv !== 1) shSec = '';
     if (lv === 1) shSec = '';
     shLv = lv; box.style.height = lv >= 1 ? S[lv + 1] + 'px' : ''; cardDraw(true);
