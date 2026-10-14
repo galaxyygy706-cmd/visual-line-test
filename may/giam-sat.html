@@ -159,7 +159,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .chart .grid{stroke:var(--line);stroke-width:1}
 .chart .plan{stroke:var(--fg);stroke-width:2;stroke-dasharray:5 4;fill:none}
 .chart .val{fill:var(--fg);font:600 10px var(--f-mono)}
-.bal .takt{stroke:var(--fg);stroke-width:2} .bal .lim{stroke:var(--crit);stroke-width:2;stroke-dasharray:6 4} .bal text.lbl{fill:var(--fg);font:600 10px var(--f-mono)} .bal text.lbl.lim{fill:var(--crit)}
+.bal .takt{stroke:var(--fg);stroke-width:2} .bal .lim{stroke:var(--near);stroke-width:2;stroke-dasharray:6 4} .bal .plt{fill:var(--fg)} .bal .plm{fill:var(--near)} .bal text.pt{font:700 12.5px var(--f-body);fill:var(--panel)} .bal text.pm{font:700 12.5px var(--f-body);fill:#0a1528}
+.bltl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px} .bltl div{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:rgba(127,127,127,.06)} .bltl span{display:block;font-size:10px;color:var(--muted)} .bltl b{font-size:15px;font-family:var(--f-body)} .bltl .am{color:var(--near)}
+.blsh{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin:4px 0 6px;font-size:11px;color:var(--muted)} .blsh .tag{background:rgba(255,90,95,.2);color:#ff9a9d;border-radius:4px;font-weight:800;padding:1px 8px} .blsh .tag.lw{background:rgba(79,138,109,.2);color:#4f8a6d} .blsh b{color:var(--fg)}
 .bal .opc{fill:var(--fg);font:600 11px var(--f-mono)} .bal .opn{font:9.5px var(--f-body)} .bal .balb{cursor:pointer} .bal .balb:hover rect{opacity:.8}
 .bl-bad{fill:var(--crit)} .bl-near{fill:var(--near)} .bl-ok{fill:var(--ok)} .bl-low{fill:#8fb9a4} .bl-na{fill:var(--gray)}
 .balsum{margin:2px 0 6px;font-size:12.5px;line-height:1.35;min-height:4.05em;color:var(--muted)} .balsum b{color:var(--fg);font-family:var(--f-mono)} .balsum .bad{color:var(--crit);font-weight:600} .balsum .low{color:#4f8a6d;font-weight:600}
@@ -599,6 +601,18 @@ body.cr .bns.tn .r b,body.cr .stage .tip .bns.tn .r b{color:#ff9a9a} :root[data-
   .m-crumb .hm{display:inline-flex;vertical-align:-4px} .m-crumb .hm svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .mr{width:100%;display:flex;align-items:center;gap:10px;padding:7px 10px;margin-bottom:7px;min-height:52px} .mr > span:first-child{flex:1;min-width:0} .mr .ar{color:var(--muted);font-size:20px}
   .mb.off,.mr.off{opacity:.45;cursor:default} .mr.all{background:var(--accent-soft);border-left-color:var(--accent)}
+  /* danh sách chuyền: chip lọc + tìm + dòng gọn (phương án D, 14/10) */
+  .lsec{font:800 11px var(--f-display,'Segoe UI');letter-spacing:.12em;border-left:3px solid var(--accent);padding-left:7px;margin:2px 0 8px;text-transform:uppercase}
+  .lsec em{font-style:normal;color:var(--muted);font-weight:600;letter-spacing:0;float:right}
+  .lchips{display:flex;gap:6px;margin-bottom:6px}.lchips span{border:1px solid var(--line);border-radius:14px;padding:3px 10px;font-size:11px;color:var(--muted);cursor:pointer}.lchips span.on{background:var(--accent);color:#fff;font-weight:800;border-color:var(--accent)}
+  .lsrch{display:block;width:100%;border:1px solid var(--line);border-radius:8px;padding:5px 9px;color:inherit;font:inherit;font-size:11.5px;margin-bottom:6px;background:rgba(255,255,255,.03);outline:0}
+  .lscr{max-height:calc(100dvh - 400px);overflow-y:auto;margin-bottom:70px}
+  .rB{display:grid;grid-template-columns:62px 1fr auto 18px;align-items:center;gap:6px;height:30px;border-bottom:1px solid rgba(100,180,245,.14);font-size:12px;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:inherit;font-family:inherit;text-align:left;padding:0;cursor:pointer}
+  .rB b{font-weight:800}.rB span{color:var(--muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rB i{font:800 12px var(--f-display,'Segoe UI');font-style:normal}
+  .rB u{background:var(--crit);color:#fff;border-radius:8px;font:800 9.5px/15px 'Segoe UI';min-width:15px;text-align:center;text-decoration:none;display:inline-block;margin-left:4px}
+  body.cr .lchips span.on{color:#04121f}
+  .rB.p{background:rgba(255,90,95,.07)}
+  .lall{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:linear-gradient(var(--accent-soft),var(--accent-soft)),var(--panel);font-weight:800;position:fixed;left:10px;right:10px;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:60;box-sizing:border-box;color:inherit;font-family:inherit;font-size:13px;text-align:left;cursor:pointer}.lall small{display:block;color:var(--muted);font-weight:500;font-size:10.5px}.lall em{font-style:normal;font-size:17px}
   /* Thẻ chuyền v3/v4 (13/10): chấm + mã, % to cùng màu trạng thái, thanh tiến độ mảnh; thẻ chọn = nền nhạt + viền 1 px + nâng nhẹ; nhiều chuyền (> 6): thẻ gọn, cần chú ý lên đầu, dải màu, nút "Tất cả" */
   .m-chips{display:flex!important;gap:8px;overflow-x:auto;padding:8px 2px 6px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;scrollbar-width:none} .m-chips::-webkit-scrollbar{display:none}
   .m-chips .mc{flex:0 0 92px;scroll-snap-align:start;position:relative;text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px 8px;min-height:44px;cursor:pointer}
@@ -747,6 +761,24 @@ body.cr .bns.tn .r b,body.cr .stage .tip .bns.tn .r b{color:#ff9a9a} :root[data-
   .stage .tip .ph-mid dl{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 10px;font-size:12.5px;margin:6px 0} .stage .tip .ph-mid dd{text-align:right;margin:0;font:600 12px var(--f-mono);white-space:nowrap} .stage .tip .ph-mid dt{color:var(--muted)}
   .ph-sec{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:9px 0 7px;font-size:13.5px;font-weight:600;color:var(--accent);cursor:pointer} .ph-sec em{font-style:normal;color:var(--muted);font-weight:400;font-size:12px}
   .ph-mid .nsec{border:0;margin:0;padding:0}
+  /* nhãn trạng thái thẻ công nhân: chỉ đổi màu chữ, không nền (demo nhan-trang-thai.html, phương án A) */
+  .ph-hr .chip,.ph-osec .chip{background:none!important;padding:0!important;border-radius:0;font:800 9.5px var(--f-body);letter-spacing:.05em;text-transform:uppercase}
+  .ph-hr .chip.c-bn,.ph-osec .chip.c-bn{color:#d23a40}
+  .ph-hr .chip.c-skill,.ph-osec .chip.c-skill{color:#c85a10}
+  .ph-hr .chip.c-ctbn,.ph-osec .chip.c-ctbn{color:#7a3fb0}
+  .ph-hr .chip.c-near,.ph-osec .chip.c-near{color:#a87208}
+  .ph-hr .chip.c-ok,.ph-osec .chip.c-ok{color:#14804f}
+  .ph-hr .chip.c-start,.ph-osec .chip.c-start{color:#2f5fb0}
+  .ph-hr .chip.c-stall,.ph-osec .chip.c-stall{color:#5b6b80}
+  :root[data-theme="dark"] .ph-hr .chip,body.cr .ph-hr .chip{}
+  :root[data-theme="dark"] .ph-hr .chip.c-bn,:root[data-theme="dark"] .ph-osec .chip.c-bn,body.cr .ph-hr .chip.c-bn,body.cr .ph-osec .chip.c-bn{color:#ff6b70}
+  :root[data-theme="dark"] .ph-hr .chip.c-skill,:root[data-theme="dark"] .ph-osec .chip.c-skill,body.cr .ph-hr .chip.c-skill,body.cr .ph-osec .chip.c-skill{color:#ff9a4d}
+  :root[data-theme="dark"] .ph-hr .chip.c-ctbn,:root[data-theme="dark"] .ph-osec .chip.c-ctbn,body.cr .ph-hr .chip.c-ctbn,body.cr .ph-osec .chip.c-ctbn{color:#c08bff}
+  :root[data-theme="dark"] .ph-hr .chip.c-near,:root[data-theme="dark"] .ph-osec .chip.c-near,body.cr .ph-hr .chip.c-near,body.cr .ph-osec .chip.c-near{color:#ffc766}
+  :root[data-theme="dark"] .ph-hr .chip.c-ok,:root[data-theme="dark"] .ph-osec .chip.c-ok,body.cr .ph-hr .chip.c-ok,body.cr .ph-osec .chip.c-ok{color:#3fe0a0}
+  :root[data-theme="dark"] .ph-hr .chip.c-start,:root[data-theme="dark"] .ph-osec .chip.c-start,body.cr .ph-hr .chip.c-start,body.cr .ph-osec .chip.c-start{color:#7fb0ff}
+  :root[data-theme="dark"] .ph-hr .chip.c-stall,:root[data-theme="dark"] .ph-osec .chip.c-stall,body.cr .ph-hr .chip.c-stall,body.cr .ph-osec .chip.c-stall{color:#9aa8bd}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ph-hr .chip.c-bn,:root:not([data-theme="light"]) .ph-osec .chip.c-bn{color:#ff6b70} :root:not([data-theme="light"]) .ph-hr .chip.c-skill,:root:not([data-theme="light"]) .ph-osec .chip.c-skill{color:#ff9a4d} :root:not([data-theme="light"]) .ph-hr .chip.c-ctbn,:root:not([data-theme="light"]) .ph-osec .chip.c-ctbn{color:#c08bff} :root:not([data-theme="light"]) .ph-hr .chip.c-near,:root:not([data-theme="light"]) .ph-osec .chip.c-near{color:#ffc766} :root:not([data-theme="light"]) .ph-hr .chip.c-ok,:root:not([data-theme="light"]) .ph-osec .chip.c-ok{color:#3fe0a0} :root:not([data-theme="light"]) .ph-hr .chip.c-start,:root:not([data-theme="light"]) .ph-osec .chip.c-start{color:#7fb0ff} :root:not([data-theme="light"]) .ph-hr .chip.c-stall,:root:not([data-theme="light"]) .ph-osec .chip.c-stall{color:#9aa8bd}}
 @media (max-width:700px){
   .stage .tip.card .cbar{cursor:default;padding:10px 12px} .stage .tip.card .cbar .btn{min-width:44px;min-height:40px}
   .stage .tip{display:none!important} .stage .tip.card:not([hidden]){display:block!important}
@@ -2198,23 +2230,18 @@ function balHtml(L) {
       + `<text x="${x0 + bw / 2}" y="${H - pb + 14}" text-anchor="middle" class="opc">${esc(x.op)}</text>`
       + `<text x="${x0 + bw / 2}" y="${H - pb + 27}" text-anchor="middle" class="opn">${esc((x.name || '').length > 10 ? x.name.slice(0, 9) + '…' : x.name || '')}</text></g>`;
   });
-  svg += `<line class="takt" x1="${pl}" x2="${Wd - pr}" y1="${y(B.takt)}" y2="${y(B.takt)}"/><text class="lbl" x="${pl + 3}" y="${y(B.takt) - 4}">takt ${nf(B.takt, 3)}′</text>`
-    + `<line class="lim" x1="${pl}" x2="${Wd - pr}" y1="${y(B.lim)}" y2="${y(B.lim)}"/><text class="lbl lim" x="${pl + 3}" y="${y(B.lim) + 11}">${pct(B.effTarget)} takt ${nf(B.lim, 3)}′</text></svg>`;
+  const kk = Wd / 356, pill = (x, yy, t, c, tc, right) => { const w = (t.length * 5.2 + 10) * kk, x0 = right ? x - w : x; return `<rect class="${c}" x="${x0}" y="${yy - 8 * kk}" width="${w}" height="${15 * kk}" rx="${7 * kk}"/><text class="${tc}" x="${x0 + 5 * kk}" y="${yy + 3 * kk}">${t}</text>`; };
+  svg += `<line class="takt" x1="${pl}" x2="${Wd - pr}" y1="${y(B.takt)}" y2="${y(B.takt)}"/><line class="lim" x1="${pl}" x2="${Wd - pr}" y1="${y(B.lim)}" y2="${y(B.lim)}"/>`
+    + pill(pl + 4 * kk, y(B.takt) - 10 * kk, `takt ${nf(B.takt, 3)}′`, 'plt', 'pt') + pill(Wd - pr - 4 * kk, y(B.lim) + 11 * kk, `${T('giới hạn', 'limit')} ${pct(B.effTarget)} · ${nf(B.lim, 3)}′`, 'plm', 'pm', true) + '</svg>';
   const short = it.filter(x => x.lv === 'bad'), spare = it.filter(x => x.diff >= 0.5);
   const sgn = d => (d > 0 ? '+' : '') + nf(d, 1);
   const tip = x => x.lv === 'bad' ? T(`thêm ~${nf(Math.ceil(-x.diff * 2) / 2, 1)} người`, `add ~${nf(Math.ceil(-x.diff * 2) / 2, 1)}`)
     : x.diff >= 0.5 ? T(`dư ~${nf(Math.floor(x.diff * 2) / 2, 1)} người`, `~${nf(Math.floor(x.diff * 2) / 2, 1)} spare`) : '';
   return `<h2>${T('Cân bằng chuyền', 'Line balance')}</h2>
-    <p class="balsum">Takt <b>${nf(B.takt, 3)}′</b> · ${T('giới hạn', 'limit')} <b>${nf(B.lim, 3)}′</b> (${pct(B.effTarget)}) · LBR <b>${pct(B.lbr)}</b>
-      ${short.length ? ` · <span class="bad">${T('Thiếu', 'Short')}: ${short.map(x => `${T('CĐ', 'Op')} ${esc(x.op)}`).join(', ')}</span>` : ''}
-      ${spare.length ? ` · <span class="low">${T('Dư', 'Spare')}: ${spare.map(x => `${T('CĐ', 'Op')} ${esc(x.op)}`).join(', ')}</span>` : ''}</p>
+    <div class="bltl"><div><span>Takt</span><b>${nf(B.takt, 3)}′</b></div><div><span class="am">${T('Giới hạn', 'Limit')} ${pct(B.effTarget)}</span><b>${nf(B.lim, 3)}′</b></div><div><span>LBR</span><b class="am">${pct(B.lbr)}</b></div></div>
+    ${short.length ? `<div class="blsh"><span class="tag">${T('THIẾU NGƯỜI', 'SHORT')}</span>${short.length}/${it.length} ${T('công đoạn', 'ops')}: <b>${short.map(x => esc(x.op)).join(' · ')}</b></div>` : ''}
+    ${spare.length ? `<div class="blsh"><span class="tag lw">${T('DƯ NGƯỜI', 'SPARE')}</span>${spare.length}/${it.length} ${T('công đoạn', 'ops')}: <b>${spare.map(x => esc(x.op)).join(' · ')}</b></div>` : ''}
     <div class="chart bal">${svg}</div>
-    <div class="legend2">
-      <span><i style="background:var(--crit)"></i><b>${T('vượt giới hạn: thiếu người', 'above limit: short')}</b></span>
-      <span><i style="background:var(--near)"></i><b>${T('sát giới hạn (±3%)', 'at limit (±3%)')}</b></span>
-      <span><i style="background:var(--ok)"></i><b>${T('ổn', 'OK')}</b></span>
-      ${HIDE.balNote ? '' : `<span><i style="background:#8fb9a4"></i><b>${T('&lt; 70% giới hạn: dư người', '&lt; 70% of limit: spare')}</b></span>`}
-    </div>
     ${HIDE.balTable ? '' : `<div class="tblw"><table class="ops cmpct balT"><tr><th>${T('CĐ', 'Op')}</th><th>${T('Tên', 'Name')}</th><th class="num">SAM</th><th class="num">${T('Người (quy đổi)', 'People (FTE)')}</th>
       <th class="num">${T('Phút / người', 'Min / person')}</th><th class="num">${T('Người cần', 'Needed')}</th><th class="num">${T('Chênh', 'Diff')}</th><th>${T('Gợi ý', 'Hint')}</th></tr>
     ${it.map(x => `<tr class="bl-r-${x.lv}" data-op="${esc(x.op)}"><td class="cd">${esc(x.op)}</td><td class="nm">${esc(x.name || '')}</td><td class="num">${nf(x.sam, 3)}</td>
@@ -2842,7 +2869,7 @@ function probCard() {
 }
 // ---------- Điện thoại (plan 9.7): thanh dưới + Home Block → Xưởng → Chuyền ----------
 // mTab: home | mon (giám sát 3D) | prob (cần xử lý) | mach (máy chờ sửa) | stat (chỉ số / biểu đồ); body[data-mt] điều khiển phần hiện (CSS ≤ 700 px). Máy tính: không ảnh hưởng.
-let mTab = QS.get('xuong') || QS.get('chuyen') ? 'mon' : 'home', mBlock = '', mXuong = '';
+let mTab = QS.get('xuong') || QS.get('chuyen') ? 'mon' : 'home', mBlock = '', mXuong = '', lnFlt = 'all', lnQ = '', mLnList = null;   // lnFlt/lnQ: bộ lọc + ô tìm danh sách chuyền (demo danh-sach-chuyen-20.html, phương án D)
 const M_RANK = { red: 4, yellow: 3, start: 2, green: 1, purple: 1, gray: 0 };
 const mOrd = L => ordLine(L, false, true).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 const mGap = L => (isFinite(L.sah) && L.planSAH > 0 ? L.sah - L.planSAH : NaN);        // SAH − Target (SAH thực tế − mục tiêu SAH cả ngày)
@@ -2986,10 +3013,25 @@ function mDraw() {
       }).join('') : `<p class="note">${T('Block này chưa khai báo xưởng.', 'No workshop declared for this block yet.')}</p>`);
     } else {
       const list = mLinesOf(id => NM.xuongOf(id) === mXuong), a = mAgg(list);
-      h = `<div class="mh">${T('Chuyền', 'Lines')} · ${T('Xưởng', 'Workshop')} ${esc(mXuong)}</div>` + list.slice().sort((p, q) => String(p.id).localeCompare(String(q.id), undefined, { numeric: true })).map(({ id, L }) => `<button class="mr" data-l="${esc(id)}" style="--c:${mClr(L.state)}"><span><b>${esc(id)}</b><small>${esc(mOrd(L))} · ${T(...(STATE[L.state] || STATE.gray))}</small></span><em style="color:${mClr(L.state)}">${pct(L.eff)}</em>${mProbN(id) ? `<span class="n">${mProbN(id)}</span>` : ''}<span class="ar">›</span></button>`).join('')
-        + (list.length ? `<button class="mr all" data-all="1"><span><b>${T('Cả xưởng', 'Whole workshop')} ${esc(mXuong)}</b><small>${T('Xem 3D toàn bộ', 'See the whole workshop in 3D')} · ${T(`${a.ppl} người`, `${a.ppl} people`)}</small></span>${effTxt(a)}<span class="ar">›</span></button>` : '');
+      const nBad = list.filter(x => mProbN(x.id)).length;
+      h = `<div class="lsec">${T('Chuyền', 'Lines')} · ${T('Xưởng', 'Workshop')} ${esc(mXuong)}<em>${list.length} ${T('chuyền', 'lines')}</em></div>`
+        + `<div class="lchips">${[['all', T('Tất cả', 'All'), list.length], ['bad', T('Vấn đề', 'Issues'), nBad], ['ok', T('Chạy tốt', 'OK'), list.length - nBad]].map(c => `<span data-lf="${c[0]}" class="${lnFlt === c[0] ? 'on' : ''}">${c[1]} ${c[2]}</span>`).join('')}</div>`
+        + `<input class="lsrch" id="lnQ" placeholder="🔍 ${T('Tìm chuyền…', 'Find a line…')}" value="${esc(lnQ)}"><div class="lscr" id="lnList"></div>`
+        + (list.length ? `<button class="lall" data-all="1"><span>${T('Cả xưởng', 'Whole workshop')} ${esc(mXuong)}<small>${T('Xem 3D toàn bộ', 'See the whole workshop in 3D')} · ${T(`${a.ppl} người`, `${a.ppl} people`)}</small></span>${effTxt(a)}</button>` : '');
+      mLnList = () => {
+        const q = lnQ.trim().toLowerCase(), el = $('lnList'); if (!el) return;
+        const rows = list.filter(x => (lnFlt === 'all' || (lnFlt === 'bad') === !!mProbN(x.id)) && (!q || String(x.id).toLowerCase().includes(q)))
+          .sort((p, r) => String(p.id).localeCompare(String(r.id), undefined, { numeric: true }));
+        el.innerHTML = rows.map(({ id, L }) => `<button class="rB${mProbN(id) ? ' p' : ''}" data-l="${esc(id)}"><b>${esc(id)}</b><span>${esc(mOrd(L))}</span><i style="color:${mClr(L.state)}">${pct(L.eff)}${mProbN(id) ? `<u>${mProbN(id)}</u>` : ''}</i><span>›</span></button>`).join('') || `<p class="note">${T('Không có chuyền phù hợp.', 'No matching line.')}</p>`;
+        el.querySelectorAll('[data-l]').forEach(e => { e.onclick = () => { selectLine(e.dataset.l, true); mSet('mon'); }; });
+      };
     }
     home.innerHTML = h;
+    if (mBlock && mXuong && $('lnList')) {
+      mLnList();
+      home.querySelectorAll('[data-lf]').forEach(e => { e.onclick = () => { lnFlt = e.dataset.lf; mDraw(); }; });
+      $('lnQ').oninput = e => { lnQ = e.target.value; mLnList(); };
+    }
     home.querySelectorAll('[data-al]').forEach(e => { e.onclick = () => { selectLine(e.dataset.al, true); mSet('mon'); }; });
     home.querySelectorAll('[data-b]').forEach(e => { e.onclick = () => { mBlock = e.dataset.b; mXuong = ''; mDraw(); window.scrollTo(0, 0); }; });
     home.querySelectorAll('[data-x]').forEach(e => { e.onclick = () => { mXuong = e.dataset.x; mDraw(); window.scrollTo(0, 0); }; });
