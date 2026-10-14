@@ -625,6 +625,32 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
   #mNav{overflow:visible}
   #v3Qual .btn{white-space:nowrap;min-height:34px;padding:0 10px}
   #mNav button span{position:absolute;top:3px;left:calc(50% + 6px);background:var(--crit);color:#fff;border-radius:8px;font-size:10px;font-weight:700;padding:0 5px}
+  /* Giao diện tối "control-room" (14/10, plan.md mục 12): chỉ ≤ 700 px, bật bằng nút 🌙 (body.cr, nhớ localStorage 'sam3d-cr'); mặc định vẫn là giao diện cũ. Máy tính không ảnh hưởng (CSS nằm trong @media điện thoại). */
+  #bCr{display:block;min-height:0;padding:3px 8px;font-size:14px;line-height:1.2;border-radius:8px}
+  body.cr{--bg:#060b16;--panel:#0d1a30;--panel-2:#12233f;--fg:#e6eefb;--muted:#8ea3c2;--line:rgba(100,180,245,.28);--accent:#35d0ff;--accent-soft:rgba(53,208,255,.14);--crit:#ff5a5a;--ok:#2fd39a;--near:#f2b705;color-scheme:dark;min-height:100vh;background:radial-gradient(700px 380px at 85% -5%,rgba(50,110,200,.38),transparent 60%),radial-gradient(600px 400px at 0% 100%,rgba(30,130,170,.25),transparent 60%),#060b16 fixed}
+  body.cr .vl-top{background:linear-gradient(90deg,#08142a,#0d2145);border-bottom:1px solid rgba(100,180,245,.35)}
+  body.cr .m-crumb{background:rgba(8,18,36,.8)}
+  body.cr .mb,body.cr .mr{background:linear-gradient(165deg,rgba(32,66,116,.75),rgba(10,24,50,.9));border:1.5px solid rgba(100,180,245,.38);box-shadow:inset 0 1px 0 rgba(200,235,255,.18)}
+  body.cr .mb[data-b]{border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 40%,transparent),inset 0 1px 0 rgba(200,235,255,.18)}
+  body.cr .mb{padding:8px 10px;min-height:128px;overflow:hidden}
+  body.cr .mb .bi{display:none} body.cr .mb .ar{right:7px;top:auto;bottom:6px;transform:none}
+  body.cr .mb b{font:800 14px var(--f-body);letter-spacing:.05em;text-transform:uppercase} body.cr .mb small{white-space:normal}
+  body.cr .mb .crart{position:absolute;right:2px;bottom:4px;width:84%;height:64%;pointer-events:none} body.cr .mb .crart svg{width:100%;height:100%;filter:drop-shadow(0 0 7px rgba(80,200,255,.5))}
+  body.cr .mb.off{border-color:rgba(100,180,245,.3)}
+  body.cr .mb em{position:relative;z-index:1}
+  body.cr #mHome .mh{color:#b9cbe6;border-left-color:var(--accent);letter-spacing:.1em}
+  body.cr #mNav{background:rgba(6,12,24,.96);border-top:1px solid rgba(100,180,245,.35)} body.cr #mNav button.on{background:none;color:var(--accent)} body.cr #mNav button.on::after{box-shadow:0 0 10px var(--accent)}
+  .cr-sum,.cr-al{display:none}
+  body.cr .cr-sum{display:block;position:relative;overflow:hidden;border:1.5px solid rgba(110,190,250,.5);border-radius:14px;background:linear-gradient(160deg,rgba(30,60,110,.6),rgba(10,18,34,.9));padding:11px 13px;margin-bottom:10px;box-shadow:0 0 18px rgba(60,160,255,.15)}
+  body.cr .cr-sum::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(120,220,255,.10),transparent);animation:crsweep 5s ease-in-out infinite;pointer-events:none}
+  @keyframes crsweep{0%{left:-60%}60%,100%{left:130%}}
+  .cr-sum .r1{display:flex;justify-content:space-between;align-items:center;font:700 11px var(--f-body);letter-spacing:.1em;color:#b9cbe6;text-transform:uppercase} .cr-sum .r1 small{font-weight:500;letter-spacing:0;color:var(--muted);text-transform:none}
+  .cr-sum .gr4{display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;margin-top:8px} .cr-sum .gr4 small{display:block;font-size:10px;color:var(--muted)} .cr-sum .gr4 b{font:800 20px/1.1 var(--f-body);font-variant-numeric:tabular-nums} .cr-sum .gr4 b.s{font-size:16px}
+  body.cr .cr-al{display:block;margin-bottom:10px} .cr-al .al{display:grid;grid-template-columns:62px 1fr auto 12px;align-items:center;height:54px;margin-bottom:7px;width:100%;text-align:left;font:inherit;color:inherit;padding:0;border:1px solid rgba(70,170,230,.55);border-radius:6px;background:linear-gradient(90deg,rgba(14,34,62,.95),rgba(8,18,36,.95));box-shadow:0 0 12px rgba(53,208,255,.16);clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));cursor:pointer}
+  .cr-al .nm{height:100%;display:grid;place-items:center;font:800 13.5px var(--f-body);border-right:1px solid rgba(70,170,230,.35);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 32%,transparent),transparent);position:relative} .cr-al .nm::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c);box-shadow:0 0 10px var(--c)}
+  .cr-al .tx{padding:0 8px;line-height:1.35;font-size:11px;color:#c4d3ea;min-width:0} .cr-al .tx b{color:#fff;font-weight:700} .cr-al .tx span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cr-al .rg{--p:50;position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from -40deg,var(--c) calc(var(--p)*1%),rgba(255,255,255,.1) 0);filter:drop-shadow(0 0 5px var(--c));margin-right:3px} .cr-al .rg::before{content:"";position:absolute;inset:3.5px;border-radius:50%;background:#0a1424} .cr-al .rg b{position:relative;font:800 10.5px var(--f-body);color:#fff}
+  .cr-al .go{color:#8fb4d8;font-size:16px;margin-right:4px}
   body[data-mt="home"] #mChips,body[data-mt="home"] #mRib,body[data-mt="home"] #mStrip,body[data-mt="home"] .stage,body[data-mt="home"] .panel,body[data-mt="home"] .bot-row,body[data-mt="home"] #empty{display:none!important}
   body:not([data-mt="home"]) #mHome{display:none}
   body[data-mt="mon"] #view > :not(#secProb),body[data-mt="mon"] .bot-row{display:none!important}
@@ -729,6 +755,7 @@ dialog.gt .gt-h h3{margin:0;font:700 20px var(--f-display);text-transform:upperc
       <button class="btn" id="bCfg" data-en="⚙ Settings">⚙ Cài đặt</button>
     </div>
     <div class="vl-right">
+      <button class="btn m-only" id="bCr" type="button" data-en-title="Dark control-room look" title="Giao diện tối">🌙</button>
       <div class="seg" data-lang-switch role="group" aria-label="Ngôn ngữ / Language"><button data-lang="vi">VI</button><button data-lang="en">EN</button></div>
       <div class="vl-clock"><b id="topClk">--:--</b><small><span data-en="ETS data">Dữ liệu ETS</span> · <span id="topDate"></span></small></div>
     </div>
@@ -2101,7 +2128,7 @@ function balHtml(L) {
   it.forEach((x, i) => {
     const x0 = pl + i * bw, v = isFinite(x.wl) ? x.wl : 0;
     const ppl = x.emps.map(e => { const w = wOf(e); return w ? `${w.name || e} · %EFF ${pct(w.eff)}` : e; }).join('\n');
-    svg += `<g class="balb" data-op="${esc(x.op)}"><rect class="bl-${x.lv}" x="${x0 + bw * 0.16}" y="${y(v)}" width="${bw * 0.68}" height="${Math.max(0, y(0) - y(v))}" rx="2"><title>${esc(`CĐ ${x.op} ${x.name || ''}\nSAM ${nf(x.sam, 3)} ÷ ${nf(x.fte, 2)} ${T('người quy đổi', 'FTE')} = ${nf(x.wl, 3)}′ / ${T('người', 'person')}\n${T('Người cần', 'People needed')} ${nf(x.need, 2)} · ${T('chênh', 'diff')} ${x.diff > 0 ? '+' : ''}${nf(x.diff, 1)}\n${ppl}`)}</title></rect>`
+    svg += `<g class="balb" data-op="${esc(x.op)}"><rect class="bl-${x.lv}" x="${x0 + bw * 0.16}" y="${y(v)}" width="${bw * 0.68}" height="${Math.max(0, y(0) - y(v))}" rx="2"><title>${esc(`${T('CĐ', 'Op')} ${x.op} ${x.name || ''}\nSAM ${nf(x.sam, 3)} ÷ ${nf(x.fte, 2)} ${T('người quy đổi', 'FTE')} = ${nf(x.wl, 3)}′ / ${T('người', 'person')}\n${T('Người cần', 'People needed')} ${nf(x.need, 2)} · ${T('chênh', 'diff')} ${x.diff > 0 ? '+' : ''}${nf(x.diff, 1)}\n${ppl}`)}</title></rect>`
       + `<text class="val" x="${x0 + bw / 2}" y="${y(v) - 3}" text-anchor="middle">${isFinite(x.wl) ? nf(x.wl, 3) : '–'}</text>`
       + `<text x="${x0 + bw / 2}" y="${H - pb + 14}" text-anchor="middle" class="opc">${esc(x.op)}</text>`
       + `<text x="${x0 + bw / 2}" y="${H - pb + 27}" text-anchor="middle" class="opn">${esc((x.name || '').length > 10 ? x.name.slice(0, 9) + '…' : x.name || '')}</text></g>`;
@@ -2114,8 +2141,8 @@ function balHtml(L) {
     : x.diff >= 0.5 ? T(`dư ~${nf(Math.floor(x.diff * 2) / 2, 1)} người`, `~${nf(Math.floor(x.diff * 2) / 2, 1)} spare`) : '';
   return `<h2>${T('Cân bằng chuyền', 'Line balance')}</h2>
     <p class="balsum">Takt <b>${nf(B.takt, 3)}′</b> · ${T('giới hạn', 'limit')} <b>${nf(B.lim, 3)}′</b> (${pct(B.effTarget)}) · LBR <b>${pct(B.lbr)}</b>
-      ${short.length ? ` · <span class="bad">${T('Thiếu', 'Short')}: ${short.map(x => `CĐ ${esc(x.op)}`).join(', ')}</span>` : ''}
-      ${spare.length ? ` · <span class="low">${T('Dư', 'Spare')}: ${spare.map(x => `CĐ ${esc(x.op)}`).join(', ')}</span>` : ''}</p>
+      ${short.length ? ` · <span class="bad">${T('Thiếu', 'Short')}: ${short.map(x => `${T('CĐ', 'Op')} ${esc(x.op)}`).join(', ')}</span>` : ''}
+      ${spare.length ? ` · <span class="low">${T('Dư', 'Spare')}: ${spare.map(x => `${T('CĐ', 'Op')} ${esc(x.op)}`).join(', ')}</span>` : ''}</p>
     <div class="chart bal">${svg}</div>
     <div class="legend2">
       <span><i style="background:var(--crit)"></i><b>${T('vượt giới hạn: thiếu người', 'above limit: short')}</b></span>
@@ -2150,7 +2177,7 @@ function rateHtml(L) {
   for (let v = 0; v <= max + 1e-9; v += step) svg += `<line class="grid" x1="${pl}" x2="${Wd - pr}" y1="${y(v)}" y2="${y(v)}"/><text x="${pl - 4}" y="${y(v) + 3}" text-anchor="end">${nf(v, 0)}</text>`;
   rows.forEach((r, i) => {
     const x0 = pl + i * bw, v = isFinite(r.rate) ? r.rate : 0, isSlow = r === slow && rows.length > 1;
-    svg += `<g class="balb" data-op="${esc(r.op)}"><rect class="bl-${r.lv}" x="${x0 + bw * 0.16}" y="${y(v)}" width="${bw * 0.68}" height="${Math.max(0, y(0) - y(v))}" rx="2"${isSlow ? ' stroke="var(--fg)" stroke-width="2"' : ''}><title>${esc(`CĐ ${r.op} ${r.name || ''}\n${isFinite(r.rate) ? nf(r.rate, 0) : '–'} sp/giờ TB (${nf(r.qty)} sp)${isSlow ? '\n← chậm nhất: kéo tốc độ chuyền' : ''}`)}</title></rect>`
+    svg += `<g class="balb" data-op="${esc(r.op)}"><rect class="bl-${r.lv}" x="${x0 + bw * 0.16}" y="${y(v)}" width="${bw * 0.68}" height="${Math.max(0, y(0) - y(v))}" rx="2"${isSlow ? ' stroke="var(--fg)" stroke-width="2"' : ''}><title>${esc(`${T('CĐ', 'Op')} ${r.op} ${r.name || ''}\n${isFinite(r.rate) ? nf(r.rate, 0) : '–'} sp/giờ TB (${nf(r.qty)} sp)${isSlow ? '\n← chậm nhất: kéo tốc độ chuyền' : ''}`)}</title></rect>`
       + `<text class="val" x="${x0 + bw / 2}" y="${y(v) - 3}" text-anchor="middle">${isFinite(r.rate) ? nf(r.rate, 0) : '–'}</text>`
       + `<text x="${x0 + bw / 2}" y="${H - pb + 14}" text-anchor="middle" class="opc">${esc(r.op)}</text>`
       + `<text x="${x0 + bw / 2}" y="${H - pb + 27}" text-anchor="middle" class="opn">${esc((r.name || '').length > 10 ? r.name.slice(0, 9) + '…' : r.name || '')}</text></g>`;
@@ -2298,8 +2325,8 @@ function drawCmp(LL, el) {
     ['%EFF', '%EFF', x => pct(x.L.eff), x => cls(x.L.eff / x.L.effTarget, 1, 0.9)],
     ['Người', 'People', x => `${x.L.people} / ${x.L.peoplePlan}`],
     !HIDE.lbrSam && ['LBR theo SAM', 'LBR by SAM', x => pct(x.L.lbrSam)],
-    !HIDE.overload && ['Tắc nghẽn', 'Bottleneck', x => { const q = x.L.ops.find(o => o.key === x.L.bottleneck); return q ? `CĐ ${esc(q.op)} · ${nf(q.rate)} ${T('sp/giờ', 'pcs/h')}` : '–'; }],
-    !HIDE.ctBn && ['Bottleneck (CT)', 'Bottleneck (CT)', x => { const q = x.L.ops.find(o => o.key === x.L.ctBottleneck); return q ? `CĐ ${esc(q.op)}` : '–'; }],
+    !HIDE.overload && ['Tắc nghẽn', 'Bottleneck', x => { const q = x.L.ops.find(o => o.key === x.L.bottleneck); return q ? `${T('CĐ', 'Op')} ${esc(q.op)} · ${nf(q.rate)} ${T('sp/giờ', 'pcs/h')}` : '–'; }],
+    !HIDE.ctBn && ['Bottleneck (CT)', 'Bottleneck (CT)', x => { const q = x.L.ops.find(o => o.key === x.L.ctBottleneck); return q ? `${T('CĐ', 'Op')} ${esc(q.op)}` : '–'; }],
   ].filter(Boolean);
   el.style.gridTemplateColumns = `auto repeat(${LL.length}, 1fr)`;
   el.innerHTML = '<div></div>' + LL.map(x => `<div class="h" style="color:${STATE_HEX[x.L.state] || 'inherit'}">${esc(x.id)}</div>`).join('')
@@ -2341,7 +2368,7 @@ function repXlsx() {
   const LL = lastLL.filter(x => x.L);
   if (!LL.length || !window.XLSX) { showMsg(T('Chưa có dữ liệu để xuất báo cáo.', 'No data to export.')); return; }
   const wb = XLSX.utils.book_new(), add = (name, rows) => XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), name);
-  const bn = L => { const q = L.ops.find(o => o.key === L.bottleneck); return q ? `CĐ ${q.op} ${q.name || ''}` : ''; };
+  const bn = L => { const q = L.ops.find(o => o.key === L.bottleneck); return q ? `${T('CĐ', 'Op')} ${q.op} ${q.name || ''}` : ''; };
   add(T('Tổng hợp', 'Summary'), [[T('Chuyền', 'Line'), T('Ngày', 'Date'), T('Dữ liệu tới', 'Data up to'), T('Đơn', 'Order'), T('Ra chuyền', 'Output'), 'Target',
     T('Dự báo cuối ca', 'Forecast'), T('Tiến độ (%)', 'Progress (%)'), '%EFF (%)', T('%EFF mục tiêu (%)', 'Target %EFF (%)'), T('Người', 'People'), T('Người KH', 'Planned people'),
     T('Takt (phút)', 'Takt (min)'), 'LBR (%)', T('Tắc nghẽn', 'Bottleneck'), T('Trạng thái', 'Status')]]
@@ -2777,6 +2804,45 @@ const M_HOME = M_SV('<path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/
 const M_BLD = M_SV('<path d="M4 21V7l6-3v17M10 9l10 3v9M3 21h18M7 10h.01M7 13h.01M7 16h.01M14 14h2M14 17h2"/>');
 const M_WASH = M_SV('<rect x="4.5" y="3" width="15" height="18" rx="2.2"/><circle cx="12" cy="14" r="4"/><path d="M8 6.5h.01M11 6.5h2"/>');
 const M_FACT = '<svg viewBox="0 0 160 90" aria-hidden="true"><path d="M20 78h110M30 78V46l22-12v12l22-12v12l22-12V20h12v58"/><path d="M42 62h6M58 62h6M74 62h6"/><circle cx="110" cy="64" r="13"/><path d="M120 74l12 12"/><path d="M14 40c0-6 5-10 12-9M128 26c0-5 4-8 10-7"/></svg>';
+// ---- Giao diện tối (plan.md 12): hình khối isometric + tóm tắt + Cần chú ý (chỉ vẽ khi body.cr) ----
+const CR_P = (x, y, z) => [100 + (x - y) * .866, 118 + (x + y) * .5 - z].map(v => +v.toFixed(1)).join(',');
+const CR_ST = 'stroke="#7fdcff" stroke-width="1.3" stroke-linejoin="round"';
+function crBox(x, y, w, d, h, z0 = 0, top = 'rgba(150,215,255,.30)') {
+  const P = CR_P; let g = '';
+  g += `<polygon ${CR_ST} fill="rgba(40,115,210,.38)" points="${P(x, y + d, z0)} ${P(x + w, y + d, z0)} ${P(x + w, y + d, z0 + h)} ${P(x, y + d, z0 + h)}"/>`;
+  g += `<polygon ${CR_ST} fill="rgba(20,70,160,.5)" points="${P(x + w, y + d, z0)} ${P(x + w, y, z0)} ${P(x + w, y, z0 + h)} ${P(x + w, y + d, z0 + h)}"/>`;
+  g += `<polygon ${CR_ST} fill="${top}" points="${P(x, y, z0 + h)} ${P(x + w, y, z0 + h)} ${P(x + w, y + d, z0 + h)} ${P(x, y + d, z0 + h)}"/>`;
+  return g;
+}
+function crCyl(cx, cy, r, h, z0 = 0, o = {}) {
+  const c = CR_P(cx, cy, z0 + h).split(','), b = CR_P(cx, cy, z0).split(','), X = 1.2247 * r, Y = .707 * r;
+  return `<path ${CR_ST} fill="${o.s || 'rgba(30,100,200,.42)'}" d="M${b[0] - X} ${b[1]} L${c[0] - X} ${c[1]} A${X} ${Y} 0 0 1 ${+c[0] + X} ${c[1]} L${+b[0] + X} ${b[1]} A${X} ${Y} 0 0 1 ${b[0] - X} ${b[1]}Z"/><ellipse ${CR_ST} cx="${c[0]}" cy="${c[1]}" rx="${X}" ry="${Y}" fill="${o.t || 'rgba(170,225,255,.4)'}"/>`;
+}
+const CR_ART = {
+  wh: () => crBox(-48, -30, 96, 62, 5, 0, 'rgba(60,140,230,.2)') + crBox(-38, -22, 76, 46, 34, 5),
+  fx: () => crBox(-52, -34, 104, 70, 5) + crBox(-42, -26, 50, 52, 22, 5) + crBox(14, -26, 30, 52, 32, 5) + crBox(30, -30, 7, 7, 30, 37, 'rgba(255,200,150,.5)'),
+  tank: () => crBox(-52, -34, 104, 70, 5) + crCyl(-22, -8, 17, 28, 5) + crCyl(14, -8, 17, 22, 5) + crCyl(-22, 22, 15, 18, 5) + crCyl(22, 22, 15, 26, 5),
+  wash: () => `<ellipse cx="100" cy="108" rx="62" ry="26" ${CR_ST} fill="rgba(40,110,210,.35)"/><ellipse cx="100" cy="104" rx="50" ry="20" ${CR_ST} fill="rgba(255,90,180,.25)"/>` + crCyl(0, 0, 28, 34, 10, { s: 'rgba(120,150,230,.45)', t: 'rgba(200,220,255,.55)' }) + `<ellipse cx="100" cy="${CR_P(0, 0, 44).split(',')[1]}" rx="22" ry="11" fill="rgba(255,110,190,.5)" stroke="#ffb0e0"/>`
+};
+const crArt = k => `<span class="crart"><svg viewBox="0 0 200 150" aria-hidden="true">${CR_ART[k]()}</svg></span>`;
+const crKind = (b, i) => b.link ? 'wash' : ['fx', 'wh', 'tank'][i % 3];
+const crOn = () => document.body.classList.contains('cr');
+(() => {
+  let on = false; try { on = localStorage.getItem('sam3d-cr') === '1'; } catch (e) {}
+  document.body.classList.toggle('cr', on);
+  const bt = $('bCr'); if (bt) bt.onclick = () => { const v = !crOn(); document.body.classList.toggle('cr', v); try { localStorage.setItem('sam3d-cr', v ? '1' : '0'); } catch (e) {} mDraw(); };
+})();
+function crTop() {                                                // tóm tắt "Toàn nhà máy" + "Cần chú ý" (cùng số với PC: %EFF, SAH, Ra chuyền, SAH − Target)
+  const all = mLinesOf(() => true), a = mAgg(all);
+  const out = all.reduce((t, x) => t + mOut(x.L), 0), gap = all.reduce((t, x) => t + (isFinite(mGap(x.L)) ? mGap(x.L) : 0), 0);
+  const att = mSortLines(all.filter(x => x.L.state === 'red' || x.L.state === 'yellow' || mProbN(x.id)), 'att').slice(0, 5);
+  const bn = id => { const b = NM && NM.blockOfGroup(id); return b ? T(b.name.vi, b.name.en) : ''; };
+  return `<div class="cr-sum"><div class="r1"><span>${T('Toàn nhà máy', 'Whole factory')}</span><small>${a.n} ${T('chuyền có dữ liệu', 'lines with data')}</small></div>
+    <div class="gr4"><div><small>%EFF</small><b style="color:${mEffClr(a.eff, a.effTarget)}">${pct(a.eff)}</b></div><div><small>SAH</small><b class="s">${nf(a.sah, 1)}</b></div><div><small>${T('Ra chuyền', 'Output')}</small><b class="s">${nf(out)}</b></div><div><small>SAH−Target</small><b class="s" style="color:var(--${gap >= 0 ? 'ok' : 'crit'})">${mSg(gap)}</b></div></div></div>`
+    + (att.length ? `<div class="cr-al"><div class="mh">🔔 ${T('Cần chú ý', 'Needs attention')} <small style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted)">${att.length} ${T('chuyền', 'lines')}</small></div>`
+      + att.map(({ id, L }) => { const c = mClr(L.state), rgb = isFinite(L.eff) ? Math.max(0, Math.min(100, L.eff * 80)) : 0;
+        return `<button class="al" data-al="${esc(id)}" style="--c:${c}"><span class="nm">${esc(id)}</span><span class="tx"><span><b>${esc(bn(id))}</b> · ${T('xưởng', 'workshop')} ${esc(NM ? NM.xuongOf(id) || '' : '')}</span><span>SAH − Target <b>${mSg(mGap(L))}</b></span></span><span class="rg" style="--p:${rgb}"><b>${pct(L.eff)}</b></span><span class="go">›</span></button>`; }).join('') + '</div>' : '');
+}
 let mSV = '';   // tab Chỉ số: '' = 4 phần chính, 'ops' = bảng công đoạn, 'wk' = bảng công nhân
 const M_MANY = 6; let mChipSel = '', mSort = 'att';
 const M_ATT = { red: 0, yellow: 1, start: 2, gray: 3, green: 4, purple: 5 };
@@ -2829,11 +2895,11 @@ function mDraw() {
     const effTxt = a => `<em style="color:${mEffClr(a.eff, a.effTarget)}">${pct(a.eff)}</em>`;
     if (!NM) h = `<p class="note">${T('Chưa tải được danh sách Block / Xưởng.', 'Block / workshop list not loaded.')}</p>`;
     else if (!mBlock) {
-      h = `<div class="mh">Block</div><div class="mg">` + NM.blocks.map(b => {
+      h = (crOn() ? crTop() : '') + `<div class="mh">Block</div><div class="mg">` + NM.blocks.map((b, bi) => {
         const list = mLinesOf(id => NM.blockOfGroup(id) && NM.blockOfGroup(id).id === b.id), a = mAgg(list), nm = esc(T(b.name.vi, b.name.en));
-        if (b.link) return `<a class="mb" href="../${esc(b.link)}" style="--c:#2361a8"><i class="bi">${M_WASH}</i><b>${nm}</b><small>${T('Mở trang riêng', 'Open its own page')}</small><span class="ar">›</span></a>`;
-        return list.length ? `<button class="mb" data-b="${b.id}" style="--c:${mClr(a.state)}"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T(`${b.xuong.length} xưởng · ${a.n} chuyền`, `${b.xuong.length} workshop(s) · ${a.n} line(s)`)}</small>${effTxt(a)}${a.probs ? `<span class="n">${a.probs}</span>` : ''}<span class="ar">›</span></button>`
-          : `<div class="mb off"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T('Chưa có dữ liệu', 'No data yet')}</small><em>–</em><span class="ar">›</span></div>`;
+        if (b.link) return `<a class="mb" href="../${esc(b.link)}" style="--c:#2361a8"><i class="bi">${M_WASH}</i><b>${nm}</b><small>${T('Mở trang riêng', 'Open its own page')}</small>${crOn() ? crArt('wash') : ''}<span class="ar">›</span></a>`;
+        return list.length ? `<button class="mb" data-b="${b.id}" style="--c:${mClr(a.state)}"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T(`${b.xuong.length} xưởng · ${a.n} chuyền`, `${b.xuong.length} workshop(s) · ${a.n} line(s)`)}</small>${effTxt(a)}${a.probs ? `<span class="n">${a.probs}</span>` : ''}${crOn() ? crArt(crKind(b, bi)) : ''}<span class="ar">›</span></button>`
+          : `<div class="mb off"><i class="bi">${M_BLD}</i><b>${nm}</b><small>${T('Chưa có dữ liệu', 'No data yet')}</small><em>–</em>${crOn() ? crArt(crKind(b, bi)) : ''}<span class="ar">›</span></div>`;
       }).join('') + `</div><div class="mhome-i">${M_FACT}<span>${T('Chọn một block để xem chi tiết chuyền', 'Pick a block to see line details')}</span></div>`;
     } else if (!mXuong) {
       h = `<div class="mh">${T('Xưởng', 'Workshops')} · ${esc(bkN)}</div>` + (bk.xuong.length ? bk.xuong.map(x => {
@@ -2847,6 +2913,7 @@ function mDraw() {
         + (list.length ? `<button class="mr all" data-all="1"><span><b>${T('Cả xưởng', 'Whole workshop')} ${esc(mXuong)}</b><small>${T('Xem 3D toàn bộ', 'See the whole workshop in 3D')} · ${T(`${a.ppl} người`, `${a.ppl} people`)}</small></span>${effTxt(a)}<span class="ar">›</span></button>` : '');
     }
     home.innerHTML = h;
+    home.querySelectorAll('[data-al]').forEach(e => { e.onclick = () => { selectLine(e.dataset.al, true); mSet('mon'); }; });
     home.querySelectorAll('[data-b]').forEach(e => { e.onclick = () => { mBlock = e.dataset.b; mXuong = ''; mDraw(); window.scrollTo(0, 0); }; });
     home.querySelectorAll('[data-x]').forEach(e => { e.onclick = () => { mXuong = e.dataset.x; mDraw(); window.scrollTo(0, 0); }; });
     home.querySelectorAll('[data-l]').forEach(e => { e.onclick = () => { selectLine(e.dataset.l, true); mSet('mon'); }; });
