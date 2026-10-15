@@ -870,7 +870,7 @@ function lineStatus(E, cfg, ie, opt) {
 
   // Phân loại phiếu. Tồn ca trước (09/10): phiếu có Date trước ngày báo cáo (ngày mới nhất trong file) — ETS ghi Date = ngày làm;
   // công nhân vào sớm (07:14) dập thẻ trước giờ ca vẫn là hàng hôm nay. File không có Date: phiếu đồng bộ trước giờ vào ca + carryMin.
-  const dKey = v => { const x = String(v || '').trim(), m = x.match(/^(d{1,2})[/.-](d{1,2})[/.-](d{4})/); return m ? `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}` : x.slice(0, 10); };
+  const dKey = v => { const x = String(v || '').trim(), m = x.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})/); return m ? `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}` : x.slice(0, 10); };
   const dayOf = T.reduce((a, t) => { const k = dKey(t.date); return k > a ? k : a; }, ''), byDate = !!dayOf && T.every(t => dKey(t.date));
   const carryEnd = Wc.s + cfg.carryMin * 60;
   T.forEach(t => {
